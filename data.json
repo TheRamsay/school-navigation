@@ -1,0 +1,175 @@
+{
+    "teachers": [
+        {
+            "id": 1,
+            "firstname": "Lenka",
+            "surname": "Houskova"
+        },
+        {
+            "id": 2,
+            "firstname": "Dagmar",
+            "surname": "Posmurna"
+        },
+        {
+            "id": 3,
+            "firstname": "Lenka",
+            "surname": "Strasakova"
+        },
+        {
+            "id": 4,
+            "firstname": "Natasa",
+            "surname": "Berkova"
+        },
+        {
+            "id": 5,
+            "firstname": "Olga",
+            "surname": "Maskova"
+        },
+        {
+            "id": 6,
+            "firstname": "Dana",
+            "surname": "Smerdova"
+        },
+        {
+            "id": 7,
+            "firstname": "Blanka",
+            "surname": "Smidova"
+        },
+        {
+            "id": 8,
+            "firstname": "Lucie",
+            "surname": "Buchtova"
+        },
+        {
+            "id": 9,
+            "firstname": "Hana",
+            "surname": "Jakubcova"
+        },
+        {
+            "id": 10,
+            "firstname": "Marie",
+            "surname": "Lanikova"
+        },
+        {
+            "id": 11,
+            "firstname": "Jarmila",
+            "surname": "Novotna"
+        },
+        {
+            "id": 13,
+            "firstname": "Jana",
+            "surname": "Tomasova"
+        },
+        {
+            "id": 14,
+            "firstname": "Dana",
+            "surname": "Augustynkova"
+        },
+        {
+            "id": 15,
+            "firstname": "Zuzana",
+            "surname": "Cizkova"
+        },
+        {
+            "id": 16,
+            "firstname": "Jitka",
+            "surname": "Hotarova"
+        },
+        {
+            "id": 17,
+            "firstname": "Eva",
+            "surname": "Kapinusova"
+        },
+        {
+            "id": 18,
+            "firstname": "Jitka",
+            "surname": "Langerova"
+        },
+        {
+            "id": 19,
+            "firstname": "Hana",
+            "surname": "Svobodova"
+        },
+        {
+            "id": 20,
+            "firstname": "Hana",
+            "surname": "Brtanova"
+        },
+        {
+            "id": 21,
+            "firstname": "Zdenka",
+            "surname": "Deutschova"
+        },
+        {
+            "id": 22,
+            "firstname": "Zdenka",
+            "surname": "Rozsypalova"
+        },
+        {
+            "id": 23,
+            "firstname": "Anna",
+            "surname": "Vonkova"
+        }
+    ],
+    "cabinets": [
+        {
+            "id": "205",
+            "phone": "151",
+            "teachers": [
+                1,
+                2,
+                3
+            ]
+        },
+        {
+            "id": "202",
+            "phone": "143",
+            "teachers": [
+                4,
+                5,
+                6,
+                7
+            ]
+        },
+        {
+            "id": "203",
+            "phone": "262",
+            "teachers": [
+                6
+            ]
+        },
+        {
+            "id": "231",
+            "phone": "144",
+            "teachers": [
+                8,
+                9,
+                10,
+                11,
+                12
+            ]
+        },
+        {
+            "id": "225",
+            "phone": "146",
+            "teachers": [
+                20,
+                21,
+                22,
+                23
+            ]
+        },
+        {
+            "id": "228",
+            "phone": "145",
+            "teachers": [
+                14,
+                15,
+                16,
+                17,
+                18,
+                19
+            ]
+        }
+    ]
+}
