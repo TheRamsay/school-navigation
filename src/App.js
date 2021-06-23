@@ -1,52 +1,51 @@
 import './App.css';
-import Search from "./components/Search"
+import SearchBox from "./components/SearchBox"
 import Map from './components/Map';
 import FloorPicker from "./components/FloorPicker";
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import RoomInfo from './components/RoomInfo';
+import {useDispatch, useSelector} from 'react-redux';
+import { setSelected } from './reducers/selectedReducer';
+import EmployeeInfo from './components/EmployeeInfo';
+import { setSelectedType } from './reducers/typeReducer';
 
 function App() {
-    const [currentRoom, setCurrentRoom] = useState(undefined)
+    const dispatch = useDispatch();
+    const selectedID = useSelector((state) => state.selected)
+    const types = useSelector((state) => state.types);
+    const floor = useSelector((state) => state.floor);
 
-    const searchHandler = (data) => {
-        console.log(data);
-        if (currentRoom) {
-            document.getElementById(currentRoom.cabinet_id).classList.remove("selected-room");
+
+    useEffect(() => {
+        dispatch(setSelected(null))
+    }, [floor])
+
+    useEffect(() => {
+        const svg = document.getElementById("svg-map");
+        const elements = svg.querySelectorAll("g > path");
+        [...elements].forEach((element) => {
+            element.classList.remove("selected-room")
+        })
+        if (selectedID !== null) {
+            const element = document.getElementById(selectedID).firstElementChild;
+            element.classList.add("selected-room");
         }
-        setCurrentRoom(data);
-        document.getElementById(data.cabinet_id).classList.add("selected-room");
-    }
+    }, [selectedID])
 
     const handleSVGClick = (event) => {
-        console.log(event) 
-        const clickedID = event.currentTarget.id;
-        let shouldFetch = true;
-
-        if (currentRoom !== undefined) {
-            document.getElementById(currentRoom.cabinet_id).classList.remove("selected-room");
-            if (clickedID !== currentRoom.cabinet_id) {
-                document.getElementById(clickedID).classList.add("selected-room");
-            } else {
-                setCurrentRoom(undefined);
-                shouldFetch = false;
-
-            }
-        } else {
-            document.getElementById(clickedID).classList.add("selected-room")
-        }
-        if (shouldFetch) {
-            axios.get("http://127.0.0.1:5000/api/cabinet/" + clickedID)
-                .then((res) => res.data)
-                .then(data => {
-                    setCurrentRoom(data)
-                })
-        }
+        const ID = event.currentTarget.parentElement.id;
+        dispatch(setSelected(ID));
+        // if (selectedID === null) {
+        //     dispatch(setSelectedType(null))
+        // } else {
+        //     dispatch(setSelectedType("room"))
+        // }
     }
 
     useEffect(() => {
         const svg = document.getElementById("svg-map");
-        const elements = svg.getElementsByTagName("path");
+        const elements = svg.querySelectorAll("path, text");
         [...elements].forEach((element) => {
             element.addEventListener("click", handleSVGClick)
         })
@@ -61,9 +60,10 @@ function App() {
 
     return (
         <div className="app">
-            <Search searchHandler={(data) => searchHandler(data)} />
+            <SearchBox />
             <Map />
-            {currentRoom ? <RoomInfo room={currentRoom}/> : ""}
+            {/* { type ? type === "room" ? <RoomInfo /> : <EmployeeInfo /> : "" } */}
+            { selectedID !== null  ? <RoomInfo /> : "" }
             <FloorPicker />
         </div>
     );

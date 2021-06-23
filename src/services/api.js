@@ -1,16 +1,15 @@
 import axios from "axios";
 
-const getTeacher = (name) => {
-    const [firstname, surname] = name.split(" ");
+const BASE_URL = "http://127.0.0.1:8000/api/";
 
-    return axios.get(`http://127.0.0.1:5000/api/teacher/${firstname}/${surname}`)
-        .then(res => res.data)
-
-};
-
-
-const getCabinet = (id) => {
-    return axios.get(`http://127.0.0.1:5000/api/cabinet/${id}`).then(res => res.data)
+const makeQuery = (query) => {
+    const data = new FormData();
+    data.append("query", query);
+    return axios.post(BASE_URL + "employee/search/", data).then(res => res.data)
 }
 
-export {getTeacher, getCabinet};
+const getRoom = (id) => {
+    return axios.get(BASE_URL + `room/${id}`).then(res => res.data)
+}
+
+export { makeQuery, getRoom };
