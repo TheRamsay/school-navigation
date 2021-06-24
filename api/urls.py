@@ -7,5 +7,5 @@ from .views import get_room, get_employee, search
 urlpatterns = [
     path("room/<str:room_id>", get_room),
     path("employee/<int:employee_id>", get_employee),
-    path("employee/search/", search),
+    path("search/", search),
 ]
