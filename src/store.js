@@ -1,17 +1,24 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import thunk from "redux-thunk";
-import floorReducer from "./reducers/floorReducer";
-import resultReducer from "./reducers/resultReducer";
-import selectedReducer from "./reducers/selectedReducer";
-import typeReducer from "./reducers/typeReducer";
+import resultReducer from "./reducers/resultSlice";
+import selectedReducer from "./reducers/selectedSlice";
+import typeReducer from "./reducers/typeSlice";
+import floorReducer from "./reducers/floorSlice";
+import { configureStore } from "@reduxjs/toolkit";
 
-const reducer = combineReducers({
-    result: resultReducer,
-    selected: selectedReducer,
-    types: typeReducer,
-    floor: floorReducer
+// const reducer = combineReducers({
+//     result: resultReducer,
+//     selected: selectedReducer,
+//     types: typeReducer,
+//     floor: floorReducer
+// });
+
+// const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+// export default store;
+
+export default configureStore({
+    reducer: {
+        result: resultReducer,
+        selected: selectedReducer,
+        types: typeReducer,
+        floor: floorReducer,
+    },
 });
-
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
-export default store;

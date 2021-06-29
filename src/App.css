@@ -1,6 +1,6 @@
 body {
-    background-color: #D7D7D7;
-    font-family: 'Noto Sans', sans-serif;
+    background-color: #d7d7d7;
+    font-family: "Open Sans", sans-serif;
 }
 
 .floor-picker {
@@ -11,12 +11,11 @@ body {
     height: 40px;
     right: 10px;
     top: 150px;
-    display:flex;
+    display: flex;
     background-color: #eeeeee;
     justify-content: center;
     align-items: center;
 }
-
 
 .floor-picker svg {
     margin: auto;
@@ -29,7 +28,6 @@ body {
     top: 200px;
     display: flex;
     flex-direction: column;
-
 }
 
 .floor-menu > div {
@@ -52,21 +50,31 @@ body {
     background-color: #eeeeee;
     bottom: 0px;
     width: 100%;
-    height: 210px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     box-shadow: 1px -2px 6px rgb(0 0 0 / 20%);
+}
+
+.content {
+    margin: 15px
+}
+
+.icon-with-text {
     display: flex;
     align-items: center;
-    justify-content: space-around;
 }
 
-.room-info.classroom {
-    height: 80px;    
+.icon-with-text > p {
+    margin-left: 5px;
 }
 
-.room-info h3, .room-info p {
-    margin: 10px
+.skeleton {
+    height: 170px;
+    
+}
+
+.skeleton > span {
+    margin: 0 20px;
 }
 
 .searchbox {
@@ -110,7 +118,7 @@ input {
     display: flex;
     flex-direction: row;
     width: 90%;
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
     margin: 20px auto;
     height: 80px;
     border-radius: 20px;
@@ -121,7 +129,7 @@ input {
 }
 
 .result-icon {
-    margin: auto 10px; 
+    margin: auto 10px;
 }
 
 .result-content {
@@ -129,19 +137,18 @@ input {
 }
 
 .content-primary {
-
 }
 
 .content-secondary {
-    color: #534F4F;
+    color: #534f4f;
 }
 
 .female {
-    color: #FA21BD;
+    color: #fa21bd;
 }
 
 .male {
-    color: #2F59EE;
+    color: #2f59ee;
 }
 
 .selected-room {
