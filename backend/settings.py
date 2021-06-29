@@ -87,15 +87,12 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     },
     "api_db": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "sql11419893",
-        "USER": "sql11419893",
-        "PASSWORD": "bVxQAtDFv8",
-        "HOST": "sql11.freesqldatabase.com",  # Or an IP Address that your DB is hosted on
-        "PORT": "3306",
-		'OPTIONS': {
-       		 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-    		},
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "navigation",
+        "USER": "***REMOVED***",
+        "PASSWORD": "***REMOVED***",
+        "HOST": "78.47.245.96",  # Or an IP Address that your DB is hosted on
+        "PORT": "5432",
     },
 }
 
