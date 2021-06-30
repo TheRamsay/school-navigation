@@ -2,7 +2,7 @@ import React from "react";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { useDispatch } from "react-redux";
 import { setSelectedType } from "../../reducers/typeSlice";
-import { setSelected } from "../../reducers/selectedSlice";
+import { setSelectedRoom } from "../../reducers/selectedSlice";
 import { useHistory } from "react-router";
 import { setFloor } from "../../reducers/floorSlice";
 import { getFloor } from "../../services/floor";
@@ -26,7 +26,7 @@ const RoomResult = ({ result }) => {
 
     const handleSelect = (ev) => {
         dispatch(setSelectedType("room"));
-        dispatch(setSelected(ev.currentTarget.dataset.room));
+        dispatch(setSelectedRoom(ev.currentTarget.dataset.room));
         dispatch(setFloor(getFloor(result.floor)));
         history.push("/");
     };

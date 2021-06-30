@@ -10,11 +10,11 @@ import SearchIcon from "@material-ui/icons/Search";
 import { useHistory, useLocation } from "react-router";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
-const SearchBox = ({ handleSearch }) => {
+const SearchBox = () => {
     const [value, setValue] = useState("");
     const dispatch = useDispatch();
     const results = useSelector((state) => state.result.value);
-    const selectedID = useSelector((state) => state.selected.value);
+    const selectedRoomID = useSelector((state) => state.selected.value.room);
     const history = useHistory();
     const location = useLocation();
 
@@ -74,5 +74,6 @@ const SearchBox = ({ handleSearch }) => {
         </>
     );
 };
+
 
 export default SearchBox;

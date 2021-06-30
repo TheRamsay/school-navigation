@@ -1,7 +1,10 @@
 import React from "react";
 import PersonIcon from "@material-ui/icons/Person";
 import { setSelectedType } from "../../reducers/typeSlice";
-import { setSelected } from "../../reducers/selectedSlice";
+import {
+    setSelectedEmployee,
+    setSelectedRoom,
+} from "../../reducers/selectedSlice";
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import { setFloor } from "../../reducers/floorSlice";
@@ -15,7 +18,8 @@ const EmployeeResult = ({ result }) => {
 
     const handleSelect = (ev) => {
         dispatch(setSelectedType("employee"));
-        dispatch(setSelected(ev.currentTarget.dataset.room));
+        dispatch(setSelectedRoom(ev.currentTarget.dataset.room));
+        dispatch(setSelectedEmployee(ev.currentTarget.dataset.employee));
         dispatch(setFloor(getFloor(result.floor)));
         history.push("/");
     };
@@ -23,6 +27,7 @@ const EmployeeResult = ({ result }) => {
     return (
         <div
             data-room={result.room_id}
+            data-employee={result.employee_id}
             className="result"
             onClick={handleSelect}
         >
@@ -31,7 +36,15 @@ const EmployeeResult = ({ result }) => {
             </div>
             <div className="result-content">
                 <p className="content-primary">
-                    {result.first_name} {result.last_name}
+                    <span>{result.title_before}. </span>
+                    <span>
+                        {result.first_name} {result.last_name}
+                    </span>
+                    <span>
+                        {result.title_after
+                            ? ", " + result.title_after + "."
+                            : ""}
+                    </span>
                 </p>
                 <p className="content-secondary">kabinet {result.room_id}</p>
             </div>

@@ -1,4 +1,3 @@
-import "./App.css";
 import SearchBox from "./components/search/SearchBox";
 import Map from "./components/Map";
 import FloorPicker from "./components/floors/FloorPicker";
@@ -9,19 +8,17 @@ import { useDispatch, useSelector } from "react-redux";
 import EmployeeInfo from "./components/info/EmployeeInfo";
 import Search from "./components/search/Search";
 import { Switch, Route, Link } from "react-router-dom";
-import { setSelected } from "./reducers/selectedSlice";
+import { setSelectedRoom } from "./reducers/selectedSlice";
 
 function App() {
     const dispatch = useDispatch();
-    const selectedID = useSelector((state) => state.selected.value);
+    const selectedRoomID = useSelector((state) => state.selected.value.room);
     const types = useSelector((state) => state.types);
     const floor = useSelector((state) => state.floor);
 
-    useEffect(() => {
-        dispatch(setSelected(null));
-    }, [floor]);
-
-
+    // useEffect(() => {
+    //     dispatch(setSelected(null));
+    // }, [floor]);
 
     return (
         <div className="app">

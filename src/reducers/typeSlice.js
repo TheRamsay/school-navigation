@@ -12,9 +12,12 @@ export const typeSlice = createSlice({
         setSelectedType: (state, action) => {
             state.value = { ...state.value, selectedType: action.payload };
         },
+        clearTypes: (state, action) => {
+            state.value = { resultType: null, selectedType: null };
+        },
     },
 });
 
-export const { setResultType, setSelectedType } = typeSlice.actions;
+export const { setResultType, setSelectedType, clearTypes } = typeSlice.actions;
 
 export default typeSlice.reducer;

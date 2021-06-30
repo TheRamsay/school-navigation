@@ -1,22 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getRoom } from "../../services/api";
 import PhoneIcon from "@material-ui/icons/Phone";
 import PersonIcon from "@material-ui/icons/Person";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
-import Skeleton from "@material-ui/lab/Skeleton";
+import SkeletonInfo from "./SkeletonInfo";
+import { setSelectedType } from "../../reducers/typeSlice";
+import { setSelectedEmployee } from "../../reducers/selectedSlice";
 
 const RoomInfo = () => {
-    const selectedID = useSelector((state) => state.selected.value);
+    const selectedRoomID = useSelector((state) => state.selected.value.room);
     const [room, setRoom] = useState({ teachers: [] });
     const [fetched, setFetched] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        getRoom(selectedID).then((data) => {
-            setRoom(data);
-            setFetched(true);
-        });
-    }, [selectedID]);
+        if (selectedRoomID) {
+            getRoom(selectedRoomID)
+                .then((data) => {
+                    setRoom(data);
+                    setFetched(true);
+                })
+                .catch((e) => {
+                    setFetched(false);
+                });
+        }
+    }, [selectedRoomID]);
+
+
+    
+    // const handleTeacherClick = () => {
+    //     dispatch(setSelectedEmployee("8"));
+    //     dispatch(setSelectedType("employee"));
+    // };
+
+    /*
+    DODELAT NA KLIKNUTI UCITELE ZOBRAZENI UCITELE
+    */
 
     const CabinetInfo = () => {
         return (
@@ -80,14 +100,7 @@ const RoomInfo = () => {
                 );
         }
     } else {
-        return (
-            <div className="room-info skeleton">
-                <Skeleton height={80} width={200}/>
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-            </div>
-        );
+        return <SkeletonInfo />;
     }
 };
 

@@ -6,24 +6,26 @@ import FloorPicker from "./floors/FloorPicker";
 import SecondFloor from "./floors/SecondFloor";
 import { useDispatch, useSelector } from "react-redux";
 import SearchBox from "./search/SearchBox";
-import { setSelected } from "../reducers/selectedSlice";
+import { setSelectedRoom } from "../reducers/selectedSlice";
 import { setSelectedType } from "../reducers/typeSlice";
+import EmployeeInfo from "./info/EmployeeInfo";
 
 const Map = () => {
     const floor = useSelector((state) => state.floor.value);
     const selectedType = useSelector((state) => state.types.value.selectedType);
     const floorOptions = { first: <FirstFloor />, second: <SecondFloor /> };
-    const selectedID = useSelector((state) => state.selected.value);
+    const selectedRoomID = useSelector((state) => state.selected.value.room);
     const dispatch = useDispatch();
+    let info = "";
 
     const handleSVGClick = (event) => {
         const ID = event.currentTarget.parentElement.id;
-        if (ID === selectedID) {
+        if (ID === selectedRoomID) {
             dispatch(setSelectedType(null));
         } else {
             dispatch(setSelectedType("room"));
         }
-        dispatch(setSelected(ID));
+        dispatch(setSelectedRoom(ID));
     };
 
     useEffect(() => {
@@ -32,15 +34,8 @@ const Map = () => {
         [...elements].forEach((element) => {
             element.classList.remove("selected-room");
         });
-
-        // if (selectedID !== null) {
-        //     const element = document.getElementById(selectedID)
-        //         .firstElementChild;
-        //     element.classList.add("selected-room");
-        // }
-
-        if (selectedID !== null) {
-            const element = document.getElementById(selectedID)
+        if (selectedRoomID !== null) {
+            const element = document.getElementById(selectedRoomID)
                 .firstElementChild;
             element.classList.add("selected-room");
             element.scrollIntoView({
@@ -48,7 +43,7 @@ const Map = () => {
                 block: "center",
             });
         }
-    }, [selectedID]);
+    }, [selectedRoomID]);
 
     useEffect(() => {
         const svg = document.getElementById("svg-map");
@@ -64,12 +59,24 @@ const Map = () => {
         };
     });
 
+    switch (selectedType) {
+        case "room":
+            info = <RoomInfo />;
+            break;
+        case "employee":
+            info = <EmployeeInfo />;
+            break;
+        default:
+            info = "";
+            break;
+    }
+
     return (
         <div className="map">
             <SearchBox />
             {floor === "first" ? <FirstFloor /> : <SecondFloor />}
             <FloorPicker />
-            {selectedType === "room" ? <RoomInfo /> : ""}
+            {info}
         </div>
     );
 };

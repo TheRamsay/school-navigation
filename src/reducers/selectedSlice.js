@@ -3,23 +3,41 @@ import { createSlice } from "@reduxjs/toolkit";
 export const selectedSlice = createSlice({
     name: "selected",
     initialState: {
-        value: null,
+        value: { room: null, employee: null },
     },
     reducers: {
-        setSelected: (state, action) => {
-            if (state.value !== null) {
-                if (state.value === action.payload) {
-                    state.value = null;
+        setSelectedRoom: (state, action) => {
+            if (state.value.room !== null) {
+                if (state.value.room === action.payload) {
+                    state.value.room = null;
                 } else {
-                    state.value = action.payload;
+                    state.value.room = action.payload;
                 }
             } else {
-                state.value = action.payload;
+                state.value.room = action.payload;
             }
+        },
+        setSelectedEmployee: (state, action) => {
+            if (state.value.employee !== null) {
+                if (state.value.employee === action.payload) {
+                    state.value.employee = null;
+                } else {
+                    state.value.employee = action.payload;
+                }
+            } else {
+                state.value.employee = action.payload;
+            }
+        },
+        clearSelected: (state, action) => {
+            state.value = { room: null, employee: null };
         },
     },
 });
 
-export const { setSelected } = selectedSlice.actions;
+export const {
+    setSelectedRoom,
+    setSelectedEmployee,
+    clearSelected,
+} = selectedSlice.actions;
 
 export default selectedSlice.reducer;
