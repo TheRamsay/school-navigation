@@ -27,16 +27,11 @@ const RoomInfo = () => {
         }
     }, [selectedRoomID]);
 
-
-    
-    // const handleTeacherClick = () => {
-    //     dispatch(setSelectedEmployee("8"));
-    //     dispatch(setSelectedType("employee"));
-    // };
-
-    /*
-    DODELAT NA KLIKNUTI UCITELE ZOBRAZENI UCITELE
-    */
+    const handleTeacherClick = (ev) => {
+        const employeeID = ev.currentTarget.dataset.employee;
+        dispatch(setSelectedEmployee(employeeID));
+        dispatch(setSelectedType("employee"));
+    };
 
     const CabinetInfo = () => {
         return (
@@ -46,7 +41,11 @@ const RoomInfo = () => {
                     <p>Učitelé</p>
                     <ul>
                         {room.teachers.map((teacher, index) => (
-                            <li key={index}>
+                            <li
+                                key={index}
+                                data-employee={teacher.employee_id}
+                                onClick={handleTeacherClick}
+                            >
                                 {teacher.first_name} {teacher.last_name}
                             </li>
                         ))}

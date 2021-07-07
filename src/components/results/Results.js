@@ -7,25 +7,14 @@ const Results = ({ handleSearch }) => {
     const results = useSelector((state) => state.result.value);
     const types = useSelector((state) => state.types.value);
 
-    const selectResult = (event) => {
-        handleSearch(event.currentTarget.innerHTML);
-    };
-
     return (
         <div className="results">
-            {results.map((result) => {
+            {results.map((result, index) => {
                 switch (types.resultType) {
                     case "employee":
-                        return (
-                            <EmployeeResult
-                                key={result.employee_id}
-                                result={result}
-                            />
-                        );
+                        return <EmployeeResult key={index} result={result} />;
                     case "room":
-                        return (
-                            <RoomResult key={result.room_id} result={result} />
-                        );
+                        return <RoomResult key={index} result={result} />;
                     default:
                         return "";
                 }

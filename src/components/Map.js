@@ -6,7 +6,10 @@ import FloorPicker from "./floors/FloorPicker";
 import SecondFloor from "./floors/SecondFloor";
 import { useDispatch, useSelector } from "react-redux";
 import SearchBox from "./search/SearchBox";
-import { setSelectedRoom } from "../reducers/selectedSlice";
+import {
+    setSelectedEmployee,
+    setSelectedRoom,
+} from "../reducers/selectedSlice";
 import { setSelectedType } from "../reducers/typeSlice";
 import EmployeeInfo from "./info/EmployeeInfo";
 
@@ -26,6 +29,7 @@ const Map = () => {
             dispatch(setSelectedType("room"));
         }
         dispatch(setSelectedRoom(ID));
+        dispatch(setSelectedEmployee(null));
     };
 
     useEffect(() => {

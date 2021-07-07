@@ -2,10 +2,16 @@ import axios from "axios";
 
 const BASE_URL = "http://127.0.0.1:8000/api/";
 
+// const makeQuery = (query) => {
+//     const data = new FormData();
+//     data.append("query", query);
+//     return axios.post(BASE_URL + "search/", data).then((res) => res.data);
+// };
+
 const makeQuery = (query) => {
-    const data = new FormData();
-    data.append("query", query);
-    return axios.post(BASE_URL + "search/", data).then((res) => res.data);
+    return axios
+        .get(BASE_URL + "search/?query=" + query)
+        .then((res) => res.data);
 };
 
 const getRoom = (id) => {
