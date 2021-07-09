@@ -14,15 +14,18 @@ const EmployeeInfo = () => {
     const selectedEmployeeID = useSelector(
         (state) => state.selected.value.employee
     );
+    const selectedRoomID = useSelector((state) => state.selected.value.room);
     const [employee, setEmployee] = useState(null);
     const [fetched, setFetched] = useState(false);
     const dispatch = useDispatch();
 
     const handleRoomClick = (ev) => {
         const roomID = ev.currentTarget.dataset.room;
-        dispatch(setSelectedEmployee(null));
-        dispatch(setSelectedRoom(roomID));
+        if (roomID !== selectedRoomID) {
+            dispatch(setSelectedRoom(roomID));
+        }
         dispatch(setSelectedType("room"));
+        dispatch(setSelectedEmployee(null));
     };
 
     useEffect(() => {

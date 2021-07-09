@@ -22,14 +22,16 @@ const Map = () => {
     let info = "";
 
     const handleSVGClick = (event) => {
-        const ID = event.currentTarget.parentElement.id;
-        if (ID === selectedRoomID) {
-            dispatch(setSelectedType(null));
-        } else {
-            dispatch(setSelectedType("room"));
+        if (event.currentTarget.className.baseVal !== "nonclickable") {
+            const ID = event.currentTarget.parentElement.id;
+            if (ID === selectedRoomID) {
+                dispatch(setSelectedType(null));
+            } else {
+                dispatch(setSelectedType("room"));
+            }
+            dispatch(setSelectedRoom(ID));
+            dispatch(setSelectedEmployee(null));
         }
-        dispatch(setSelectedRoom(ID));
-        dispatch(setSelectedEmployee(null));
     };
 
     useEffect(() => {
