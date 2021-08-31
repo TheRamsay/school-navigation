@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/api/";
+const BASE_URL = "http://78.47.245.96/api/";
 
 // const makeQuery = (query) => {
 //     const data = new FormData();
