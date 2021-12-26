@@ -2,10 +2,10 @@ import './App.css';
 import SearchBox from "./components/SearchBox"
 import Map from './components/Map';
 import FloorPicker from "./components/FloorPicker";
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import RoomInfo from './components/RoomInfo';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSelected } from './reducers/selectedReducer';
 import EmployeeInfo from './components/EmployeeInfo';
 import { setSelectedType } from './reducers/typeReducer';
@@ -16,7 +16,6 @@ function App() {
     const selectedID = useSelector((state) => state.selected)
     const types = useSelector((state) => state.types);
     const floor = useSelector((state) => state.floor);
-
 
     useEffect(() => {
         dispatch(setSelected(null))
