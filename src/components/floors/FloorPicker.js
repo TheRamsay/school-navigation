@@ -1,22 +1,20 @@
-import React, {useState} from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLayerGroup } from "@fortawesome/free-solid-svg-icons";
-import {useDispatch, useSelector} from "react-redux";
-import {setFloor} from "../reducers/floorReducer";
+import React, { useState } from "react";
+import LayersIcon from "@material-ui/icons/Layers";
+import { useDispatch, useSelector } from "react-redux";
+import { setFloor } from "../../reducers/floorSlice";
 
 const FloorPicker = () => {
-    
     const [active, setActive] = useState(false);
     const dispatch = useDispatch();
-    const floor = useSelector(state => state.floor)
+    const floor = useSelector((state) => state.floor.value);
 
     const toggleActive = () => {
-        setActive(!active)
+        setActive(!active);
     };
 
     const changeFloor = (ev) => {
-        dispatch(setFloor(ev.currentTarget.id)) 
-    }
+        dispatch(setFloor(ev.currentTarget.id));
+    };
 
     const FloorMenu = () => {
         return (
@@ -25,27 +23,26 @@ const FloorPicker = () => {
                     1
                 </div>
                 <div id="second" className="floor-option" onClick={changeFloor}>
-                    2 
+                    2
                 </div>
                 <div id="third" className="floor-option" onClick={changeFloor}>
-                    3 
+                    3
                 </div>
                 <div id="fourth" className="floor-option" onClick={changeFloor}>
                     4
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     return (
         <>
             <div className="floor-picker" onClick={toggleActive}>
-                <FontAwesomeIcon icon={faLayerGroup} size="1x" color="#333030" />
+                <LayersIcon />
             </div>
             {active ? <FloorMenu /> : ""}
         </>
-    )
-
-}
+    );
+};
 
 export default FloorPicker;
