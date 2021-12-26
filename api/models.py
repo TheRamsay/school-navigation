@@ -15,7 +15,7 @@ class Room(models.Model):
 
     class Meta:
 
-        db_table = "room_test"
+        db_table = "room"
         app_label = "api"
 
 class Employee(models.Model):
@@ -28,11 +28,11 @@ class Employee(models.Model):
     last_name = models.CharField(max_length=100)
     title_after = models.CharField(max_length=100, null=True, blank=True)
     email = models.CharField(max_length=100)
-    room_id = models.ForeignKey('Room', on_delete=models.CASCADE, db_column="room_id_room")
+    room_id = models.ForeignKey('Room', on_delete=models.CASCADE, db_column="room_id")
 
 
     class Meta:
-        db_table = "employee_test"
+        db_table = "employee"
         app_label = "api"
 
 
