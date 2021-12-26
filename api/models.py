@@ -24,6 +24,7 @@ class Employee(models.Model):
     gender = models.CharField(max_length=1, choices=[("M", "M"), ("F", "F")], default=None)
     title_before = models.CharField(max_length=100, null=True, blank=True)
     first_name = models.CharField(max_length=100)
+    
     last_name = models.CharField(max_length=100)
     title_after = models.CharField(max_length=100, null=True, blank=True)
     email = models.CharField(max_length=100)

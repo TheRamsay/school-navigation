@@ -15,6 +15,7 @@ def get_room(request, room_id):
     return Response(room_serializer.data)
 
 
+
 @api_view(["GET"])
 def get_employee(request, employee_id):
     employee = Employee.objects.get(pk=employee_id)
@@ -22,7 +23,7 @@ def get_employee(request, employee_id):
     return Response(serializer.data)
 
 
-@api_view(["POST"])
+@api_view(["GET"])
 def search(request):
     query = request.data["query"]
     
