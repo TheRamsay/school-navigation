@@ -1,16 +1,17 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, {useEffect, useState, useMemo, useRef, useCallback} from "react";
 import axios from "axios";
 import Results from "../results/Results";
-import { makeQuery } from "../../services/api";
-import { setResult } from "../../reducers/resultSlice";
-import { setResultType } from "../../reducers/typeSlice";
-import { clearResult } from "../../reducers/resultSlice";
+import {makeQuery} from "../../services/api";
+import {setResult} from "../../reducers/resultSlice";
+import {setResultType} from "../../reducers/typeSlice";
+import {clearResult} from "../../reducers/resultSlice";
 import SearchIcon from "@material-ui/icons/Search";
-import { useHistory, useLocation } from "react-router";
+import {useHistory, useLocation} from "react-router";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { RootState } from "../../store";
-import { useAppSelector, useAppDispatch} from "../../hooks";
-import { HTMLClickEvent, HTMLInputEvent } from "../../types";
+import {RootState} from "../../store";
+import {useAppSelector, useAppDispatch} from "../../hooks";
+import {HTMLClickEvent, HTMLInputEvent} from "../../types";
+import debounce from "lodash.debounce";
 
 const SearchBox = () => {
     const [value, setValue] = useState("");
@@ -20,12 +21,20 @@ const SearchBox = () => {
     const selectedRoomID = useAppSelector((state: RootState) => state.selected.value.room);
     const history = useHistory();
     const location = useLocation();
+    const debounceFunctionRef = useRef<(() => void)>();
+    debounceFunctionRef.current = () => handleQuery();
+
+    const debounceHandleQuery = useCallback(debounce(() => {
+        if (debounceFunctionRef.current){
+            debounceFunctionRef.current()
+        }
+    }, 250), []);
 
     const handleChange = (ev: HTMLInputEvent) => {
         setValue(ev.currentTarget.value);
     };
 
-    const handleFocus = (ev: HTMLInputEvent) => {
+    const handleFocus = () => {
         if (location.pathname !== "/search") {
             history.push("/search");
         }
@@ -33,13 +42,7 @@ const SearchBox = () => {
 
     const goHome = () => history.push("/");
 
-    useEffect(() => {
-        if (location.pathname === "/search") {
-            document.getElementById("search-input")?.focus();
-        }
-    });
-
-    useEffect(() => {
+    const handleQuery = () => {
         if (value.length > 0) {
             makeQuery(value).then((data) => {
                 if (data.result) {
@@ -54,38 +57,24 @@ const SearchBox = () => {
             dispatch(clearResult());
 
         }
+    }
+
+    useEffect(() => {
+        if (location.pathname === "/search") {
+            document.getElementById("search-input")?.focus();
+        }
+    });
+
+    useEffect(() => {
+        debounceHandleQuery();
     }, [value]);
 
-    // const debouncedSearchHandler = useMemo(
-    //     () =>
-    //         debounce(() => {
-    //             makeQuery(value).then((data) => {
-    //                 console.log(data);
-    //                 if (value.length > 0) {
-    //                     if (data.result) {
-    //                         dispatch(setResult(data.result));
-    //                         dispatch(setResultType(data.type));
-    //                     } else {
-    //                         dispatch(setResult([]));
-    //                         dispatch(setResultType(null));
-    //                     }
-    //                 } else {
-    //                     dispatch(clearResult());
-    //                 }
-    //             });
-    //         }, 500),
-    //     [value]
-    // );
-
-    // useEffect(() => {
-    //     debouncedSearchHandler();
-    // }, [value]);
 
     return (
         <>
             <div className="searchbox">
                 {location.pathname === "/search" ? (
-                    <ArrowBackIcon onClick={goHome} />
+                    <ArrowBackIcon onClick={goHome}/>
                 ) : (
                     <div className="fill"></div>
                 )}
@@ -96,7 +85,7 @@ const SearchBox = () => {
                     onFocus={handleFocus}
                     autoComplete="off"
                 />
-                <SearchIcon id="search-icon" />
+                <SearchIcon id="search-icon"/>
             </div>
         </>
     );

@@ -48,9 +48,11 @@ const EmployeeInfo = () => {
                 <div
                     className="content"
                     data-room={employee.room_id}
-                    onClick={handleRoomClick}
                 >
-                    <div className="icon-with-text">
+                    <div
+                        className="icon-with-text"
+                        onClick={handleRoomClick}
+                    >
                         <RoomIcon />
                         <p>{employee.room_id}</p>
                     </div>

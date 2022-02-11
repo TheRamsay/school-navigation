@@ -21,24 +21,27 @@ function App() {
         dispatch(setSelectedRoom(null))
     }, [floor])
 
+
     console.log(window.location.origin);
     if (window.location.origin === "http://localhost:3000") {
         axiosInstance.defaults.baseURL = "http://localhost:8000/api";
     } else {
+        console.log("JJ");
         axiosInstance.defaults.baseURL = window.location.origin + "/api";
     }
 
     return (
-        <div className="app">
-            <Switch>
-                <Route path="/search">
-                    <Search />
-                </Route>
-                <Route path="/" exact>
-                    <Map />
-                </Route>
-            </Switch>
-        </div>
+        // <div className="app">
+        //     <Switch>
+        //         <Route path="/search">
+        //             <Search />
+        //         </Route>
+        //         <Route path="/" exact>
+        //             <Map />
+        //         </Route>
+        //     </Switch>
+        // </div>
+        <></>
     );
 }
 

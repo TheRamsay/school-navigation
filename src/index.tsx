@@ -10,6 +10,7 @@ ReactDOM.render(
     <Router>
         <Provider store={store}>
             <App />
+
         </Provider>
     </Router>,
     document.getElementById('root')

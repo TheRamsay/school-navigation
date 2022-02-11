@@ -16,6 +16,7 @@ const FloorPicker = () => {
 
     const changeFloor = (ev: HTMLClickEvent) => {
         dispatch(setFloor(ev.currentTarget.id));
+        toggleActive();
     };
 
     const FloorMenu = () => {
