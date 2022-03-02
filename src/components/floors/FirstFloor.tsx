@@ -5,1353 +5,728 @@ const FirstFloor = () => {
     return (
         <>
             <svg
-                xmlns="http://www.w3.org/2000/svg"
                 id="svg-map"
                 width="100%"
                 height="100%"
-                version="1.1"
-                viewBox="0 0 35.41 282.34"
+                x={0}
+                y={0}
+                viewBox="0 0 1400 2200"
+                style={{
+                    background: "new 0 0 1400 2200",
+                }}
+                xmlSpace="preserve"
+                xmlns="http://www.w3.org/2000/svg"
             >
-                <defs id="defs6059">
-                    <clipPath id="clipPath563" clipPathUnits="userSpaceOnUse">
-                        <path id="path561" d="M0 0h9921v14031H0V0"></path>
-                    </clipPath>
-                    <clipPath id="clipPath563-1" clipPathUnits="userSpaceOnUse">
-                        <path id="path561-8" d="M0 0h9921v14031H0V0"></path>
-                    </clipPath>
-                    <clipPath id="clipPath563-6" clipPathUnits="userSpaceOnUse">
-                        <path id="path561-2" d="M0 0h9921v14031H0V0"></path>
-                    </clipPath>
-                </defs>
-                <g id="layer1" transform="translate(-85.562 -7.757)">
+                <style type="text/css" id="style1606">
+                    {
+                        ".st0,.st1,.st2,.st3,.st4,.st5{fill:#999;stroke:#000;stroke-miterlimit:10}.st1,.st2,.st3,.st4,.st5{fill:#ffc62a}.st2,.st3,.st4,.st5{fill:#fff6aa}.st3,.st4,.st5{fill:#74beff}.st4,.st5{fill:none;stroke-width:.5}.st5{fill:#999}.st6{fill:#fff6aa}"
+                    }
+                </style>
+                <g id="Layer_2_1_">
+                    <g id="Layer_1-2">
+                        <path className="st0" id="rect1608" d="M791.5 31.5h373v1226h-373z" />
+                        <path className="st0" id="rect1610" d="M791.5 1257.5h373v286h-373z" />
+                        <path
+                            transform="rotate(-18.103 1141.627 1795.108)"
+                            className="st0"
+                            id="rect1612"
+                            d="M1002.6 1446.6h277.2v696.6h-277.2z"
+                        />
+                        <path
+                            transform="rotate(-18.103 872.59 1604.546)"
+                            className="st0"
+                            id="rect1614"
+                            d="M814.5 1521H930v166.8H814.5z"
+                        />
+                        <path className="st0" id="rect1616" d="M18.5 1099.5h773v263h-773z" />
+                        <path className="st0" id="rect1618" d="M18.5 247.5h426v1887h-426z" />
+                    </g>
+                </g>
+                <path className="st1" id="rect1622" d="M791.5 1092.5h133v313h-133z" />
+                <path className="st2" id="rect1624" d="M791.5 763.5h133v165h-133z" />
+                <path className="st2" id="rect1626" d="M791.5 599.5h133v165h-133z" />
+                <path className="st2" id="rect1628" d="M791.5 435.5h133v165h-133z" />
+                <path className="st1" id="rect1632" d="M1031.5 189.5h133v165h-133z" />
+                <path className="st2" id="rect1634" d="M1031.5 354.5h133v117h-133z" />
+                <path className="st2" id="rect1636" d="M1031.5 471.5h133v117h-133z" />
+                <path className="st1" id="rect1638" d="M1031.5 588.5h133v165h-133z" />
+                <path className="st2" id="rect1640" d="M1031.5 753.5h133v117h-133z" />
+                <path className="st2" id="rect1642" d="M1031.5 870.5h133v117h-133z" />
+                <path className="st1" id="rect1644" d="M1031.5 987.5h133v165h-133z" />
+                <path className="st1" id="rect1646" d="M791.5 927.5h133v84h-133z" />
+                <path className="st1" id="rect1648" d="M791.5 1011.5h133v81h-133z" />
+                <path className="st2" id="rect1650" d="M1031.5 1152.5h133v105h-133z" />
+                <path
+                    transform="rotate(-18.286 1138.082 1516.22)"
+                    className="st1"
+                    id="rect1652"
+                    d="M1083.7 1433.8h109.2v165h-109.2z"
+                />
+                <path
+                    transform="rotate(-18.286 1182.803 1651.72)"
+                    className="st1"
+                    id="rect1654"
+                    d="M1128.5 1591.2h109.2v121.2h-109.2z"
+                />
+                <path
+                    transform="rotate(-18.286 1227.071 1787.006)"
+                    className="st2"
+                    id="rect1656"
+                    d="M1172.7 1704.6h109.2v165h-109.2z"
+                />
+                <path
+                    transform="rotate(-18.286 1275.144 1931.668)"
+                    className="st1"
+                    id="rect1658"
+                    d="M1220.8 1862H1330v139.4h-109.2z"
+                />
+                <path
+                    transform="rotate(-108.282 1232.901 2072.381)"
+                    className="st2"
+                    id="rect1660"
+                    d="M1177 1933.4h111.9v278H1177z"
+                />
+                <path
+                    transform="rotate(-18.286 971.7 1547.57)"
+                    className="st1"
+                    id="rect1662"
+                    d="M917.3 1487h109.2v121.2H917.3z"
+                />
+                <path
+                    transform="rotate(-18.286 1016.119 1683.583)"
+                    className="st2"
+                    id="rect1664"
+                    d="M961.8 1601.2H1071v165H961.8z"
+                />
+                <path
+                    transform="rotate(-18.286 1070.6 1850.908)"
+                    className="st2"
+                    id="rect1666"
+                    d="M1016.3 1757.3h109.2v187.3h-109.2z"
+                />
+                <path
+                    transform="rotate(-18.286 1108.022 1965.928)"
+                    className="st3"
+                    id="rect1668"
+                    d="M1053.7 1938h109.2v56.1h-109.2z"
+                />
+                <path
+                    transform="rotate(-18.286 1125.03 2018.981)"
+                    className="st3"
+                    id="rect1670"
+                    d="M1070.7 1990.8h109.2v56.6h-109.2z"
+                />
+                <path className="st3" id="rect1672" d="M1031.5 98.5h133v91h-133z" />
+                <path className="st3" id="rect1674" d="M1031.5 31.5h133v67h-133z" />
+                <path
+                    transform="rotate(-18.286 848.428 1531.808)"
+                    className="st4"
+                    id="rect1676"
+                    d="M791.1 1525.4h115.1v13H791.1z"
+                />
+                <path
+                    transform="rotate(-18.286 852.362 1544.474)"
+                    className="st4"
+                    id="rect1678"
+                    d="M795 1538h115.1v13H795z"
+                />
+                <path
+                    transform="rotate(-18.286 856.361 1556.603)"
+                    className="st4"
+                    id="rect1680"
+                    d="M799 1550.2h115.1v13H799z"
+                />
+                <path
+                    transform="rotate(-18.286 860.36 1568.907)"
+                    className="st4"
+                    id="rect1682"
+                    d="M803 1562.5h115.1v13H803z"
+                />
+                <path
+                    transform="rotate(-18.286 864.358 1580.819)"
+                    className="st4"
+                    id="rect1684"
+                    d="M807 1574.4h115.1v13H807z"
+                />
+                <path
+                    transform="rotate(-18.286 868.792 1592.96)"
+                    className="st4"
+                    id="rect1686"
+                    d="M811.4 1586.5h115.1v13H811.4z"
+                />
+                <path
+                    transform="rotate(-18.286 872.79 1604.959)"
+                    className="st4"
+                    id="rect1688"
+                    d="M815.4 1598.5h115.1v13H815.4z"
+                />
+                <path
+                    transform="rotate(-18.286 876.789 1617.74)"
+                    className="st4"
+                    id="rect1690"
+                    d="M819.4 1611.3h115.1v13H819.4z"
+                />
+                <path
+                    transform="rotate(71.718 860.796 1575.544)"
+                    className="st5"
+                    id="rect1692"
+                    d="M809 1560.6h103.6v29.8H809z"
+                />
+                <path className="st0" id="rect1694" d="M908.5 31.5h16v124h-16z" />
+                <path className="st0" id="rect1696" d="M892.5 31.5h16v124h-16z" />
+                <path className="st5" id="rect1698" d="M876.5 31.5h16v124h-16z" />
+                <path className="st0" id="rect1700" d="M860.5 31.5h16v124h-16z" />
+                <path className="st0" id="rect1702" d="M844.5 31.5h16v124h-16z" />
+                <path className="st0" id="rect1704" d="M844.5 72.5h80v36h-80z" />
+                <g id="g1710">
+                    <path className="st6" id="rect1706" d="M19.5 1490.5h174v127h-174z" />
+                    <path d="M193 1491v126H20v-126h173m1-1H19v128h175v-128z" id="path1708" />
+                </g>
+                <g id="g1716">
+                    <path className="st6" id="rect1712" d="M318.5 1615.5h126v519h-126z" />
                     <path
-                        id="rect189392-4"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M110.824 279.906H111.84V283.907H110.824z"
-                    ></path>
+                        d="M444 1616v518H319v-518h125m1-1H318v520h127v-520z"
+                        id="path1714"
+                    />
+                </g>
+                <g id="g1722">
                     <path
-                        id="rect189392-9"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M109.808 279.906H110.82400000000001V283.907H109.808z"
-                    ></path>
+                        id="rect1718"
+                        style={{
+                            fill: "#74beff",
+                        }}
+                        d="M301.5 1490.5h143v90h-143z"
+                    />
+                    <path d="M444 1491v89H302v-89h142m1-1H301v91h144v-91z" id="path1720" />
+                </g>
+                <g id="g1728">
                     <path
-                        id="rect189392-1"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M108.792 279.906H109.808V283.907H108.792z"
-                    ></path>
-                    <path
-                        id="rect189392-5"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M107.776 279.906H108.792V283.907H107.776z"
-                    ></path>
-                    <g
-                        id="g557"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803)"
-                    >
-                        <g id="g559" clipPath="url(#clipPath563-6)">
-                            <text
-                                transform="matrix(1 0 0 -1 2576 13299)"
-                                // style={{ InkscapeFontSpecification: "Tahoma" }}
-                                id="text567"
-                                fill="#000"
-                                fillOpacity="1"
-                                fillRule="nonzero"
-                                stroke="none"
-                                fontFamily="Tahoma"
-                                fontSize="84.471"
-                                fontVariant="normal"
-                                fontWeight="normal"
-                                writingMode="lr-tb"
-                            >
-                                <tspan
-                                    id="tspan565"
-                                    x="0 46.121166 92.242332"
-                                    y="0"
-                                >
-                                    206
-                                </tspan>
-                            </text>
+                        id="rect1724"
+                        style={{
+                            fill: "#ffc62a",
+                        }}
+                        d="M363.5 1615.5h81v192h-81z"
+                    />
+                    <path d="M444 1616v191h-80v-191h80m1-1h-82v193h82v-193z" id="path1726" />
+                </g>
+                <path
+                    transform="rotate(90 247.567 1573.725)"
+                    className="st0"
+                    id="rect1730"
+                    d="M240.5 1519.8h14.1v107.9h-14.1z"
+                />
+                <path
+                    transform="rotate(90 247.567 1559.661)"
+                    className="st0"
+                    id="rect1732"
+                    d="M240.5 1505.7h14.1v107.9h-14.1z"
+                />
+                <path
+                    transform="rotate(90 247.567 1545.598)"
+                    className="st5"
+                    id="rect1734"
+                    d="M240.5 1491.6h14.1v107.9h-14.1z"
+                />
+                <path
+                    transform="rotate(90 247.567 1531.534)"
+                    className="st0"
+                    id="rect1736"
+                    d="M240.5 1477.6h14.1v107.9h-14.1z"
+                />
+                <path
+                    transform="rotate(90 247.567 1517.471)"
+                    className="st0"
+                    id="rect1738"
+                    d="M240.5 1463.5h14.1v107.9h-14.1z"
+                />
+                <path
+                    transform="rotate(90 250.178 1545.598)"
+                    className="st0"
+                    id="rect1740"
+                    d="M215 1529.9h70.3v31.3H215z"
+                />
+                <path
+                    id="line1742"
+                    style={{
+                        fill: "none",
+                        stroke: "#000",
+                        strokeMiterlimit: 10,
+                    }}
+                    d="M193.5 1490.5h108"
+                />
+                <g id={"221"}>
+                    <path className="st2" id="rect1744" d="M791.5 155.5h133v117h-133z" />
+                    <g id="g1754">
+                        <g id="g1752">
+                            <path
+                                d="M803.7 164.7c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                                id="path1746"
+                            />
+                            <path
+                                d="M811.1 164.7c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                                id="path1748"
+                            />
+                            <path
+                                d="M819.8 164.8v8.2h-1v-7l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.7 7.7v.8h-4.9v-.8h4.9z"
+                                id="path1750"
+                            />
                         </g>
                     </g>
-                    <path
-                        id="rect45259"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeDasharray="none"
-                        strokeMiterlimit="4"
-                        strokeOpacity="1"
-                        strokeWidth="0.4"
-                        d="M110.824 82.971H115.819V84.961H110.824z"
-                    ></path>
-                    <path
-                        id="rect45261"
-                        className="nonclickable"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeDasharray="none"
-                        strokeMiterlimit="4"
-                        strokeOpacity="1"
-                        strokeWidth="0.4"
-                        d="M105.807 94.465H110.824V97.958H105.807z"
-                    ></path>
-                    <g
-                        id="1"
-                        fillOpacity="1"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                </g>
+                <g id="g1762">
+                    <g id="g1760">
                         <path
-                            id="rect372365"
-                            fill="#c8beb7"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1905 -13977H3322V-13268H1905z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2512"
-                            x="2535.912"
-                            y="-13537.393"
-                            fill="#000"
-                            stroke="none"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                            fontStyle="normal"
-                            fontWeight="normal"
-                        >
-                            <tspan
-                                id="tspan34522"
-                                x="2535.912"
-                                y="-13537.393"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                1
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="205"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M905.3 253.4v8.3h-1.6V255l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.6 7.3v1.2h-5.3v-1.2h5.3z"
+                            id="path1756"
+                        />
                         <path
-                            id="rect372367"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1905 -13268H2519V-12323H1905z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2659"
-                            x="1988.579"
-                            y="-12710.678"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan31058"
-                                x="1988.579"
-                                y="-12710.678"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                205
-                            </tspan>
-                        </text>
+                            d="M911 253.2c.6 0 1.1.1 1.5.3.4.2.7.5 1 .8.2.3.3.7.3 1.1 0 .4-.1.7-.2.9-.1.3-.3.5-.6.7-.3.2-.6.3-.9.4.4 0 .7.1 1 .3.3.2.5.4.7.7.2.3.3.7.3 1.1 0 .5-.1.9-.4 1.3-.3.4-.6.7-1.1.9s-1 .3-1.7.3c-.6 0-1.1-.1-1.6-.3-.5-.2-.9-.5-1.3-.9l1-.9c.2.3.5.5.8.6.3.1.6.2 1 .2.5 0 .9-.1 1.2-.4.3-.2.4-.6.4-1 0-.3-.1-.6-.2-.8s-.3-.4-.5-.4c-.2-.1-.5-.1-.8-.1h-.8l.2-1.2h.5c.3 0 .5 0 .7-.1.2-.1.4-.2.5-.4s.2-.4.2-.7c0-.4-.1-.7-.4-.9-.3-.2-.6-.3-1-.3s-.7.1-.9.2c-.3.1-.5.3-.8.6l-.8-.9c.4-.4.8-.6 1.3-.8.4-.2.9-.3 1.4-.3z"
+                            id="path1758"
+                        />
                     </g>
-                    <g
-                        id="2"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                </g>
+                <g id={"220"}>
+                    <path className="st1" id="rect1630" d="M791.5 271.5h133v165h-133z" />
+                    <g id="g1772">
+                        <g id="g1770">
+                            <path
+                                d="M802.9 282.3c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                id="path1764"
+                            />
+                            <path
+                                d="M810.3 282.3c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                id="path1766"
+                            />
+                            <path
+                                d="M818.1 282.3c.9 0 1.6.4 2.1 1.1.5.8.7 1.8.7 3.2 0 1.4-.2 2.5-.7 3.2-.5.8-1.2 1.1-2.1 1.1-.9 0-1.6-.4-2.1-1.1-.5-.8-.7-1.8-.7-3.2 0-1.4.2-2.5.7-3.2s1.2-1.1 2.1-1.1zm0 .8c-.5 0-.9.3-1.2.8-.3.6-.4 1.5-.4 2.7 0 .6 0 1.2.1 1.6.1.5.2.8.3 1.1.1.3.3.5.5.6s.5.2.8.2c.4 0 .7-.1.9-.4.3-.2.4-.6.6-1.1.1-.5.2-1.2.2-2s-.1-1.5-.2-2-.3-.9-.5-1.1c-.4-.2-.7-.4-1.1-.4zm1.2.4.3.9-2.7 5.5-.4-.7 2.8-5.7z"
+                                id="path1768"
+                            />
+                        </g>
+                    </g>
+                </g>
+                <g id="g1782">
+                    <g id="g1780">
                         <path
-                            id="rect372381"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1905 -12323H2519V-11378H1905z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2661"
-                            x="2136.235"
-                            y="-11763.911"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan40854"
-                                x="2136.235"
-                                y="-11763.911"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                2
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="203"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M803.9 445.8c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                            id="path1774"
+                        />
                         <path
-                            id="rect372379"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1905 -11378H2519V-10670H1905z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2663"
-                            x="1989.092"
-                            y="-10939.178"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan42816"
-                                x="1989.092"
-                                y="-10939.178"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                203
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="202"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M812.6 446v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.6v.8h-4.9v-.8h4.9z"
+                            id="path1776"
+                        />
                         <path
-                            id="rect372377"
-                            fill="#c8beb7"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1905 -10670H2519V-9725H1905z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2666"
-                            x="1987.896"
-                            y="-10112.678"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan45328"
-                                x="1987.896"
-                                y="-10112.678"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                202
-                            </tspan>
-                        </text>
+                            d="M819 445.9c.6 0 1.1.1 1.5.4s.7.7.9 1.2c.2.5.3 1.1.3 1.8 0 .9-.1 1.6-.3 2.2-.2.6-.4 1.1-.8 1.5-.4.4-.8.7-1.4 1-.6.3-1.3.5-2 .7l-.2-.8c.8-.2 1.5-.5 2-.8.5-.3.9-.7 1.2-1.2.3-.5.4-1.1.4-1.8v-.6c0-.7-.1-1.3-.2-1.7-.1-.4-.3-.7-.6-.9-.2-.2-.6-.3-1-.3-.5 0-1 .2-1.2.5-.3.3-.4.8-.4 1.5 0 .6.1 1.1.4 1.4.3.3.7.4 1.1.4.4 0 .8-.1 1.1-.4.3-.2.6-.6.9-1v.9c-.2.4-.6.7-.9.9s-.8.4-1.2.4c-.5 0-.9-.1-1.3-.3-.4-.2-.7-.5-.9-.9-.2-.4-.3-.9-.3-1.5s.1-1.1.4-1.5c.2-.4.6-.7 1-.9.5-.1.9-.2 1.5-.2z"
+                            id="path1778"
+                        />
                     </g>
-                    <g
-                        id="5"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                </g>
+                <g id="g1792">
+                    <g id="g1790">
                         <path
-                            id="rect372375"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2755 -11378H3322V-10433H2755z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2674"
-                            x="2961.938"
-                            y="-10822.443"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan46652"
-                                x="2961.938"
-                                y="-10822.443"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                5
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="3"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M802.9 611.5c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                            id="path1784"
+                        />
                         <path
-                            id="rect372373"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2755 -12796H3322V-11378H2755z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2672"
-                            x="2963.59"
-                            y="-12002.178"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan47646"
-                                x="2963.59"
-                                y="-12002.178"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                3
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="208"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M811.6 611.7v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.6v.8h-4.9v-.8h4.9z"
+                            id="path1786"
+                        />
                         <path
-                            id="rect372371"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2755.409 -13032H3322.409V-12796H2755.409z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2670"
-                            x="2846.282"
-                            y="-12841.295"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="200"
-                        >
-                            <tspan
-                                id="tspan48442"
-                                x="2846.282"
-                                y="-12841.295"
-                                strokeWidth="12.5"
-                                fontSize="200"
-                            >
-                                208
-                            </tspan>
-                        </text>
+                            d="M820.6 613.7c0 .4-.1.8-.4 1.1-.3.3-.6.6-1.1.8.6.2 1 .5 1.3.9.3.4.5.8.5 1.4 0 .5-.1.9-.4 1.2-.2.4-.6.7-1 .9-.4.2-.9.3-1.5.3s-1.1-.1-1.5-.3c-.4-.2-.8-.5-1-.9-.2-.4-.3-.8-.3-1.2 0-.5.2-1 .5-1.3s.7-.7 1.2-.9c-.4-.2-.8-.5-1-.8s-.3-.7-.3-1.2c0-.4.1-.7.2-1s.4-.5.6-.7c.3-.2.5-.3.8-.4.3-.1.6-.1.9-.1.3 0 .6 0 .9.1.3.1.6.2.8.4s.4.4.6.7c.2.3.2.6.2 1zm-.7 4.2c0-.4-.1-.7-.3-.9-.2-.2-.5-.4-.8-.6-.3-.1-.7-.3-1.2-.4-.2.1-.5.2-.7.4s-.4.4-.5.6-.2.5-.2.9c0 .5.1.9.4 1.1.3.3.7.4 1.3.4.6 0 1-.1 1.4-.4s.6-.7.6-1.1zm-3.3-4.1c0 .3.1.6.2.8.2.2.4.3.6.5.3.1.6.2 1 .4.4-.2.7-.5.9-.7s.3-.5.3-.9-.1-.8-.4-1c-.3-.2-.6-.4-1.1-.4-.5 0-.9.1-1.1.4-.3.1-.4.4-.4.9z"
+                            id="path1788"
+                        />
                     </g>
-                    <g
-                        id="207"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                </g>
+                <g id="g1802">
+                    <g id="g1800">
                         <path
-                            id="rect372369"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2755 -13268H3322V-13032H2755z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2668"
-                            x="2846.215"
-                            y="-13077.295"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="200"
-                        >
-                            <tspan
-                                id="tspan55864"
-                                x="2846.215"
-                                y="-13077.295"
-                                strokeWidth="12.5"
-                                fontSize="200"
-                            >
-                                207
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="212"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M802.9 773.9c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6.4-.5.8-.9 1.1-1.2.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9s.9-.4 1.4-.4z"
+                            id="path1794"
+                        />
                         <path
-                            id="rect372383"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2849 -10433H3086V-10174H2849z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2678"
-                            x="2871.455"
-                            y="-10266.391"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="100"
-                        >
-                            <tspan
-                                id="tspan95464"
-                                x="2871.455"
-                                y="-10266.391"
-                                strokeWidth="12.5"
-                                fontSize="100"
-                            >
-                                212
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="213"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M811.6 774v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.7v.8h-4.9v-.8h4.9z"
+                            id="path1796"
+                        />
                         <path
-                            id="rect372385"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2849 -10174H3086V-9890H2849z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2680"
-                            x="2871.968"
-                            y="-9995.647"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="100"
-                        >
-                            <tspan
-                                id="tspan98030"
-                                x="2871.968"
-                                y="-9995.647"
-                                strokeWidth="12.5"
-                                fontSize="100"
-                            >
-                                213
-                            </tspan>
-                        </text>
+                            d="m817.2 782.6-1-.3 3.3-7.4h-4v-.9h5v.8l-3.3 7.8z"
+                            id="path1798"
+                        />
                     </g>
-                    <g
-                        id="214"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                </g>
+                <g id="g1814">
+                    <g id="g1812">
                         <path
-                            id="rect372387"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M3086 -10339H3322V-9725H3086z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2676"
-                            x="3107.125"
-                            y="-9994.891"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="100"
-                        >
-                            <tspan
-                                id="tspan100512"
-                                x="3107.125"
-                                y="-9994.891"
-                                strokeWidth="12.5"
-                                fontSize="100"
-                            >
-                                214
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="2222"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M803.9 937.2c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                            id="path1804"
+                        />
                         <path
-                            id="rect372389"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2842 -8215H3556V-7743H2842z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2682"
-                            x="2900.725"
-                            y="-7892.412"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan134636"
-                                x="2900.725"
-                                y="-7892.412"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                2222
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="6"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M812.6 937.4v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.6v.8h-4.9v-.8h4.9z"
+                            id="path1806"
+                        />
                         <path
-                            id="rect372391"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1902 -7743H2611V-7034H1902z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2686"
-                            x="2180.849"
-                            y="-7303.849"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan138918"
-                                x="2180.849"
-                                y="-7303.849"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                6
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="231"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M819.5 937.2c.3 0 .6 0 .9.1.3.1.5.2.8.4l-.4.7-.6-.3c-.2-.1-.4-.1-.7-.1-.5 0-.8.2-1.2.5-.3.3-.6.7-.7 1.3-.2.5-.2 1.2-.2 1.9v.4c0 1 .1 1.8.4 2.3.3.5.7.7 1.3.7.5 0 .9-.2 1.2-.6.3-.4.4-.9.4-1.6 0-.5-.1-.8-.2-1.1-.1-.3-.3-.5-.5-.6s-.5-.2-.8-.2c-.4 0-.8.1-1.2.4-.3.3-.6.6-.8 1v-.9c.3-.5.6-.8 1-1 .4-.2.8-.3 1.2-.3.4 0 .8.1 1.2.3.4.2.7.5.9.9s.3.9.3 1.5-.1 1.2-.4 1.6c-.2.4-.6.8-1 1-.4.2-.9.4-1.3.4-.5 0-1-.1-1.3-.3-.4-.2-.6-.5-.9-.8-.2-.4-.4-.8-.5-1.3s-.2-1.1-.2-1.7c0-.9.1-1.7.4-2.4.2-.7.6-1.2 1.1-1.6s1.2-.6 1.8-.6z"
+                            id="path1808"
+                        />
                         <path
-                            id="rect372499"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1902 -7034H2611V-6089H1902z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2690"
-                            x="2037.237"
-                            y="-6476.678"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan141202"
-                                x="2037.237"
-                                y="-6476.678"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                231
-                            </tspan>
-                        </text>
+                            d="M829.4 943.4c0 .5-.1.8-.3 1.2-.2.3-.4.6-.7.7s-.6.3-1 .4-.8.1-1.1.1H824v-8.5h2.1c.4 0 .7 0 1.1.1.4.1.7.2 1 .3s.5.4.7.7c.2.3.3.6.3 1s-.1.7-.2.9c-.1.3-.3.5-.6.6-.2.2-.5.3-.8.3.3 0 .6.1.9.3.3.1.5.4.7.6.1.5.2.8.2 1.3zm-1.4-3.8c0-.5-.1-.8-.4-1-.3-.2-.7-.3-1.2-.3H825v2.7h1.4c.5 0 .9-.1 1.2-.3s.4-.6.4-1.1zm.3 3.9c0-.4-.1-.8-.2-1s-.4-.4-.7-.5c-.3-.1-.6-.1-.9-.1H825v3.1h1.4c.2 0 .4 0 .6-.1s.4-.1.6-.2c.2-.1.3-.3.4-.5.2-.2.3-.4.3-.7z"
+                            id="path1810"
+                        />
                     </g>
-                    <g
-                        id="8"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                </g>
+                <g id="g1826">
+                    <g id="g1824">
                         <path
-                            id="rect372501"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1902 -6089.001H2611V-5381.001H1902z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2694"
-                            x="2182.33"
-                            y="-5650.178"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan142760"
-                                x="2182.33"
-                                y="-5650.178"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                8
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="229"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M803.2 1021.1c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                            id="path1816"
+                        />
                         <path
-                            id="rect372505"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1902 -5381H2611V-4672H1902z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2696"
-                            x="2032.509"
-                            y="-4941.564"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan145638"
-                                x="2032.509"
-                                y="-4941.564"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                229
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="228"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M811.9 1021.2v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.7v.8h-4.9v-.8h4.9z"
+                            id="path1818"
+                        />
                         <path
-                            id="rect372509"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1902 -4672H2611V-3727H1902z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2700"
-                            x="2031.769"
-                            y="-4114.678"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan147382"
-                                x="2031.769"
-                                y="-4114.678"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                228
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="12"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M818.8 1021.1c.3 0 .6 0 .9.1.3.1.5.2.8.4l-.4.7-.6-.3c-.2-.1-.4-.1-.7-.1-.5 0-.8.2-1.2.5-.3.3-.6.7-.7 1.3-.2.5-.2 1.2-.2 1.9v.4c0 1 .1 1.8.4 2.3.3.5.7.7 1.3.7.5 0 .9-.2 1.2-.6.3-.4.4-.9.4-1.6 0-.5-.1-.8-.2-1.1-.1-.3-.3-.5-.5-.6s-.5-.2-.8-.2c-.4 0-.8.1-1.2.4-.3.3-.6.6-.8 1v-.9c.3-.5.6-.8 1-1 .4-.2.8-.3 1.2-.3.4 0 .8.1 1.2.3.4.2.7.5.9.9s.3.9.3 1.5-.1 1.2-.4 1.6c-.2.4-.6.8-1 1-.4.2-.9.4-1.3.4-.5 0-1-.1-1.3-.3-.4-.2-.6-.5-.9-.8-.2-.4-.4-.8-.5-1.3s-.2-1.1-.2-1.7c0-.9.1-1.7.4-2.4.2-.7.6-1.2 1.1-1.6s1.2-.6 1.8-.6z"
+                            id="path1820"
+                        />
                         <path
-                            id="rect372513"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1902 -3727H2611V-3019H1902z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2704"
-                            x="2099.9"
-                            y="-3286.412"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan148466"
-                                x="2099.9"
-                                y="-3286.412"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                12
-                            </tspan>
-                        </text>
+                            d="M827.4 1027.6H824l-.7 2.2h-1.1l2.8-8.5h1.4l2.8 8.5h-1.1l-.7-2.2zm-3.1-.9h2.8l-1.4-4.5-1.4 4.5z"
+                            id="path1822"
+                        />
                     </g>
-                    <g
-                        id="14"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                </g>
+                <g id="g1836">
+                    <g id="g1834">
                         <path
-                            id="rect372515"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1902 -3019H2611V-2310H1902z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2706"
-                            x="2097.963"
-                            y="-2579.393"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan149804"
-                                x="2097.963"
-                                y="-2579.393"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                14
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="225"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M804.2 1103.9c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6.4-.5.8-.9 1.1-1.2.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9s.9-.4 1.4-.4z"
+                            id="path1828"
+                        />
                         <path
-                            id="rect372517"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1902 -2310H2611V-1365H1902z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2710"
-                            x="2033.079"
-                            y="-1752.678"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan151890"
-                                x="2033.079"
-                                y="-1752.678"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                225
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="13"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M812.4 1103.9c.3 0 .6 0 .9.1.3.1.5.2.8.4l-.4.7-.6-.3c-.2-.1-.4-.1-.7-.1-.5 0-.8.2-1.2.5-.3.3-.6.7-.7 1.3s-.2 1.2-.2 1.9v.4c0 1 .1 1.8.4 2.3.3.5.7.7 1.3.7.5 0 .9-.2 1.2-.6.3-.4.4-.9.4-1.6 0-.5-.1-.8-.2-1.1s-.3-.5-.5-.6c-.2-.1-.5-.2-.8-.2-.4 0-.8.1-1.2.4-.3.3-.6.6-.8 1v-.9c.3-.5.6-.8 1-1 .4-.2.8-.3 1.2-.3.4 0 .8.1 1.2.3.4.2.7.5.9.9.2.4.3.9.3 1.5s-.1 1.2-.4 1.6c-.2.4-.6.8-1 1-.4.2-.9.4-1.3.4-.5 0-1-.1-1.3-.3-.4-.2-.6-.5-.9-.8s-.4-.8-.5-1.3-.2-1.1-.2-1.7c0-.9.1-1.7.4-2.4.2-.7.6-1.2 1.1-1.6.6-.4 1.2-.6 1.8-.6z"
+                            id="path1830"
+                        />
                         <path
-                            id="rect372521"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2847 -1838H3556V-1129H2847z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2712"
-                            x="3046.096"
-                            y="-1398.678"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan153766"
-                                x="3046.096"
-                                y="-1398.678"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                13
-                            </tspan>
-                        </text>
+                            d="M819 1103.9c.5 0 1 .1 1.4.3.4.2.7.4.9.8.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7c.2.3.3.7.3 1.1 0 .5-.1.9-.4 1.3s-.6.7-1 .9c-.4.2-1 .3-1.5.3s-.9-.1-1.4-.3-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5.3-.3.5-.7.5-1.3 0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2s.4-.3.6-.5.2-.5.2-.8c0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4-.4 0-.7.1-1 .2-.3.1-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7.3.1.7 0 1.1 0z"
+                            id="path1832"
+                        />
                     </g>
-                    <g
-                        id="220"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                </g>
+                <g id="g1844">
+                    <g id="g1842">
                         <path
-                            id="rect372519"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2847 -2783H3556V-1838H2847z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2708"
-                            x="2977.509"
-                            y="-2225.677"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan155194"
-                                x="2977.509"
-                                y="-2225.677"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                220
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="11"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="m1135 57.3-1.7 12.8h-2.8l-1.1-9.3-1.2 9.3h-2.8l-1.5-12.8h2.4l.8 10.5 1.2-9h2.4l1.2 9 .9-10.5h2.2z"
+                            id="path1838"
+                        />
                         <path
-                            id="rect372511"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2847 -3727H3556V-2783H2847z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2702"
-                            x="3049.742"
-                            y="-3169.893"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan156554"
-                                x="3049.742"
-                                y="-3169.893"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                11
-                            </tspan>
-                        </text>
+                            d="M1141.6 57c.9 0 1.6.1 2.3.3.6.2 1.2.6 1.7 1l-1.3 1.5c-.4-.3-.8-.5-1.2-.7-.4-.2-.9-.2-1.4-.2-.6 0-1.1.2-1.6.5s-.9.8-1.2 1.5c-.3.7-.4 1.6-.4 2.7s.1 2 .4 2.7c.3.7.7 1.2 1.2 1.5s1.1.5 1.7.5c.7 0 1.2-.1 1.7-.4.4-.2.8-.5 1.2-.8l1.2 1.5c-.4.4-1 .8-1.7 1.1s-1.5.5-2.5.5c-1.1 0-2.1-.3-3-.8-.9-.5-1.6-1.3-2.1-2.3-.5-1-.7-2.2-.7-3.7 0-1.4.3-2.6.8-3.6s1.2-1.7 2.1-2.2 1.8-.6 2.8-.6z"
+                            id="path1840"
+                        />
                     </g>
-                    <g
-                        id="9"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                </g>
+                <g id="g1852">
+                    <g id="g1850">
                         <path
-                            id="rect372507"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2847 -4908.001H3556V-3727.001H2847z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2698"
-                            x="3128.583"
-                            y="-4232.621"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan158892"
-                                x="3128.583"
-                                y="-4232.621"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                9
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="7"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="m1135.1 138-1.7 12.8h-2.8l-1.1-9.3-1.2 9.3h-2.8L1124 138h2.4l.8 10.5 1.2-9h2.4l1.2 9 .9-10.5h2.2z"
+                            id="path1846"
+                        />
                         <path
-                            id="rect372503"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2847 -6089.001H3556V-4908.001H2847z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2692"
-                            x="3125.906"
-                            y="-5413.678"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan160450"
-                                x="3125.906"
-                                y="-5413.678"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                7
-                            </tspan>
-                        </text>
+                            d="M1141.7 137.8c.9 0 1.6.1 2.3.3.6.2 1.2.6 1.7 1l-1.3 1.5c-.4-.3-.8-.5-1.2-.7-.4-.2-.9-.2-1.4-.2-.6 0-1.1.2-1.6.5s-.9.8-1.2 1.5c-.3.7-.4 1.6-.4 2.7s.1 2 .4 2.7c.3.7.7 1.2 1.2 1.5s1.1.5 1.7.5c.7 0 1.2-.1 1.7-.4.4-.2.8-.5 1.2-.8l1.2 1.5c-.4.4-1 .8-1.7 1.1s-1.5.5-2.5.5c-1.1 0-2.1-.3-3-.8-.9-.5-1.6-1.3-2.1-2.3-.5-1-.7-2.2-.7-3.7 0-1.4.3-2.6.8-3.6s1.2-1.7 2.1-2.2 1.7-.6 2.8-.6z"
+                            id="path1848"
+                        />
                     </g>
-                    <g
-                        id="216B"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                </g>
+                <g id="g1862">
+                    <g id="g1860">
                         <path
-                            id="rect372497"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2847 -7270.999H3556V-6089H2847z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2688"
-                            x="2894.452"
-                            y="-6595.177"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan163328"
-                                x="2894.452"
-                                y="-6595.177"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                216B
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="216A"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M1045.2 41.2c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5V49c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                            id="path1854"
+                        />
                         <path
-                            id="rect372393"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M2847 -7743H3556V-7271H2847z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2684"
-                            x="2891.547"
-                            y="-7422.178"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan165138"
-                                x="2891.547"
-                                y="-7422.178"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                216A
-                            </tspan>
-                        </text>
-                    </g>
-                    <g
-                        id="224"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                            d="M1052.5 41.2c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5V49c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                            id="path1856"
+                        />
                         <path
-                            id="rect372523"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1902 -1365H2611V-893H1902z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2714"
-                            x="2030.458"
-                            y="-1042.412"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="233.333"
-                        >
-                            <tspan
-                                id="tspan169584"
-                                x="2030.458"
-                                y="-1042.412"
-                                strokeWidth="12.5"
-                                fontSize="233.333"
-                            >
-                                224
-                            </tspan>
-                        </text>
+                            d="M1059.9 41.2c.5 0 1 .1 1.4.3.4.2.7.4.9.8.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7c.2.3.3.7.3 1.1 0 .5-.1.9-.4 1.3s-.6.7-1 .9c-.4.2-1 .3-1.5.3s-.9-.1-1.4-.3c-.5-.2-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5.3-.3.5-.7.5-1.3 0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2.2-.1.4-.3.6-.5.2-.2.2-.5.2-.8 0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4-.4 0-.7.1-1 .2-.3.1-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7h1.1z"
+                            id="path1858"
+                        />
                     </g>
-                    <g
-                        id="223"
-                        transform="matrix(.02117 0 0 -.02117 45.503 303.803) scale(1 -1)"
-                    >
+                </g>
+                <g id="g1872">
+                    <g id="g1870">
                         <path
-                            id="rect372525"
-                            fill="#c8beb7"
-                            fillOpacity="1"
-                            stroke="#000"
-                            strokeDasharray="none"
-                            strokeMiterlimit="4"
-                            strokeOpacity="1"
-                            strokeWidth="18.898"
-                            d="M1902 -893H2611V-657H1902z"
-                        ></path>
-                        <text
-                            xmlSpace="preserve"
-                            style={{ lineHeight: "1.25" }}
-                            id="text2716"
-                            x="2065.436"
-                            y="-702.295"
-                            strokeWidth="12.5"
-                            fontFamily="sans-serif"
-                            fontSize="200"
-                        >
-                            <tspan
-                                id="tspan173804"
-                                x="2065.436"
-                                y="-702.295"
-                                strokeWidth="12.5"
-                                fontSize="200"
-                            >
-                                223
-                            </tspan>
-                        </text>
+                            d="M1046.2 112.2c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                            id="path1864"
+                        />
+                        <path
+                            d="M1053.5 112.2c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                            id="path1866"
+                        />
+                        <path
+                            d="m1061 112.2.9.4-2.3 5.4h4.5v.8h-5.6v-.8l2.5-5.8zm2 3.3v5.3h-1v-2.7l.1-2.6h.9z"
+                            id="path1868"
+                        />
                     </g>
-                    <path
-                        id="rect189390"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeDasharray="none"
-                        strokeMiterlimit="4"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M105.765 279.906H106.76V283.907H105.765z"
-                    ></path>
-                    <path
-                        id="rect189392"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M106.76 279.906H107.77600000000001V283.907H106.76z"
-                    ></path>
-                    <path
-                        id="rect189392-19"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M111.84 279.906H112.85600000000001V283.907H111.84z"
-                    ></path>
-                    <path
-                        id="rect189392-2"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M112.856 279.906H113.872V283.907H112.856z"
-                    ></path>
-                    <path
-                        id="rect189392-16"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M113.872 279.906H114.888V283.907H113.872z"
-                    ></path>
-                    <path
-                        id="rect189392-6"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M114.761 279.906H115.777V283.907H114.761z"
-                    ></path>
-                    <path
-                        id="rect189392-90"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M105.765 285.896H106.781V289.897H105.765z"
-                    ></path>
-                    <path
-                        id="rect189392-55"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M107.797 285.896H108.813V289.897H107.797z"
-                    ></path>
-                    <path
-                        id="rect189392-52"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M106.781 285.896H107.79700000000001V289.897H106.781z"
-                    ></path>
-                    <path
-                        id="rect189392-3"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M111.861 285.896H112.87700000000001V289.897H111.861z"
-                    ></path>
-                    <path
-                        id="rect189392-0"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M110.845 285.896H111.861V289.897H110.845z"
-                    ></path>
-                    <path
-                        id="rect189392-7"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M109.829 285.896H110.845V289.897H109.829z"
-                    ></path>
-                    <path
-                        id="rect189392-33"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M108.813 285.896H109.82900000000001V289.897H108.813z"
-                    ></path>
-                    <path
-                        id="rect189392-8"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M114.909 285.896H115.92500000000001V289.897H114.909z"
-                    ></path>
-                    <path
-                        id="rect189392-65"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M113.893 285.896H114.909V289.897H113.893z"
-                    ></path>
-                    <path
-                        id="rect189392-79"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M112.877 285.896H113.893V289.897H112.877z"
-                    ></path>
-                    <path
-                        id="rect190137"
-                        fill="#c8beb7"
-                        fillOpacity="1"
-                        stroke="#000"
-                        strokeDasharray="none"
-                        strokeMiterlimit="4"
-                        strokeOpacity="1"
-                        strokeWidth="0.265"
-                        d="M115.777 279.906H120.772V289.897H115.777z"
-                    ></path>
+                </g>
+                <g id="g1882">
+                    <g id="g1880">
+                        <path
+                            d="M1046.2 202.4c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                            id="path1874"
+                        />
+                        <path
+                            d="M1053.5 202.4c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                            id="path1876"
+                        />
+                        <path
+                            d="m1063.6 202.5-.2.8h-3.3v2.7c.3-.1.5-.2.7-.3s.5-.1.7-.1c.5 0 .9.1 1.2.3s.6.5.8.9c.2.4.3.9.3 1.4s-.1 1.1-.4 1.5c-.2.4-.6.8-1 1-.4.2-.9.4-1.5.4-.5 0-1-.1-1.4-.3-.4-.2-.8-.4-1.1-.8l.6-.6c.3.3.5.5.8.6.3.1.6.2 1 .2.6 0 1-.2 1.3-.5s.5-.8.5-1.5c0-.5-.1-.8-.2-1.1-.1-.3-.3-.5-.6-.6-.2-.1-.5-.2-.8-.2-.2 0-.5 0-.7.1-.2 0-.4.1-.7.2h-.8v-4.2h4.8z"
+                            id="path1878"
+                        />
+                    </g>
+                </g>
+                <g id="g1892">
+                    <g id="g1890">
+                        <path
+                            d="M1045.2 368c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                            id="path1884"
+                        />
+                        <path
+                            d="M1052.5 368c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                            id="path1886"
+                        />
+                        <path
+                            d="M1060.7 368c.3 0 .6 0 .9.1.3.1.5.2.8.4l-.4.7-.6-.3c-.2-.1-.4-.1-.7-.1-.5 0-.8.2-1.2.5-.3.3-.6.7-.7 1.3-.2.5-.2 1.2-.2 1.9v.4c0 1 .1 1.8.4 2.3.3.5.7.7 1.3.7.5 0 .9-.2 1.2-.6.3-.4.4-.9.4-1.6 0-.5-.1-.8-.2-1.1-.1-.3-.3-.5-.5-.6s-.5-.2-.8-.2c-.4 0-.8.1-1.2.4-.3.3-.6.6-.8 1v-.9c.3-.5.6-.8 1-1 .4-.2.8-.3 1.2-.3.4 0 .8.1 1.2.3.4.2.7.5.9.9s.3.9.3 1.5-.1 1.2-.4 1.6c-.2.4-.6.8-1 1-.4.2-.9.4-1.3.4-.5 0-1-.1-1.3-.3-.4-.2-.6-.5-.9-.8-.2-.4-.4-.8-.5-1.3s-.2-1.1-.2-1.7c0-.9.1-1.7.4-2.4.2-.7.6-1.2 1.1-1.6s1.2-.6 1.8-.6z"
+                            id="path1888"
+                        />
+                    </g>
+                </g>
+                <g id="g1902">
+                    <g id="g1900">
+                        <path
+                            d="M1045.2 483c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                            id="path1894"
+                        />
+                        <path
+                            d="M1052.5 483c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                            id="path1896"
+                        />
+                        <path
+                            d="m1059.4 491.7-1-.3 3.3-7.4h-4v-.9h5v.8l-3.3 7.8z"
+                            id="path1898"
+                        />
+                    </g>
+                </g>
+                <g id="g1912">
+                    <g id="g1910">
+                        <path
+                            d="M1046.2 602.3c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.9c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.2.8-.3 1.4-.3z"
+                            id="path1904"
+                        />
+                        <path
+                            d="M1053.5 602.3c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.9c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.2.9-.3 1.4-.3z"
+                            id="path1906"
+                        />
+                        <path
+                            d="M1063.8 604.4c0 .4-.1.8-.4 1.1-.3.3-.6.6-1.1.8.6.2 1 .5 1.3.9.3.4.5.8.5 1.4 0 .5-.1.9-.4 1.2-.2.4-.6.7-1 .9-.4.2-.9.3-1.5.3s-1.1-.1-1.5-.3c-.4-.2-.8-.5-1-.9-.2-.4-.3-.8-.3-1.2 0-.5.2-1 .5-1.3s.7-.7 1.2-.9c-.4-.2-.8-.5-1-.8s-.3-.7-.3-1.2c0-.4.1-.7.2-1s.4-.5.6-.7c.3-.2.5-.3.8-.4.3-.1.6-.1.9-.1.3 0 .6 0 .9.1.3.1.6.2.8.4s.4.4.6.7c.2.3.2.6.2 1zm-.7 4.2c0-.4-.1-.7-.3-.9-.2-.2-.5-.4-.8-.6-.3-.1-.7-.3-1.2-.4-.2.1-.5.2-.7.4s-.4.4-.5.6-.2.5-.2.9c0 .5.1.9.4 1.1.3.3.7.4 1.3.4.6 0 1-.1 1.4-.4s.6-.6.6-1.1zm-3.3-4.1c0 .3.1.6.2.8.2.2.4.3.6.5.3.1.6.2 1 .4.4-.2.7-.5.9-.7s.3-.5.3-.9-.1-.8-.4-1c-.3-.2-.6-.4-1.1-.4-.5 0-.9.1-1.1.4-.3.1-.4.4-.4.9z"
+                            id="path1908"
+                        />
+                    </g>
+                </g>
+                <g id="g1922">
+                    <g id="g1920">
+                        <path
+                            d="M1046.2 764.8c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                            id="path1914"
+                        />
+                        <path
+                            d="M1053.5 764.8c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                            id="path1916"
+                        />
+                        <path
+                            d="M1061.2 764.8c.6 0 1.1.1 1.5.4s.7.7.9 1.2c.2.5.3 1.1.3 1.8 0 .9-.1 1.6-.3 2.2-.2.6-.4 1.1-.8 1.5-.4.4-.8.7-1.4 1-.6.3-1.3.5-2 .7l-.2-.8c.8-.2 1.5-.5 2-.8.5-.3.9-.7 1.2-1.2.3-.5.4-1.1.4-1.8v-.6c0-.7-.1-1.3-.2-1.7-.1-.4-.3-.7-.6-.9-.2-.2-.6-.3-1-.3-.5 0-1 .2-1.2.5-.3.3-.4.8-.4 1.5 0 .6.1 1.1.4 1.4.3.3.7.4 1.1.4.4 0 .8-.1 1.1-.4.3-.2.6-.6.9-1v.9c-.2.4-.6.7-.9.9s-.8.4-1.2.4c-.5 0-.9-.1-1.3-.3-.4-.2-.7-.5-.9-.9-.2-.4-.3-.9-.3-1.5s.1-1.1.4-1.5c.2-.4.6-.7 1-.9.5-.1 1-.2 1.5-.2z"
+                            id="path1918"
+                        />
+                    </g>
+                </g>
+                <g id="g1932">
+                    <g id="g1930">
+                        <path
+                            d="M1045.2 883.8c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                            id="path1924"
+                        />
+                        <path
+                            d="M1052.5 883.8c.5 0 1 .1 1.4.3.4.2.7.4.9.8.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7c.2.3.3.7.3 1.1 0 .5-.1.9-.4 1.3s-.6.7-1 .9c-.4.2-1 .3-1.5.3s-.9-.1-1.4-.3c-.5-.2-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5.3-.3.5-.7.5-1.3 0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2.2-.1.4-.3.6-.5.2-.2.2-.5.2-.8 0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4-.4 0-.7.1-1 .2-.3.1-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7.3.1.7 0 1.1 0z"
+                            id="path1926"
+                        />
+                        <path
+                            d="M1060.3 883.8c.9 0 1.6.4 2.1 1.1.5.8.7 1.8.7 3.2 0 1.4-.2 2.5-.7 3.2-.5.8-1.2 1.1-2.1 1.1-.9 0-1.6-.4-2.1-1.1-.5-.8-.7-1.8-.7-3.2 0-1.4.2-2.5.7-3.2s1.2-1.1 2.1-1.1zm0 .8c-.5 0-.9.3-1.2.8-.3.6-.4 1.5-.4 2.7 0 .6 0 1.2.1 1.6.1.5.2.8.3 1.1.1.3.3.5.5.6s.5.2.8.2c.4 0 .7-.1.9-.4.3-.2.4-.6.6-1.1.1-.5.2-1.2.2-2s-.1-1.5-.2-2-.3-.9-.5-1.1c-.4-.3-.7-.4-1.1-.4zm1.2.3.3.9-2.7 5.5-.4-.7 2.8-5.7z"
+                            id="path1928"
+                        />
+                    </g>
+                </g>
+                <g id="g1942">
+                    <g id="g1940">
+                        <path
+                            d="M1045.2 1000.8c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                            id="path1934"
+                        />
+                        <path
+                            d="M1052.5 1000.8c.5 0 1 .1 1.4.3.4.2.7.4.9.8.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7c.2.3.3.7.3 1.1 0 .5-.1.9-.4 1.3s-.6.7-1 .9c-.4.2-1 .3-1.5.3s-.9-.1-1.4-.3c-.5-.2-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5.3-.3.5-.7.5-1.3 0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2.2-.1.4-.3.6-.5.2-.2.2-.5.2-.8 0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4-.4 0-.7.1-1 .2-.3.1-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7.3.1.7 0 1.1 0z"
+                            id="path1936"
+                        />
+                        <path
+                            d="M1061.2 1000.9v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.6v.8h-4.9v-.8h4.9z"
+                            id="path1938"
+                        />
+                    </g>
+                </g>
+                <g id="g1952">
+                    <g id="g1950">
+                        <path
+                            d="M1045.2 1167.8c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9s.8-.4 1.4-.4z"
+                            id="path1944"
+                        />
+                        <path
+                            d="M1052.5 1167.8c.5 0 1 .1 1.4.3s.7.4.9.8c.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7.3.7.3 1.1c0 .5-.1.9-.4 1.3s-.6.7-1 .9c-.4.2-1 .3-1.5.3s-.9-.1-1.4-.3c-.5-.2-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5.3-.3.5-.7.5-1.3 0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2s.4-.3.6-.5c.2-.2.2-.5.2-.8 0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4-.4 0-.7.1-1 .2-.3.1-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7.3.1.7 0 1.1 0z"
+                            id="path1946"
+                        />
+                        <path
+                            d="M1059.9 1167.8c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4-.5.5-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9s.9-.4 1.4-.4z"
+                            id="path1948"
+                        />
+                    </g>
+                </g>
+                <g id="g1962">
+                    <g id="g1960">
+                        <path
+                            d="M1078.1 1460.5c.5-.2 1-.2 1.4-.1.4.1.8.3 1.1.5.3.3.5.6.7 1.1.1.4.2.8.2 1.1s-.1.8-.2 1.3c-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2 .3-.6.5-1.1.7-1.5.2-.4.3-.8.4-1.1.1-.3.1-.6.1-.9 0-.3-.1-.5-.2-.8-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.7-.8 1.2-.9z"
+                            id="path1954"
+                        />
+                        <path
+                            d="M1085.5 1458c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3-.2.9-.7 1.4-1.6 1.7-.9.3-1.6.1-2.3-.4s-1.2-1.5-1.7-2.9c-.4-1.3-.6-2.4-.3-3.3.1-.8.6-1.4 1.5-1.7zm.2.8c-.5.2-.8.6-.9 1.2-.1.6 0 1.5.4 2.7.2.6.4 1.1.6 1.5s.4.7.6.9c.2.2.4.4.7.4.2.1.5 0 .8 0 .3-.1.6-.3.7-.6.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9-.3-.5-.6-.8-.9-.9-.3-.1-.6-.1-1 0zm1.3-.1.5.8-.8 6-.6-.6.9-6.2z"
+                            id="path1956"
+                        />
+                        <path
+                            d="M1092.1 1455.8c.5-.2 1-.2 1.4-.1.4.1.8.3 1.1.5.3.3.5.6.7 1.1.1.4.2.8.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2s.5-1.1.7-1.5c.2-.4.3-.8.4-1.1s.1-.6.1-.9c0-.3-.1-.5-.2-.8-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5s-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.7-.7 1.2-.9z"
+                            id="path1958"
+                        />
+                    </g>
+                </g>
+                <g id="g1972">
+                    <g id="g1970">
+                        <path
+                            d="M1132 1621.4c.5-.2 1-.2 1.4-.1.4.1.8.2 1.1.5.3.3.5.6.7 1.1.1.4.2.8.2 1.1s-.1.8-.2 1.3c-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2s.5-1.1.7-1.5c.2-.4.3-.8.4-1.1.1-.3.1-.6.1-.9 0-.3-.1-.5-.2-.8-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.3-.5.7-.7 1.2-.9z"
+                            id="path1964"
+                        />
+                        <path
+                            d="M1139.4 1619c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3-.2.9-.7 1.4-1.6 1.7-.9.3-1.6.1-2.3-.4-.7-.6-1.2-1.5-1.7-2.9-.4-1.3-.6-2.4-.3-3.3.1-.9.6-1.4 1.5-1.7zm.3.8c-.5.2-.8.6-.9 1.2s0 1.5.4 2.7c.2.6.4 1.1.6 1.5s.4.7.6.9c.2.2.4.4.7.4.2.1.5 0 .8-.1.3-.1.6-.3.7-.6.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9-.3-.5-.6-.8-.9-.9-.3 0-.7-.1-1 .1zm1.2-.1.5.8-.8 6-.6-.6.9-6.2z"
+                            id="path1966"
+                        />
+                        <path
+                            d="M1146 1616.8c.5-.2 1-.2 1.4-.2.4.1.8.2 1.1.4.3.2.5.5.6.9.1.3.1.6.1 1s-.2.6-.4.8c-.2.2-.4.4-.7.6.3-.1.6-.1 1 0 .3.1.6.2.9.4s.5.5.6 1c.2.5.2.9.1 1.4-.1.4-.3.9-.7 1.2-.3.4-.8.6-1.4.8-.4.1-.9.2-1.4.2-.5 0-1-.2-1.4-.4l.5-.8c.3.2.7.3 1 .3.4 0 .7 0 1-.1.6-.2 1-.5 1.2-.9.2-.4.2-.9.1-1.4-.1-.4-.3-.7-.5-.8s-.5-.3-.8-.3c-.3 0-.6 0-.9.1l-.7.2-.1-.8.5-.2c.3-.1.5-.2.7-.4s.3-.4.4-.7c.1-.3.1-.5 0-.9s-.4-.7-.8-.9c-.4-.1-.8-.1-1.2 0-.4.1-.6.3-.9.5s-.4.5-.6.8l-.7-.4c.2-.4.5-.8.9-1.1.4 0 .7-.2 1.1-.3z"
+                            id="path1968"
+                        />
+                    </g>
+                </g>
+                <g id="g1982">
+                    <g id="g1980">
+                        <path
+                            d="M1169.8 1733.5c.5-.2 1-.2 1.4-.1.4.1.8.3 1.1.5s.5.6.7 1.1c.1.4.2.8.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.7s-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2s.5-1.1.7-1.5c.2-.4.3-.8.4-1.1s.1-.6.1-.9c0-.3-.1-.5-.2-.8-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.7-.7 1.2-.9z"
+                            id="path1974"
+                        />
+                        <path
+                            d="M1177.2 1731.1c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3-.2.9-.7 1.4-1.6 1.7-.9.3-1.6.1-2.3-.4-.7-.6-1.2-1.5-1.7-2.9-.4-1.3-.6-2.4-.3-3.3.1-.9.6-1.4 1.5-1.7zm.3.8c-.5.2-.8.6-.9 1.2-.1.6 0 1.5.4 2.7.2.6.4 1.1.6 1.5s.4.7.6.9c.2.2.4.4.7.4.2.1.5 0 .8 0 .3-.1.6-.3.7-.6.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9-.3-.5-.6-.8-.9-.9-.3-.2-.7-.2-1 0zm1.2-.1.5.8-.8 6-.6-.6.9-6.2z"
+                            id="path1976"
+                        />
+                        <path
+                            d="m1183.9 1728.9.9.1-.5 5.8 4.3-1.4.3.8-5.3 1.8-.2-.7.5-6.4zm3 2.5 1.7 5-.9.3-.8-2.6-.7-2.5.7-.2z"
+                            id="path1978"
+                        />
+                    </g>
+                </g>
+                <g id="g1992">
+                    <g id="g1990">
+                        <path
+                            d="M1222.2 1889.6c.5-.2 1-.2 1.4-.1.4.1.8.3 1.1.5s.5.6.7 1.1c.1.4.2.8.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2 .3-.6.5-1.1.7-1.5.2-.4.3-.8.4-1.1s.1-.6.1-.9c0-.3-.1-.5-.2-.8-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.4.6-.7 1.2-.9z"
+                            id="path1984"
+                        />
+                        <path
+                            d="M1229.5 1887.2c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3-.2.9-.7 1.4-1.6 1.7-.9.3-1.6.1-2.3-.4-.7-.6-1.2-1.5-1.7-2.9-.4-1.3-.6-2.4-.3-3.3.1-.8.7-1.4 1.5-1.7zm.3.8c-.5.2-.8.6-.9 1.2-.1.6 0 1.5.4 2.7.2.6.4 1.1.6 1.5s.4.7.6.9c.2.2.4.4.7.4.2.1.5 0 .8 0 .3-.1.6-.3.7-.6.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9-.3-.5-.6-.8-.9-.9-.3-.1-.6-.1-1 0zm1.3-.1.5.8-.8 6-.6-.6.9-6.2z"
+                            id="path1986"
+                        />
+                        <path
+                            d="m1238.8 1884.3.1.8-3.2 1.1.8 2.5c.2-.2.4-.4.6-.5.2-.1.4-.2.7-.3.4-.1.9-.2 1.2-.1.4.1.7.3 1.1.6.3.3.5.7.7 1.3.2.5.2 1 .1 1.5s-.3.9-.6 1.3-.8.6-1.3.8c-.5.2-.9.2-1.4.2-.4 0-.9-.2-1.3-.4l.4-.8c.3.2.7.3 1 .3.3 0 .7 0 1-.1.5-.2.9-.5 1.1-.9.2-.4.2-.9 0-1.6-.1-.4-.3-.8-.5-1-.2-.2-.4-.3-.7-.4-.3 0-.5 0-.8.1l-.6.3c-.2.1-.4.2-.6.4l-.8.3-1.3-4 4.3-1.4z"
+                            id="path1988"
+                        />
+                    </g>
+                </g>
+                <g id="g2002">
+                    <g id="g2000">
+                        <path
+                            d="M1102.3 2069.6c.5-.2 1-.2 1.4-.1.4.1.8.2 1.1.5.3.3.5.6.7 1.1.1.4.2.8.2 1.1s-.1.8-.2 1.3c-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2s.5-1.1.7-1.5c.2-.4.3-.8.4-1.1.1-.3.1-.6.1-.9 0-.3-.1-.5-.2-.8-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.6-.8 1.2-.9z"
+                            id="path1994"
+                        />
+                        <path
+                            d="M1109.7 2067.1c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3-.2.9-.7 1.4-1.6 1.7-.9.3-1.6.1-2.3-.4-.7-.6-1.2-1.5-1.7-2.9-.4-1.3-.6-2.4-.3-3.3 0-.8.6-1.4 1.5-1.7zm.2.8c-.5.2-.8.6-.9 1.2s0 1.5.4 2.7c.2.6.4 1.1.6 1.5s.4.7.6.9c.2.2.4.4.7.4.2.1.5 0 .8-.1.3-.1.6-.3.7-.6.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9-.3-.5-.6-.8-.9-.9-.3 0-.6 0-1 .1zm1.3-.1.5.8-.8 6-.6-.6.9-6.2z"
+                            id="path1996"
+                        />
+                        <path
+                            d="M1117.1 2064.7c.3-.1.6-.2.9-.2.3 0 .6 0 .8.1l-.2.8c-.2-.1-.4-.1-.7-.1-.2 0-.4.1-.7.1-.4.1-.7.4-1 .8-.2.4-.3.9-.3 1.4 0 .6.1 1.2.4 1.9l.1.4c.3 1 .7 1.7 1.1 2 .4.4.9.5 1.5.3.5-.2.8-.5 1-.9.1-.4.1-1-.1-1.6-.1-.4-.3-.8-.5-1-.2-.2-.4-.3-.7-.4-.2 0-.5 0-.8.1-.4.1-.7.4-1 .7-.2.4-.4.8-.5 1.2l-.3-.9c.1-.5.3-1 .6-1.3.3-.3.6-.5 1.1-.7.4-.1.8-.2 1.2-.1.4.1.8.3 1.1.6s.6.7.8 1.3c.2.6.2 1.1.2 1.6-.1.5-.3.9-.6 1.3s-.7.6-1.2.8c-.5.2-.9.2-1.3.1s-.8-.2-1.1-.5c-.3-.3-.6-.6-.9-1.1s-.5-1-.7-1.6c-.3-.9-.4-1.7-.4-2.4s.2-1.4.5-1.9c.6-.3 1-.6 1.7-.8z"
+                            id="path1998"
+                        />
+                    </g>
+                </g>
+                <g id="g2012">
+                    <g id="g2010">
+                        <path
+                            d="M956.3 1629.2c.5-.2 1-.2 1.4-.1.4.1.8.3 1.1.5s.5.6.7 1.1c.1.4.2.8.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.7s-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2s.5-1.1.7-1.5c.2-.4.3-.8.4-1.1s.1-.6.1-.9c0-.3-.1-.5-.2-.8-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.6-.7 1.2-.9z"
+                            id="path2004"
+                        />
+                        <path
+                            d="m964.6 1626.6 2.6 7.8-1 .3-2.2-6.7-1.5 1.7-.7-.6 1.9-2.3.9-.2zm4 6.7.3.8-4.6 1.5-.3-.8 4.6-1.5z"
+                            id="path2006"
+                        />
+                        <path
+                            d="m971.6 1624.3 2.6 7.8-1 .3-2.2-6.7-1.5 1.7-.7-.6 1.9-2.3.9-.2zm4 6.7.3.8-4.6 1.5-.3-.8 4.6-1.5z"
+                            id="path2008"
+                        />
+                    </g>
+                </g>
+                <g id="g2022">
+                    <g id="g2020">
+                        <path
+                            d="M1009.5 1788c.5-.2 1-.2 1.4-.1.4.1.8.3 1.1.5.3.3.5.6.7 1.1.1.4.2.8.2 1.1s-.1.8-.2 1.3c-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2 .3-.6.5-1.1.7-1.5.2-.4.3-.8.4-1.1.1-.3.1-.6.1-.9 0-.3-.1-.5-.2-.8-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.7-.7 1.2-.9z"
+                            id="path2014"
+                        />
+                        <path
+                            d="m1017.8 1785.4 2.6 7.8-1 .3-2.2-6.8-1.5 1.7-.7-.6 1.9-2.3.9-.1zm4.1 6.7.3.8-4.6 1.5-.3-.8 4.6-1.5z"
+                            id="path2016"
+                        />
+                        <path
+                            d="M1023.9 1783.2c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3-.2.9-.7 1.4-1.6 1.7-.9.3-1.6.1-2.3-.4-.7-.6-1.2-1.5-1.7-2.9-.4-1.3-.6-2.4-.3-3.3.1-.8.6-1.4 1.5-1.7zm.2.8c-.5.2-.8.6-.9 1.2-.1.6 0 1.5.4 2.7.2.6.4 1.1.6 1.5.2.4.4.7.6.9.2.2.5.4.7.4h.8c.3-.1.6-.3.7-.6.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9-.3-.5-.6-.8-.9-.9s-.6-.1-1 0zm1.3-.1.5.8-.8 6-.6-.6.9-6.2z"
+                            id="path2018"
+                        />
+                    </g>
+                </g>
+                <g id="g2030">
+                    <g id="g2028">
+                        <path
+                            d="m1124.7 1953.9 2.4 12.6-2.6.9-4-8.5 1.8 9.2-2.7.9-5.5-11.6 2.3-.8 4 9.7-1.7-8.9 2.3-.7 3.9 8.2-2.4-10.2 2.2-.8z"
+                            id="path2024"
+                        />
+                        <path
+                            d="M1130.9 1951.5c.8-.3 1.6-.4 2.2-.4.7 0 1.3.2 1.9.4l-.7 1.8c-.4-.2-.9-.3-1.4-.3-.5 0-.9.1-1.4.2-.6.2-1 .5-1.4 1s-.6 1.1-.7 1.8c-.1.8.1 1.7.4 2.7.3 1.1.8 1.9 1.3 2.4.5.6 1 .9 1.6 1.1s1.2.1 1.7-.1c.6-.2 1.1-.5 1.5-.9s.6-.7.9-1.1l1.6 1.1c-.3.6-.7 1.1-1.2 1.6s-1.3.9-2.2 1.2c-1.1.3-2.1.4-3.1.2s-1.9-.7-2.7-1.5c-.8-.8-1.4-1.9-1.9-3.2-.4-1.4-.6-2.6-.4-3.7.2-1.1.6-2 1.3-2.8.8-.6 1.7-1.1 2.7-1.5z"
+                            id="path2026"
+                        />
+                    </g>
+                </g>
+                <g id="g2038">
+                    <g id="g2036">
+                        <path
+                            d="m1142.6 2003.7 2.4 12.6-2.6.9-4-8.5 1.8 9.2-2.7.9-5.5-11.6 2.3-.8 4 9.7-1.7-8.9 2.3-.7 3.9 8.2-2.4-10.2 2.2-.8z"
+                            id="path2032"
+                        />
+                        <path
+                            d="M1148.8 2001.4c.8-.3 1.6-.4 2.2-.4.7 0 1.3.2 1.9.4l-.7 1.8c-.4-.2-.9-.3-1.4-.3-.5 0-.9.1-1.4.2-.6.2-1 .5-1.4 1-.4.5-.6 1.1-.7 1.8-.1.8.1 1.7.4 2.7.3 1.1.8 1.9 1.3 2.4.5.6 1 .9 1.6 1.1.6.1 1.2.1 1.7-.1.6-.2 1.1-.5 1.5-.9.3-.4.6-.7.9-1.1l1.6 1.1c-.3.6-.7 1.1-1.2 1.6s-1.3.9-2.2 1.2c-1.1.3-2.1.4-3.1.2s-1.9-.7-2.7-1.5c-.8-.8-1.4-1.9-1.9-3.2-.4-1.4-.6-2.6-.4-3.7.2-1.1.6-2 1.3-2.8s1.7-1.2 2.7-1.5z"
+                            id="path2034"
+                        />
+                    </g>
                 </g>
             </svg>
         </>

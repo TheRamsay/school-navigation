@@ -31,17 +31,16 @@ function App() {
     }
 
     return (
-        // <div className="app">
-        //     <Switch>
-        //         <Route path="/search">
-        //             <Search />
-        //         </Route>
-        //         <Route path="/" exact>
-        //             <Map />
-        //         </Route>
-        //     </Switch>
-        // </div>
-        <></>
+        <div className="app">
+            <Switch>
+                <Route path="/search">
+                    <Search />
+                </Route>
+                <Route path="/" exact>
+                    <Map />
+                </Route>
+            </Switch>
+        </div>
     );
 }
 

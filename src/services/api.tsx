@@ -17,7 +17,7 @@ export const axiosInstance = axios.create({
 });
 
 const makeQuery = async (query: string): Promise<any> => {
-    const res = await axiosInstance.get("/search/?query=" + query);
+    const res = await axiosInstance.get(`${BASE_URL}search/?query=${query}`);
     return res.data;
     // return axios
     //     .get(BASE_URL + "search/?query=" + query)
@@ -25,11 +25,11 @@ const makeQuery = async (query: string): Promise<any> => {
 };
 
 const getRoom = (id: string) => {
-    return axiosInstance.get(`/room/${id}`).then((res) => res.data);
+    return axiosInstance.get(`${BASE_URL}room/${id}`).then((res) => res.data);
 };
 
 const getEmployee = (id: string) => {
-    return axiosInstance.get(`/employee/${id}`).then((res) => res.data);
+    return axiosInstance.get(`${BASE_URL}employee/${id}`).then((res) => res.data);
 };
 
 export { makeQuery, getRoom, getEmployee };
