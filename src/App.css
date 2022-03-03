@@ -156,3 +156,7 @@ input {
 .selected-room {
     fill: #d16973;
 }
+
+g:hover {
+    cursor: pointer;
+}
