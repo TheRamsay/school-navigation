@@ -5,13 +5,38 @@ import {ReactSVGPanZoom, Tool, TOOL_PAN, Value} from "react-svg-pan-zoom";
 const FirstFloor = () => {
     const [tool, setTool] = useState<Tool>(TOOL_PAN);
     const [value, setValue] = useState<Value | null>(null);
+    const [zoom, setZoom] = useState(1);
+    const [translate, setTranslate] = useState([0, 0]);
+
+    useEffect(() => {
+        const handler = (ev: KeyboardEvent) => {
+            if (ev.key.toLowerCase() === "j") {
+                setZoom(zoom + 0.01);
+            } else if (ev.key.toLowerCase() === "k") {
+                setZoom(zoom - 0.01);
+            } else if (ev.key.toLowerCase() === "a") {
+                setTranslate([translate[0] + 20, translate[1]]);
+            } else if (ev.key.toLowerCase() === "d") {
+                setTranslate([translate[0] - 20, translate[1]]);
+            } else if (ev.key.toLowerCase() === "w") {
+                setTranslate([translate[0], translate[1] - 20]);
+            } else if (ev.key.toLowerCase() === "s") {
+                setTranslate([translate[0], translate[1] + 20]);
+            }
+        };
+
+        window.addEventListener("keydown", handler);
+
+        return () => window.removeEventListener("keydown", handler);
+    },);
+
     return (
         <>
             <svg
                 id="svg-map"
                 // width="100%"
                 // height="100%"
-                // transform="scale(1.9)"
+                transform={`scale(${zoom}) translate(${translate[0]}, ${translate[1]})`}
                 x={0}
                 y={0}
                 viewBox="0 0 1400 2200"
