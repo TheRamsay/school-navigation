@@ -49,7 +49,9 @@ const Map = () => {
         });
         if (selectedRoomID !== null) {
             const element = document.getElementById(selectedRoomID)?.firstElementChild;
+            console.log(element);
             if (element) {
+                const oldClass = element.classList[0];
                 element.classList.add("selected-room");
                 element.scrollIntoView({
                     behavior: "smooth",
