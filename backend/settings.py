@@ -91,7 +91,7 @@ DATABASES = {
         "NAME": "navigation",
         "USER": "***REMOVED***",
         "PASSWORD": "***REMOVED***",
-        "HOST": "78.47.245.96",  # Or an IP Address that your DB is hosted on
+        "HOST": "78.47.245.96",  
         "PORT": "5432",
     },
 }
