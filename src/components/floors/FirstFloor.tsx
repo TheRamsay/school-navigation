@@ -1,48 +1,189 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
-import {ReactSVGPanZoom, Tool, TOOL_PAN, Value} from "react-svg-pan-zoom";
+import {setSelectedRoom} from "../../reducers/selectedSlice";
+import * as d3 from "d3";
+
+
+interface ViewBox {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    startWidth: number;
+    startHeight: number;
+}
+
+interface Point {
+    x: number,
+    y: number
+}
 
 const FirstFloor = () => {
-    const [tool, setTool] = useState<Tool>(TOOL_PAN);
-    const [value, setValue] = useState<Value | null>(null);
-    const [zoom, setZoom] = useState(1);
-    const [translate, setTranslate] = useState([0, 0]);
+    const [viewBox, setViewBox] = useState<ViewBox>({
+        x: 150,
+        y: 0,
+        width: 800,
+        height: 800,
+        startWidth: 1070,
+        startHeight: 1681
+    });
+    const [isPanning, setIsPanning] = useState(false);
+    const [startPoint, setStartPoint] = useState<Point>({x: 0, y: 0});
+    const [endPoint, setEndPoint] = useState<Point>({x: 0, y: 0});
+    const [scale, setScale] = useState(1);
+    const SVGMapRef = useRef<SVGSVGElement>(null);
+
+    // useEffect(() => {
+    //     console.log(scale);
+    //     const dx = (startPoint.x - endPoint.x) / scale;
+    //     const dy = (startPoint.y - endPoint.y) / scale;
+    //     const movedViewBox = {...viewBox};
+    //     movedViewBox.x += dx;
+    //     movedViewBox.y += dy;
+    //     setViewBox(movedViewBox);
+    // }, [endPoint]);
+    //
+    // useEffect(() => {
+    //     if (!SVGMapRef.current) {
+    //         return;
+    //     }
+    //
+    //     const zoom = (ev: WheelEvent) => {
+    //         ev.preventDefault();
+    //         const mx = ev.offsetX;
+    //         const my = ev.offsetY;
+    //         console.log(ev.deltaX+ " " + ev.deltaY);
+    //         const dw = viewBox.width * Math.sign(-ev.deltaY) * 0.05;
+    //         const dh = viewBox.height * Math.sign(-ev.deltaY) * 0.05;
+    //         const dx = dw * mx / viewBox.startWidth;
+    //         const dy = dh * my / viewBox.startHeight;
+    //         const newViewbox = {...viewBox};
+    //         newViewbox.x += dx;
+    //         newViewbox.y += dy;
+    //         newViewbox.width -= dw;
+    //         newViewbox.height -= dh;
+    //         setViewBox(newViewbox);
+    //         setScale(newViewbox.startWidth / newViewbox.width);
+    //     };
+    //
+    //     const mouseDown = (ev: MouseEvent) => {
+    //         setIsPanning(true);
+    //         if (!SVGMapRef.current) {
+    //             return;
+    //         }
+    //         // const screenPoint = SVGMapRef.current.createSVGPoint();
+    //         // screenPoint.x = ev.x;
+    //         // screenPoint.y = ev.y;
+    //         // const SVGPoint = screenPoint.matrixTransform(SVGMapRef.current.getScreenCTM()?.inverse());
+    //         // setStartPoint({x: SVGPoint.x, y: SVGPoint.y});
+    //         setStartPoint({x: ev.x, y: ev.y});
+    //         console.log("Setting start point " + startPoint);
+    //     }
+    //
+    //     const mouseLeave = () => {
+    //         setIsPanning(false);
+    //         console.log("Leaving");
+    //     }
+    //
+    //     const mouseMove = (ev: MouseEvent) => {
+    //         if (isPanning) {
+    //             setEndPoint({x: ev.x, y: ev.y});
+    //             const dx = (startPoint.x - endPoint.x) / scale;
+    //             const dy = (startPoint.y - endPoint.y) / scale;
+    //             const movedViewBox = {...viewBox};
+    //             movedViewBox.x += dx;
+    //             movedViewBox.y += dy;
+    //             setViewBox(movedViewBox);
+    //             setStartPoint({...endPoint});
+    //         }
+    //     }
+    //
+    //     const mouseUp = (ev: MouseEvent) => {
+    //         if (isPanning) {
+    //             console.log("Mouse up");
+    //             // setEndPoint({x: ev.x, y: ev.y});
+    //             // const dx = (startPoint.x - endPoint.x) / scale;
+    //             // const dy = (startPoint.y - endPoint.y) / scale;
+    //             // const movedViewBox = {...viewBox};
+    //             // movedViewBox.x += dx;
+    //             // movedViewBox.y += dy;
+    //             // setViewBox(movedViewBox);
+    //             setIsPanning(false);
+    //         }
+    //     }
+    //
+    //     SVGMapRef.current.addEventListener("wheel", zoom);
+    //     SVGMapRef.current.addEventListener("mousedown", mouseDown);
+    //     SVGMapRef.current.addEventListener("mouseleave", mouseLeave);
+    //     SVGMapRef.current.addEventListener("mousemove", mouseMove);
+    //     SVGMapRef.current.addEventListener("mouseup", mouseUp);
+    //
+    //
+    //     return () => {
+    //         if (!SVGMapRef.current) {
+    //             return
+    //         }
+    //
+    //         SVGMapRef.current.removeEventListener("wheel", zoom)
+    //         SVGMapRef.current.removeEventListener("mousedown", mouseDown);
+    //         SVGMapRef.current.removeEventListener("mouseleave", mouseLeave);
+    //         SVGMapRef.current.removeEventListener("mousemove", mouseMove);
+    //         SVGMapRef.current.removeEventListener("mouseup", mouseUp);
+    //     }
+    // },);
+
 
     useEffect(() => {
-        const handler = (ev: KeyboardEvent) => {
-            if (ev.key.toLowerCase() === "j") {
-                setZoom(zoom + 0.01);
-            } else if (ev.key.toLowerCase() === "k") {
-                setZoom(zoom - 0.01);
-            } else if (ev.key.toLowerCase() === "a") {
-                setTranslate([translate[0] + 20, translate[1]]);
-            } else if (ev.key.toLowerCase() === "d") {
-                setTranslate([translate[0] - 20, translate[1]]);
-            } else if (ev.key.toLowerCase() === "w") {
-                setTranslate([translate[0], translate[1] - 20]);
-            } else if (ev.key.toLowerCase() === "s") {
-                setTranslate([translate[0], translate[1] + 20]);
-            }
-        };
+        const zoom = d3.zoom()
+            .scaleExtent([0.25, 3])
+            // .translateExtent([[0, 0], [1920, 980]])
+            .on('zoom', handleZoom);
 
-        window.addEventListener("keydown", handler);
+        // @ts-ignore
+        function handleZoom(e) {
+            d3.select('#svg-map g')
+                .attr('transform', e.transform);
+        }
 
-        return () => window.removeEventListener("keydown", handler);
+        function center() {
+            d3.select('svg')
+                .transition()
+                .call(zoom.translateTo, 0.5 * width, 0.5 * height);
+        }
+
+        // function zoomIn() {
+        //     d3.select('svg')
+        //         .transition()
+        //         // @ts-ignore
+        //         .call(zoom.scaleBy, 2);
+        // }
+        //
+        // function zoomOut() {
+        //     d3.select('svg')
+        //         .transition()
+        //         // @ts-ignore
+        //         .call(zoom.scaleBy, 0.5);
+        // }
+
+
+        // @ts-ignore
+        d3.select('#svg-map').call(zoom);
+
     },);
 
     return (
         <>
             <svg
+                ref={SVGMapRef}
                 id="svg-map"
-                // width="100%"
-                // height="100%"
-                transform={`scale(${zoom}) translate(${translate[0]}, ${translate[1]})`}
-                x={0}
-                y={0}
-                viewBox="0 0 1400 2200"
-                style={{
-                    background: "new 0 0 1400 2200",
-                }}
+                // transform={`scale(${zoom}) translate(${translate[0]}, ${translate[1]})`}
+                // viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`}
+                // width={"100%"}
+                // height={"100%"}
+                // viewBox="0 0 900 900"
+                // style={{
+                //     background: "new 0 0 1400 2200",
+                // }}
                 xmlSpace="preserve"
                 xmlns="http://www.w3.org/2000/svg"
             >
@@ -51,653 +192,654 @@ const FirstFloor = () => {
                         ".st0,.st1{fill:#999;stroke:#000;stroke-miterlimit:10}.st1{stroke-width:1;stroke-miterlimit:10.0002}.st2,.st3,.st4,.st5{fill:#ffc62a;stroke:#000;stroke-miterlimit:10}.st3,.st4,.st5{fill:#fff6aa}.st4,.st5{fill:#ffc62a;stroke-width:1;stroke-miterlimit:9.9998}.st5{fill:#fff6aa}.st10,.st6,.st7,.st8{fill:#74beff;stroke:#000}.st6{stroke-width:1;stroke-miterlimit:9.9998}.st10,.st7,.st8{stroke-miterlimit:10}.st10,.st8{fill:none;stroke-width:.5;stroke-miterlimit:9.9998}.st10{fill:#999;stroke-miterlimit:10}.st11{fill:#fff6aa}"
                     }
                 </style>
-                <g id="Layer_2_1_">
-                    <g id="Layer_1-2">
-                        <path id="rect1608" className="st0" d="M791.5 31.5h373v1226h-373z"/>
-                        <path id="rect1610" className="st0" d="M791.5 1257.5h373v286h-373z"/>
-                        <path
-                            id="rect1612"
-                            transform="rotate(-18.103 1141.275 1794.938)"
-                            className="st1"
-                            d="M1002.6 1446.7h277.2v696.6h-277.2z"
-                        />
-                        <path
-                            id="rect1614"
-                            transform="rotate(-18.103 872.33 1604.43)"
-                            className="st1"
-                            d="M814.5 1521.1H930v166.8H814.5z"
-                        />
-                        <path id="rect1616" className="st0" d="M18.5 1099.5h773v263h-773z"/>
-                        <path id="rect1618" className="st0" d="M18.5 247.5h426v1887h-426z"/>
+                <g>
+                    <g id="Layer_2_1_">
+                        <g id="Layer_1-2">
+                            <path id="rect1608" className="st0" d="M791.5 31.5h373v1226h-373z"/>
+                            <path id="rect1610" className="st0" d="M791.5 1257.5h373v286h-373z"/>
+                            <path
+                                id="rect1612"
+                                transform="rotate(-18.103 1141.275 1794.938)"
+                                className="st1"
+                                d="M1002.6 1446.7h277.2v696.6h-277.2z"
+                            />
+                            <path
+                                id="rect1614"
+                                transform="rotate(-18.103 872.33 1604.43)"
+                                className="st1"
+                                d="M814.5 1521.1H930v166.8H814.5z"
+                            />
+                            <path id="rect1616" className="st0" d="M18.5 1099.5h773v263h-773z"/>
+                            <path id="rect1618" className="st0" d="M18.5 247.5h426v1887h-426z"/>
+                        </g>
                     </g>
-                </g>
-                <path
-                    id="rect1662"
-                    transform="rotate(-18.286 971.808 1547.615)"
-                    className="st4"
-                    d="M917.3 1486.9h109.2v121.2H917.3z"
-                />
-                <path
-                    id="rect1676"
-                    transform="rotate(-18.286 848.576 1531.897)"
-                    className="st8"
-                    d="M791.1 1525.3h115.1v13H791.1z"
-                />
-                <path
-                    id="rect1678"
-                    transform="rotate(-18.286 852.457 1544.512)"
-                    className="st8"
-                    d="M795 1537.9h115.1v13H795z"
-                />
-                <path
-                    id="rect1680"
-                    transform="rotate(-18.286 856.478 1556.708)"
-                    className="st8"
-                    d="M799 1550.1h115.1v13H799z"
-                />
-                <path
-                    id="rect1682"
-                    transform="rotate(-18.286 860.476 1569.008)"
-                    className="st8"
-                    d="M803 1562.4h115.1v13H803z"
-                />
-                <path
-                    id="rect1684"
-                    transform="rotate(-18.286 864.471 1580.909)"
-                    className="st8"
-                    d="M807 1574.3h115.1v13H807z"
-                />
-                <path
-                    id="rect1686"
-                    transform="rotate(-18.286 868.86 1593.022)"
-                    className="st8"
-                    d="M811.4 1586.4h115.1v13H811.4z"
-                />
-                <path
-                    id="rect1688"
-                    transform="rotate(-18.286 872.86 1605.022)"
-                    className="st8"
-                    d="M815.4 1598.4h115.1v13H815.4z"
-                />
-                <path
-                    id="rect1690"
-                    transform="rotate(-18.286 876.864 1617.821)"
-                    className="st8"
-                    d="M819.4 1611.2h115.1v13H819.4z"
-                />
-                <path
-                    id="rect1692"
-                    transform="rotate(-18.286 860.745 1575.606)"
-                    style={{
-                        fill: "#999",
-                        stroke: "#000",
-                        strokeWidth: 0.5,
-                        strokeMiterlimit: 9.9998,
-                    }}
-                    d="M845.9 1523.7h29.8v103.6h-29.8z"
-                />
-                <path id="rect1694" className="st0" d="M908.5 31.5h16v124h-16z"/>
-                <path id="rect1696" className="st0" d="M892.5 31.5h16v124h-16z"/>
-                <path id="rect1698" className="st10" d="M876.5 31.5h16v124h-16z"/>
-                <path id="rect1700" className="st0" d="M860.5 31.5h16v124h-16z"/>
-                <path id="rect1702" className="st0" d="M844.5 31.5h16v124h-16z"/>
-                <path id="rect1704" className="st0" d="M844.5 72.5h80v36h-80z"/>
-                <path id="rect1730" className="st0" d="M193.6 1566.7h107.9v14.1H193.6z"/>
-                <path id="rect1732" className="st0" d="M193.6 1552.6h107.9v14.1H193.6z"/>
-                <path id="rect1734" className="st10" d="M193.7 1538.5h107.9v14.1H193.7z"/>
-                <path id="rect1736" className="st0" d="M193.6 1524.5h107.9v14.1H193.6z"/>
-                <path id="rect1738" className="st0" d="M193.6 1510.4h107.9v14.1H193.6z"/>
-                <path id="rect1740" className="st0" d="M234.6 1510.4h31.3v70.3h-31.3z"/>
-                <path
-                    id="line1742"
-                    style={{
-                        fill: "none",
-                        stroke: "#000",
-                        strokeMiterlimit: 10,
-                    }}
-                    d="M193.5 1490.5h108"
-                />
-                <g id={"221"}>
-                    <g id="_x32_21">
-                        <path id="rect1744" className="st3" d="M791.5 155.5h133v117h-133z"/>
-                        <g id="g1754">
-                            <g id="g1752">
+                    <path
+                        id="rect1662"
+                        transform="rotate(-18.286 971.808 1547.615)"
+                        className="st4"
+                        d="M917.3 1486.9h109.2v121.2H917.3z"
+                    />
+                    <path
+                        id="rect1676"
+                        transform="rotate(-18.286 848.576 1531.897)"
+                        className="st8"
+                        d="M791.1 1525.3h115.1v13H791.1z"
+                    />
+                    <path
+                        id="rect1678"
+                        transform="rotate(-18.286 852.457 1544.512)"
+                        className="st8"
+                        d="M795 1537.9h115.1v13H795z"
+                    />
+                    <path
+                        id="rect1680"
+                        transform="rotate(-18.286 856.478 1556.708)"
+                        className="st8"
+                        d="M799 1550.1h115.1v13H799z"
+                    />
+                    <path
+                        id="rect1682"
+                        transform="rotate(-18.286 860.476 1569.008)"
+                        className="st8"
+                        d="M803 1562.4h115.1v13H803z"
+                    />
+                    <path
+                        id="rect1684"
+                        transform="rotate(-18.286 864.471 1580.909)"
+                        className="st8"
+                        d="M807 1574.3h115.1v13H807z"
+                    />
+                    <path
+                        id="rect1686"
+                        transform="rotate(-18.286 868.86 1593.022)"
+                        className="st8"
+                        d="M811.4 1586.4h115.1v13H811.4z"
+                    />
+                    <path
+                        id="rect1688"
+                        transform="rotate(-18.286 872.86 1605.022)"
+                        className="st8"
+                        d="M815.4 1598.4h115.1v13H815.4z"
+                    />
+                    <path
+                        id="rect1690"
+                        transform="rotate(-18.286 876.864 1617.821)"
+                        className="st8"
+                        d="M819.4 1611.2h115.1v13H819.4z"
+                    />
+                    <path
+                        id="rect1692"
+                        transform="rotate(-18.286 860.745 1575.606)"
+                        style={{
+                            fill: "#999",
+                            stroke: "#000",
+                            strokeWidth: 0.5,
+                            strokeMiterlimit: 9.9998,
+                        }}
+                        d="M845.9 1523.7h29.8v103.6h-29.8z"
+                    />
+                    <path id="rect1694" className="st0" d="M908.5 31.5h16v124h-16z"/>
+                    <path id="rect1696" className="st0" d="M892.5 31.5h16v124h-16z"/>
+                    <path id="rect1698" className="st10" d="M876.5 31.5h16v124h-16z"/>
+                    <path id="rect1700" className="st0" d="M860.5 31.5h16v124h-16z"/>
+                    <path id="rect1702" className="st0" d="M844.5 31.5h16v124h-16z"/>
+                    <path id="rect1704" className="st0" d="M844.5 72.5h80v36h-80z"/>
+                    <path id="rect1730" className="st0" d="M193.6 1566.7h107.9v14.1H193.6z"/>
+                    <path id="rect1732" className="st0" d="M193.6 1552.6h107.9v14.1H193.6z"/>
+                    <path id="rect1734" className="st10" d="M193.7 1538.5h107.9v14.1H193.7z"/>
+                    <path id="rect1736" className="st0" d="M193.6 1524.5h107.9v14.1H193.6z"/>
+                    <path id="rect1738" className="st0" d="M193.6 1510.4h107.9v14.1H193.6z"/>
+                    <path id="rect1740" className="st0" d="M234.6 1510.4h31.3v70.3h-31.3z"/>
+                    <path
+                        id="line1742"
+                        style={{
+                            fill: "none",
+                            stroke: "#000",
+                            strokeMiterlimit: 10,
+                        }}
+                        d="M193.5 1490.5h108"
+                    />
+                    <g id={"221"}>
+                        <g id="_x32_21">
+                            <path id="rect1744" className="st3" d="M791.5 155.5h133v117h-133z"/>
+                            <g id="g1754">
+                                <g id="g1752">
+                                    <path
+                                        id="path1746"
+                                        d="M803.7 164.7c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2.5-.7.7-.9c.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                                    />
+                                    <path
+                                        id="path1748"
+                                        d="M811.1 164.7c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2.5-.7.7-.9c.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                                    />
+                                    <path
+                                        id="path1750"
+                                        d="M819.8 164.8v8.2h-1v-7l-1.9 1.2-.4-.7 2.5-1.6.8-.1zm1.7 7.7v.8h-4.9v-.8h4.9z"
+                                    />
+                                </g>
+                            </g>
+                        </g>
+                        <g id="g1762">
+                            <g id="g1760">
                                 <path
-                                    id="path1746"
-                                    d="M803.7 164.7c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2.5-.7.7-.9c.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                                    id="path1756"
+                                    d="M905.3 253.4v8.3h-1.6V255l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.6 7.3v1.2h-5.3v-1.2h5.3z"
                                 />
                                 <path
-                                    id="path1748"
-                                    d="M811.1 164.7c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2.5-.7.7-.9c.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
-                                />
-                                <path
-                                    id="path1750"
-                                    d="M819.8 164.8v8.2h-1v-7l-1.9 1.2-.4-.7 2.5-1.6.8-.1zm1.7 7.7v.8h-4.9v-.8h4.9z"
+                                    id="path1758"
+                                    d="M911 253.2c.6 0 1.1.1 1.5.3s.7.5 1 .8c.2.3.3.7.3 1.1 0 .4-.1.7-.2.9-.1.3-.3.5-.6.7s-.6.3-.9.4c.4 0 .7.1 1 .3.3.2.5.4.7.7.2.3.3.7.3 1.1 0 .5-.1.9-.4 1.3-.3.4-.6.7-1.1.9s-1 .3-1.7.3c-.6 0-1.1-.1-1.6-.3-.5-.2-.9-.5-1.3-.9l1-.9c.2.3.5.5.8.6s.6.2 1 .2c.5 0 .9-.1 1.2-.4.3-.2.4-.6.4-1 0-.3-.1-.6-.2-.8s-.3-.4-.5-.4c-.2-.1-.5-.1-.8-.1h-.8l.2-1.2h.5c.3 0 .5 0 .7-.1s.4-.2.5-.4.2-.4.2-.7c0-.4-.1-.7-.4-.9-.3-.2-.6-.3-1-.3s-.7.1-.9.2c-.3.1-.5.3-.8.6l-.8-.9c.4-.4.8-.6 1.3-.8.4-.2.9-.3 1.4-.3z"
                                 />
                             </g>
                         </g>
                     </g>
-                    <g id="g1762">
-                        <g id="g1760">
-                            <path
-                                id="path1756"
-                                d="M905.3 253.4v8.3h-1.6V255l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.6 7.3v1.2h-5.3v-1.2h5.3z"
-                            />
-                            <path
-                                id="path1758"
-                                d="M911 253.2c.6 0 1.1.1 1.5.3s.7.5 1 .8c.2.3.3.7.3 1.1 0 .4-.1.7-.2.9-.1.3-.3.5-.6.7s-.6.3-.9.4c.4 0 .7.1 1 .3.3.2.5.4.7.7.2.3.3.7.3 1.1 0 .5-.1.9-.4 1.3-.3.4-.6.7-1.1.9s-1 .3-1.7.3c-.6 0-1.1-.1-1.6-.3-.5-.2-.9-.5-1.3-.9l1-.9c.2.3.5.5.8.6s.6.2 1 .2c.5 0 .9-.1 1.2-.4.3-.2.4-.6.4-1 0-.3-.1-.6-.2-.8s-.3-.4-.5-.4c-.2-.1-.5-.1-.8-.1h-.8l.2-1.2h.5c.3 0 .5 0 .7-.1s.4-.2.5-.4.2-.4.2-.7c0-.4-.1-.7-.4-.9-.3-.2-.6-.3-1-.3s-.7.1-.9.2c-.3.1-.5.3-.8.6l-.8-.9c.4-.4.8-.6 1.3-.8.4-.2.9-.3 1.4-.3z"
-                            />
+                    <g id={"220"}>
+                        <path id="rect1630" className="st2" d="M791.5 271.5h133v165h-133z"/>
+                        <g id="g1772">
+                            <g id="g1770">
+                                <path
+                                    id="path1764"
+                                    d="M802.9 282.3c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1766"
+                                    d="M810.3 282.3c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1768"
+                                    d="M818.1 282.3c.9 0 1.6.4 2.1 1.1.5.8.7 1.8.7 3.2 0 1.4-.2 2.5-.7 3.2-.5.8-1.2 1.1-2.1 1.1-.9 0-1.6-.4-2.1-1.1-.5-.8-.7-1.8-.7-3.2 0-1.4.2-2.5.7-3.2s1.2-1.1 2.1-1.1zm0 .8c-.5 0-.9.3-1.2.8-.3.6-.4 1.5-.4 2.7 0 .6 0 1.2.1 1.6.1.5.2.8.3 1.1.1.3.3.5.5.6s.5.2.8.2c.4 0 .7-.1.9-.4.3-.2.4-.6.6-1.1.1-.5.2-1.2.2-2s-.1-1.5-.2-2-.3-.9-.5-1.1c-.4-.2-.7-.4-1.1-.4zm1.2.4.3.9-2.7 5.5-.4-.7 2.8-5.7z"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"220"}>
-                    <path id="rect1630" className="st2" d="M791.5 271.5h133v165h-133z"/>
-                    <g id="g1772">
-                        <g id="g1770">
-                            <path
-                                id="path1764"
-                                d="M802.9 282.3c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1766"
-                                d="M810.3 282.3c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1768"
-                                d="M818.1 282.3c.9 0 1.6.4 2.1 1.1.5.8.7 1.8.7 3.2 0 1.4-.2 2.5-.7 3.2-.5.8-1.2 1.1-2.1 1.1-.9 0-1.6-.4-2.1-1.1-.5-.8-.7-1.8-.7-3.2 0-1.4.2-2.5.7-3.2s1.2-1.1 2.1-1.1zm0 .8c-.5 0-.9.3-1.2.8-.3.6-.4 1.5-.4 2.7 0 .6 0 1.2.1 1.6.1.5.2.8.3 1.1.1.3.3.5.5.6s.5.2.8.2c.4 0 .7-.1.9-.4.3-.2.4-.6.6-1.1.1-.5.2-1.2.2-2s-.1-1.5-.2-2-.3-.9-.5-1.1c-.4-.2-.7-.4-1.1-.4zm1.2.4.3.9-2.7 5.5-.4-.7 2.8-5.7z"
-                            />
+                    <g id="216B">
+                        <path id="rect1646" className="st2" d="M791.5 927.5h133v84h-133z"/>
+                        <g id="g1814">
+                            <g id="g1812">
+                                <path
+                                    id="path1804"
+                                    d="M803.9 937.2c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2.5-.7.7-.9c.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1806"
+                                    d="M812.6 937.4v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.6v.8h-4.9v-.8h4.9z"
+                                />
+                                <path
+                                    id="path1808"
+                                    d="M819.5 937.2c.3 0 .6 0 .9.1.3.1.5.2.8.4l-.4.7-.6-.3c-.2-.1-.4-.1-.7-.1-.5 0-.8.2-1.2.5-.3.3-.6.7-.7 1.3-.2.5-.2 1.2-.2 1.9v.4c0 1 .1 1.8.4 2.3.3.5.7.7 1.3.7.5 0 .9-.2 1.2-.6.3-.4.4-.9.4-1.6 0-.5-.1-.8-.2-1.1-.1-.3-.3-.5-.5-.6s-.5-.2-.8-.2c-.4 0-.8.1-1.2.4-.3.3-.6.6-.8 1v-.9c.3-.5.6-.8 1-1s.8-.3 1.2-.3.8.1 1.2.3.7.5.9.9.3.9.3 1.5-.1 1.2-.4 1.6c-.2.4-.6.8-1 1s-.9.4-1.3.4c-.5 0-1-.1-1.3-.3-.4-.2-.6-.5-.9-.8-.2-.4-.4-.8-.5-1.3s-.2-1.1-.2-1.7c0-.9.1-1.7.4-2.4.2-.7.6-1.2 1.1-1.6s1.2-.6 1.8-.6z"
+                                />
+                                <path
+                                    id="path1810"
+                                    d="M829.4 943.4c0 .5-.1.8-.3 1.2-.2.3-.4.6-.7.7s-.6.3-1 .4-.8.1-1.1.1H824v-8.5h2.1c.4 0 .7 0 1.1.1.4.1.7.2 1 .3s.5.4.7.7.3.6.3 1-.1.7-.2.9c-.1.3-.3.5-.6.6-.2.2-.5.3-.8.3.3 0 .6.1.9.3.3.1.5.4.7.6.1.5.2.8.2 1.3zm-1.4-3.8c0-.5-.1-.8-.4-1-.3-.2-.7-.3-1.2-.3H825v2.7h1.4c.5 0 .9-.1 1.2-.3s.4-.6.4-1.1zm.3 3.9c0-.4-.1-.8-.2-1s-.4-.4-.7-.5-.6-.1-.9-.1H825v3.1h1.4c.2 0 .4 0 .6-.1s.4-.1.6-.2c.2-.1.3-.3.4-.5.2-.2.3-.4.3-.7z"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id="216B">
-                    <path id="rect1646" className="st2" d="M791.5 927.5h133v84h-133z"/>
-                    <g id="g1814">
-                        <g id="g1812">
-                            <path
-                                id="path1804"
-                                d="M803.9 937.2c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2.5-.7.7-.9c.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1806"
-                                d="M812.6 937.4v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.6v.8h-4.9v-.8h4.9z"
-                            />
-                            <path
-                                id="path1808"
-                                d="M819.5 937.2c.3 0 .6 0 .9.1.3.1.5.2.8.4l-.4.7-.6-.3c-.2-.1-.4-.1-.7-.1-.5 0-.8.2-1.2.5-.3.3-.6.7-.7 1.3-.2.5-.2 1.2-.2 1.9v.4c0 1 .1 1.8.4 2.3.3.5.7.7 1.3.7.5 0 .9-.2 1.2-.6.3-.4.4-.9.4-1.6 0-.5-.1-.8-.2-1.1-.1-.3-.3-.5-.5-.6s-.5-.2-.8-.2c-.4 0-.8.1-1.2.4-.3.3-.6.6-.8 1v-.9c.3-.5.6-.8 1-1s.8-.3 1.2-.3.8.1 1.2.3.7.5.9.9.3.9.3 1.5-.1 1.2-.4 1.6c-.2.4-.6.8-1 1s-.9.4-1.3.4c-.5 0-1-.1-1.3-.3-.4-.2-.6-.5-.9-.8-.2-.4-.4-.8-.5-1.3s-.2-1.1-.2-1.7c0-.9.1-1.7.4-2.4.2-.7.6-1.2 1.1-1.6s1.2-.6 1.8-.6z"
-                            />
-                            <path
-                                id="path1810"
-                                d="M829.4 943.4c0 .5-.1.8-.3 1.2-.2.3-.4.6-.7.7s-.6.3-1 .4-.8.1-1.1.1H824v-8.5h2.1c.4 0 .7 0 1.1.1.4.1.7.2 1 .3s.5.4.7.7.3.6.3 1-.1.7-.2.9c-.1.3-.3.5-.6.6-.2.2-.5.3-.8.3.3 0 .6.1.9.3.3.1.5.4.7.6.1.5.2.8.2 1.3zm-1.4-3.8c0-.5-.1-.8-.4-1-.3-.2-.7-.3-1.2-.3H825v2.7h1.4c.5 0 .9-.1 1.2-.3s.4-.6.4-1.1zm.3 3.9c0-.4-.1-.8-.2-1s-.4-.4-.7-.5-.6-.1-.9-.1H825v3.1h1.4c.2 0 .4 0 .6-.1s.4-.1.6-.2c.2-.1.3-.3.4-.5.2-.2.3-.4.3-.7z"
-                            />
+                    <g id="216A">
+                        <path id="rect1648" className="st2" d="M791.5 1011.5h133v81h-133z"/>
+                        <g id="g1826">
+                            <g id="g1824">
+                                <path
+                                    id="path1816"
+                                    d="M803.2 1021.1c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1818"
+                                    d="M811.9 1021.2v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.7v.8h-4.9v-.8h4.9z"
+                                />
+                                <path
+                                    id="path1820"
+                                    d="M818.8 1021.1c.3 0 .6 0 .9.1.3.1.5.2.8.4l-.4.7-.6-.3c-.2-.1-.4-.1-.7-.1-.5 0-.8.2-1.2.5-.3.3-.6.7-.7 1.3-.2.5-.2 1.2-.2 1.9v.4c0 1 .1 1.8.4 2.3.3.5.7.7 1.3.7.5 0 .9-.2 1.2-.6s.4-.9.4-1.6c0-.5-.1-.8-.2-1.1-.1-.3-.3-.5-.5-.6s-.5-.2-.8-.2c-.4 0-.8.1-1.2.4-.3.3-.6.6-.8 1v-.9c.3-.5.6-.8 1-1s.8-.3 1.2-.3.8.1 1.2.3c.4.2.7.5.9.9s.3.9.3 1.5-.1 1.2-.4 1.6c-.2.4-.6.8-1 1s-.9.4-1.3.4c-.5 0-1-.1-1.3-.3-.4-.2-.6-.5-.9-.8-.2-.4-.4-.8-.5-1.3s-.2-1.1-.2-1.7c0-.9.1-1.7.4-2.4.2-.7.6-1.2 1.1-1.6s1.2-.6 1.8-.6z"
+                                />
+                                <path
+                                    id="path1822"
+                                    d="M827.4 1027.6H824l-.7 2.2h-1.1l2.8-8.5h1.4l2.8 8.5h-1.1l-.7-2.2zm-3.1-.9h2.8l-1.4-4.5-1.4 4.5z"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id="216A">
-                    <path id="rect1648" className="st2" d="M791.5 1011.5h133v81h-133z"/>
-                    <g id="g1826">
-                        <g id="g1824">
-                            <path
-                                id="path1816"
-                                d="M803.2 1021.1c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1818"
-                                d="M811.9 1021.2v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.7v.8h-4.9v-.8h4.9z"
-                            />
-                            <path
-                                id="path1820"
-                                d="M818.8 1021.1c.3 0 .6 0 .9.1.3.1.5.2.8.4l-.4.7-.6-.3c-.2-.1-.4-.1-.7-.1-.5 0-.8.2-1.2.5-.3.3-.6.7-.7 1.3-.2.5-.2 1.2-.2 1.9v.4c0 1 .1 1.8.4 2.3.3.5.7.7 1.3.7.5 0 .9-.2 1.2-.6s.4-.9.4-1.6c0-.5-.1-.8-.2-1.1-.1-.3-.3-.5-.5-.6s-.5-.2-.8-.2c-.4 0-.8.1-1.2.4-.3.3-.6.6-.8 1v-.9c.3-.5.6-.8 1-1s.8-.3 1.2-.3.8.1 1.2.3c.4.2.7.5.9.9s.3.9.3 1.5-.1 1.2-.4 1.6c-.2.4-.6.8-1 1s-.9.4-1.3.4c-.5 0-1-.1-1.3-.3-.4-.2-.6-.5-.9-.8-.2-.4-.4-.8-.5-1.3s-.2-1.1-.2-1.7c0-.9.1-1.7.4-2.4.2-.7.6-1.2 1.1-1.6s1.2-.6 1.8-.6z"
-                            />
-                            <path
-                                id="path1822"
-                                d="M827.4 1027.6H824l-.7 2.2h-1.1l2.8-8.5h1.4l2.8 8.5h-1.1l-.7-2.2zm-3.1-.9h2.8l-1.4-4.5-1.4 4.5z"
-                            />
+                    <g id={"263"}>
+                        <path id="rect1622" className="st2" d="M791.5 1092.5h133v313h-133z"/>
+                        <g id="g1836">
+                            <g id="g1834">
+                                <path
+                                    id="path1828"
+                                    d="M804.2 1103.9c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6.4-.5.8-.9 1.1-1.2.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9s.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1830"
+                                    d="M812.4 1103.9c.3 0 .6 0 .9.1.3.1.5.2.8.4l-.4.7-.6-.3c-.2-.1-.4-.1-.7-.1-.5 0-.8.2-1.2.5-.3.3-.6.7-.7 1.3s-.2 1.2-.2 1.9v.4c0 1 .1 1.8.4 2.3.3.5.7.7 1.3.7.5 0 .9-.2 1.2-.6s.4-.9.4-1.6c0-.5-.1-.8-.2-1.1s-.3-.5-.5-.6-.5-.2-.8-.2c-.4 0-.8.1-1.2.4-.3.3-.6.6-.8 1v-.9c.3-.5.6-.8 1-1s.8-.3 1.2-.3.8.1 1.2.3c.4.2.7.5.9.9s.3.9.3 1.5-.1 1.2-.4 1.6c-.2.4-.6.8-1 1s-.9.4-1.3.4c-.5 0-1-.1-1.3-.3-.4-.2-.6-.5-.9-.8s-.4-.8-.5-1.3-.2-1.1-.2-1.7c0-.9.1-1.7.4-2.4.2-.7.6-1.2 1.1-1.6.6-.4 1.2-.6 1.8-.6z"
+                                />
+                                <path
+                                    id="path1832"
+                                    d="M819 1103.9c.5 0 1 .1 1.4.3.4.2.7.4.9.8.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7c.2.3.3.7.3 1.1 0 .5-.1.9-.4 1.3s-.6.7-1 .9c-.4.2-1 .3-1.5.3s-.9-.1-1.4-.3-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5.3-.3.5-.7.5-1.3 0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2s.4-.3.6-.5.2-.5.2-.8c0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4-.4 0-.7.1-1 .2s-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7.3.1.7 0 1.1 0z"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"263"}>
-                    <path id="rect1622" className="st2" d="M791.5 1092.5h133v313h-133z"/>
-                    <g id="g1836">
-                        <g id="g1834">
-                            <path
-                                id="path1828"
-                                d="M804.2 1103.9c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6.4-.5.8-.9 1.1-1.2.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9s.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1830"
-                                d="M812.4 1103.9c.3 0 .6 0 .9.1.3.1.5.2.8.4l-.4.7-.6-.3c-.2-.1-.4-.1-.7-.1-.5 0-.8.2-1.2.5-.3.3-.6.7-.7 1.3s-.2 1.2-.2 1.9v.4c0 1 .1 1.8.4 2.3.3.5.7.7 1.3.7.5 0 .9-.2 1.2-.6s.4-.9.4-1.6c0-.5-.1-.8-.2-1.1s-.3-.5-.5-.6-.5-.2-.8-.2c-.4 0-.8.1-1.2.4-.3.3-.6.6-.8 1v-.9c.3-.5.6-.8 1-1s.8-.3 1.2-.3.8.1 1.2.3c.4.2.7.5.9.9s.3.9.3 1.5-.1 1.2-.4 1.6c-.2.4-.6.8-1 1s-.9.4-1.3.4c-.5 0-1-.1-1.3-.3-.4-.2-.6-.5-.9-.8s-.4-.8-.5-1.3-.2-1.1-.2-1.7c0-.9.1-1.7.4-2.4.2-.7.6-1.2 1.1-1.6.6-.4 1.2-.6 1.8-.6z"
-                            />
-                            <path
-                                id="path1832"
-                                d="M819 1103.9c.5 0 1 .1 1.4.3.4.2.7.4.9.8.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7c.2.3.3.7.3 1.1 0 .5-.1.9-.4 1.3s-.6.7-1 .9c-.4.2-1 .3-1.5.3s-.9-.1-1.4-.3-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5.3-.3.5-.7.5-1.3 0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2s.4-.3.6-.5.2-.5.2-.8c0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4-.4 0-.7.1-1 .2s-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7.3.1.7 0 1.1 0z"
-                            />
+                    <g id={"223"}>
+                        <path id="rect1674" className="st7" d="M1031.5 31.5h133v67h-133z"/>
+                        <g id="g1844">
+                            <g id="g1842">
+                                <path
+                                    id="path1838"
+                                    d="m1117.3 59.6-1.7 12.8h-2.8l-1.1-9.3-1.2 9.3h-2.8l-1.5-12.8h2.4l.8 10.5 1.2-9h2.4l1.2 9 .9-10.5h2.2z"
+                                />
+                                <path
+                                    id="path1840"
+                                    d="M1123.9 59.3c.9 0 1.6.1 2.3.3.6.2 1.2.6 1.7 1l-1.3 1.5c-.4-.3-.8-.5-1.2-.7-.4-.2-.9-.2-1.4-.2-.6 0-1.1.2-1.6.5s-.9.8-1.2 1.5c-.3.7-.4 1.6-.4 2.7s.1 2 .4 2.7.7 1.2 1.2 1.5 1.1.5 1.7.5c.7 0 1.2-.1 1.7-.4.4-.2.8-.5 1.2-.8l1.2 1.5c-.4.4-1 .8-1.7 1.1s-1.5.5-2.5.5c-1.1 0-2.1-.3-3-.8s-1.6-1.3-2.1-2.3-.7-2.2-.7-3.7c0-1.4.3-2.6.8-3.6s1.2-1.7 2.1-2.2 1.8-.6 2.8-.6z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g1862">
+                            <g id="g1860">
+                                <path
+                                    id="path1854"
+                                    d="M1045.2 41.2c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5V49c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1856"
+                                    d="M1052.5 41.2c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5V49c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1858"
+                                    d="M1059.9 41.2c.5 0 1 .1 1.4.3s.7.4.9.8c.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7.3.7.3 1.1c0 .5-.1.9-.4 1.3s-.6.7-1 .9-1 .3-1.5.3-.9-.1-1.4-.3-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5s.5-.7.5-1.3c0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2.2-.1.4-.3.6-.5s.2-.5.2-.8c0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4s-.7.1-1 .2c-.3.1-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7h1.1z"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"223"}>
-                    <path id="rect1674" className="st7" d="M1031.5 31.5h133v67h-133z"/>
-                    <g id="g1844">
-                        <g id="g1842">
-                            <path
-                                id="path1838"
-                                d="m1117.3 59.6-1.7 12.8h-2.8l-1.1-9.3-1.2 9.3h-2.8l-1.5-12.8h2.4l.8 10.5 1.2-9h2.4l1.2 9 .9-10.5h2.2z"
-                            />
-                            <path
-                                id="path1840"
-                                d="M1123.9 59.3c.9 0 1.6.1 2.3.3.6.2 1.2.6 1.7 1l-1.3 1.5c-.4-.3-.8-.5-1.2-.7-.4-.2-.9-.2-1.4-.2-.6 0-1.1.2-1.6.5s-.9.8-1.2 1.5c-.3.7-.4 1.6-.4 2.7s.1 2 .4 2.7.7 1.2 1.2 1.5 1.1.5 1.7.5c.7 0 1.2-.1 1.7-.4.4-.2.8-.5 1.2-.8l1.2 1.5c-.4.4-1 .8-1.7 1.1s-1.5.5-2.5.5c-1.1 0-2.1-.3-3-.8s-1.6-1.3-2.1-2.3-.7-2.2-.7-3.7c0-1.4.3-2.6.8-3.6s1.2-1.7 2.1-2.2 1.8-.6 2.8-.6z"
-                            />
+                    <g id={"224"}>
+                        <path id="rect1672" className="st7" d="M1031.5 98.5h133v91h-133z"/>
+                        <g id="g1852">
+                            <g id="g1850">
+                                <path
+                                    id="path1846"
+                                    d="m1116.3 137.6-1.7 12.8h-2.8l-1.1-9.3-1.2 9.3h-2.8l-1.5-12.8h2.4l.8 10.5 1.2-9h2.4l1.2 9 .9-10.5h2.2z"
+                                />
+                                <path
+                                    id="path1848"
+                                    d="M1122.9 137.4c.9 0 1.6.1 2.3.3.6.2 1.2.6 1.7 1l-1.3 1.5c-.4-.3-.8-.5-1.2-.7-.4-.2-.9-.2-1.4-.2-.6 0-1.1.2-1.6.5s-.9.8-1.2 1.5c-.3.7-.4 1.6-.4 2.7s.1 2 .4 2.7.7 1.2 1.2 1.5 1.1.5 1.7.5c.7 0 1.2-.1 1.7-.4.4-.2.8-.5 1.2-.8l1.2 1.5c-.4.4-1 .8-1.7 1.1s-1.5.5-2.5.5c-1.1 0-2.1-.3-3-.8s-1.6-1.3-2.1-2.3-.7-2.2-.7-3.7c0-1.4.3-2.6.8-3.6s1.2-1.7 2.1-2.2 1.7-.6 2.8-.6z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g1872">
+                            <g id="g1870">
+                                <path
+                                    id="path1864"
+                                    d="M1046.2 112.2c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1866"
+                                    d="M1053.5 112.2c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1868"
+                                    d="m1061 112.2.9.4-2.3 5.4h4.5v.8h-5.6v-.8l2.5-5.8zm2 3.3v5.3h-1v-2.7l.1-2.6h.9z"
+                                />
+                            </g>
                         </g>
                     </g>
-                    <g id="g1862">
-                        <g id="g1860">
-                            <path
-                                id="path1854"
-                                d="M1045.2 41.2c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5V49c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1856"
-                                d="M1052.5 41.2c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5V49c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1858"
-                                d="M1059.9 41.2c.5 0 1 .1 1.4.3s.7.4.9.8c.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7.3.7.3 1.1c0 .5-.1.9-.4 1.3s-.6.7-1 .9-1 .3-1.5.3-.9-.1-1.4-.3-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5s.5-.7.5-1.3c0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2.2-.1.4-.3.6-.5s.2-.5.2-.8c0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4s-.7.1-1 .2c-.3.1-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7h1.1z"
-                            />
+                    <g id={"225"}>
+                        <path id="rect1632" className="st2" d="M1031.5 189.5h133v165h-133z"/>
+                        <g id="g1882">
+                            <g id="g1880">
+                                <path
+                                    id="path1874"
+                                    d="M1046.2 202.4c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1876"
+                                    d="M1053.5 202.4c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1878"
+                                    d="m1063.6 202.5-.2.8h-3.3v2.7c.3-.1.5-.2.7-.3s.5-.1.7-.1c.5 0 .9.1 1.2.3s.6.5.8.9c.2.4.3.9.3 1.4s-.1 1.1-.4 1.5c-.2.4-.6.8-1 1s-.9.4-1.5.4c-.5 0-1-.1-1.4-.3s-.8-.4-1.1-.8l.6-.6c.3.3.5.5.8.6s.6.2 1 .2c.6 0 1-.2 1.3-.5s.5-.8.5-1.5c0-.5-.1-.8-.2-1.1s-.3-.5-.6-.6c-.2-.1-.5-.2-.8-.2-.2 0-.5 0-.7.1-.2 0-.4.1-.7.2h-.8v-4.2h4.8v.1z"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"224"}>
-                    <path id="rect1672" className="st7" d="M1031.5 98.5h133v91h-133z"/>
-                    <g id="g1852">
-                        <g id="g1850">
-                            <path
-                                id="path1846"
-                                d="m1116.3 137.6-1.7 12.8h-2.8l-1.1-9.3-1.2 9.3h-2.8l-1.5-12.8h2.4l.8 10.5 1.2-9h2.4l1.2 9 .9-10.5h2.2z"
-                            />
-                            <path
-                                id="path1848"
-                                d="M1122.9 137.4c.9 0 1.6.1 2.3.3.6.2 1.2.6 1.7 1l-1.3 1.5c-.4-.3-.8-.5-1.2-.7-.4-.2-.9-.2-1.4-.2-.6 0-1.1.2-1.6.5s-.9.8-1.2 1.5c-.3.7-.4 1.6-.4 2.7s.1 2 .4 2.7.7 1.2 1.2 1.5 1.1.5 1.7.5c.7 0 1.2-.1 1.7-.4.4-.2.8-.5 1.2-.8l1.2 1.5c-.4.4-1 .8-1.7 1.1s-1.5.5-2.5.5c-1.1 0-2.1-.3-3-.8s-1.6-1.3-2.1-2.3-.7-2.2-.7-3.7c0-1.4.3-2.6.8-3.6s1.2-1.7 2.1-2.2 1.7-.6 2.8-.6z"
-                            />
+                    <g id={"228"}>
+                        <path id="rect1638" className="st2" d="M1031.5 588.5h133v165h-133z"/>
+                        <g id="g1912">
+                            <g id="g1910">
+                                <path
+                                    id="path1904"
+                                    d="M1046.2 602.3c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.9c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.2.8-.3 1.4-.3z"
+                                />
+                                <path
+                                    id="path1906"
+                                    d="M1053.5 602.3c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.9c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.2.9-.3 1.4-.3z"
+                                />
+                                <path
+                                    id="path1908"
+                                    d="M1063.8 604.4c0 .4-.1.8-.4 1.1s-.6.6-1.1.8c.6.2 1 .5 1.3.9s.5.8.5 1.4c0 .5-.1.9-.4 1.2-.2.4-.6.7-1 .9s-.9.3-1.5.3-1.1-.1-1.5-.3-.8-.5-1-.9-.3-.8-.3-1.2c0-.5.2-1 .5-1.3s.7-.7 1.2-.9c-.4-.2-.8-.5-1-.8s-.3-.7-.3-1.2c0-.4.1-.7.2-1s.4-.5.6-.7c.3-.2.5-.3.8-.4.3-.1.6-.1.9-.1s.6 0 .9.1.6.2.8.4.4.4.6.7c.2.3.2.6.2 1zm-.7 4.2c0-.4-.1-.7-.3-.9-.2-.2-.5-.4-.8-.6-.3-.1-.7-.3-1.2-.4-.2.1-.5.2-.7.4s-.4.4-.5.6-.2.5-.2.9c0 .5.1.9.4 1.1.3.3.7.4 1.3.4.6 0 1-.1 1.4-.4s.6-.6.6-1.1zm-3.3-4.1c0 .3.1.6.2.8.2.2.4.3.6.5.3.1.6.2 1 .4.4-.2.7-.5.9-.7s.3-.5.3-.9-.1-.8-.4-1-.6-.4-1.1-.4-.9.1-1.1.4c-.3.1-.4.4-.4.9z"
+                                />
+                            </g>
                         </g>
                     </g>
-                    <g id="g1872">
-                        <g id="g1870">
-                            <path
-                                id="path1864"
-                                d="M1046.2 112.2c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1866"
-                                d="M1053.5 112.2c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1868"
-                                d="m1061 112.2.9.4-2.3 5.4h4.5v.8h-5.6v-.8l2.5-5.8zm2 3.3v5.3h-1v-2.7l.1-2.6h.9z"
-                            />
+                    <g id={"231"}>
+                        <path id="rect1644" className="st2" d="M1031.5 987.5h133v165h-133z"/>
+                        <g id="g1942">
+                            <g id="g1940">
+                                <path
+                                    id="path1934"
+                                    d="M1045.2 1000.8c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1936"
+                                    d="M1052.5 1000.8c.5 0 1 .1 1.4.3s.7.4.9.8c.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7.3.7.3 1.1c0 .5-.1.9-.4 1.3s-.6.7-1 .9-1 .3-1.5.3-.9-.1-1.4-.3-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5s.5-.7.5-1.3c0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2.2-.1.4-.3.6-.5s.2-.5.2-.8c0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4s-.7.1-1 .2c-.3.1-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7.3.1.7 0 1.1 0z"
+                                />
+                                <path
+                                    id="path1938"
+                                    d="M1061.2 1000.9v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.6v.8h-4.9v-.8h4.9z"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"225"}>
-                    <path id="rect1632" className="st2" d="M1031.5 189.5h133v165h-133z"/>
-                    <g id="g1882">
-                        <g id="g1880">
-                            <path
-                                id="path1874"
-                                d="M1046.2 202.4c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1876"
-                                d="M1053.5 202.4c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1878"
-                                d="m1063.6 202.5-.2.8h-3.3v2.7c.3-.1.5-.2.7-.3s.5-.1.7-.1c.5 0 .9.1 1.2.3s.6.5.8.9c.2.4.3.9.3 1.4s-.1 1.1-.4 1.5c-.2.4-.6.8-1 1s-.9.4-1.5.4c-.5 0-1-.1-1.4-.3s-.8-.4-1.1-.8l.6-.6c.3.3.5.5.8.6s.6.2 1 .2c.6 0 1-.2 1.3-.5s.5-.8.5-1.5c0-.5-.1-.8-.2-1.1s-.3-.5-.6-.6c-.2-.1-.5-.2-.8-.2-.2 0-.5 0-.7.1-.2 0-.4.1-.7.2h-.8v-4.2h4.8v.1z"
-                            />
+                    <g id={"202"}>
+                        <path
+                            id="rect1652"
+                            transform="rotate(-18.286 1138.227 1516.318)"
+                            className="st4"
+                            d="M1083.7 1433.7h109.2v165h-109.2z"
+                        />
+                        <g id="g1962">
+                            <g id="g1960">
+                                <path
+                                    id="path1954"
+                                    d="M1078.1 1460.5c.5-.2 1-.2 1.4-.1s.8.3 1.1.5c.3.3.5.6.7 1.1.1.4.2.8.2 1.1s-.1.8-.2 1.3c-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2 .3-.6.5-1.1.7-1.5s.3-.8.4-1.1c.1-.3.1-.6.1-.9s-.1-.5-.2-.8c-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.7-.8 1.2-.9z"
+                                />
+                                <path
+                                    id="path1956"
+                                    d="M1085.5 1458c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3s-.7 1.4-1.6 1.7c-.9.3-1.6.1-2.3-.4s-1.2-1.5-1.7-2.9c-.4-1.3-.6-2.4-.3-3.3.1-.8.6-1.4 1.5-1.7zm.2.8c-.5.2-.8.6-.9 1.2s0 1.5.4 2.7c.2.6.4 1.1.6 1.5s.4.7.6.9c.2.2.4.4.7.4.2.1.5 0 .8 0 .3-.1.6-.3.7-.6.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9s-.6-.8-.9-.9c-.3-.1-.6-.1-1 0zm1.3-.1.5.8-.8 6-.6-.6.9-6.2z"
+                                />
+                                <path
+                                    id="path1958"
+                                    d="M1092.1 1455.8c.5-.2 1-.2 1.4-.1s.8.3 1.1.5c.3.3.5.6.7 1.1.1.4.2.8.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2s.5-1.1.7-1.5.3-.8.4-1.1.1-.6.1-.9-.1-.5-.2-.8c-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5s-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.7-.7 1.2-.9z"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"228"}>
-                    <path id="rect1638" className="st2" d="M1031.5 588.5h133v165h-133z"/>
-                    <g id="g1912">
-                        <g id="g1910">
-                            <path
-                                id="path1904"
-                                d="M1046.2 602.3c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.9c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.2.8-.3 1.4-.3z"
-                            />
-                            <path
-                                id="path1906"
-                                d="M1053.5 602.3c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.9c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.2.9-.3 1.4-.3z"
-                            />
-                            <path
-                                id="path1908"
-                                d="M1063.8 604.4c0 .4-.1.8-.4 1.1s-.6.6-1.1.8c.6.2 1 .5 1.3.9s.5.8.5 1.4c0 .5-.1.9-.4 1.2-.2.4-.6.7-1 .9s-.9.3-1.5.3-1.1-.1-1.5-.3-.8-.5-1-.9-.3-.8-.3-1.2c0-.5.2-1 .5-1.3s.7-.7 1.2-.9c-.4-.2-.8-.5-1-.8s-.3-.7-.3-1.2c0-.4.1-.7.2-1s.4-.5.6-.7c.3-.2.5-.3.8-.4.3-.1.6-.1.9-.1s.6 0 .9.1.6.2.8.4.4.4.6.7c.2.3.2.6.2 1zm-.7 4.2c0-.4-.1-.7-.3-.9-.2-.2-.5-.4-.8-.6-.3-.1-.7-.3-1.2-.4-.2.1-.5.2-.7.4s-.4.4-.5.6-.2.5-.2.9c0 .5.1.9.4 1.1.3.3.7.4 1.3.4.6 0 1-.1 1.4-.4s.6-.6.6-1.1zm-3.3-4.1c0 .3.1.6.2.8.2.2.4.3.6.5.3.1.6.2 1 .4.4-.2.7-.5.9-.7s.3-.5.3-.9-.1-.8-.4-1-.6-.4-1.1-.4-.9.1-1.1.4c-.3.1-.4.4-.4.9z"
-                            />
+                    <g id={"203"}>
+                        <path
+                            id="rect1654"
+                            transform="rotate(-18.286 1183.014 1651.797)"
+                            className="st4"
+                            d="M1128.5 1591.1h109.2v121.2h-109.2z"
+                        />
+                        <g id="g1972">
+                            <g id="g1970">
+                                <path
+                                    id="path1964"
+                                    d="M1132 1621.4c.5-.2 1-.2 1.4-.1s.8.2 1.1.5c.3.3.5.6.7 1.1.1.4.2.8.2 1.1s-.1.8-.2 1.3c-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2s.5-1.1.7-1.5.3-.8.4-1.1c.1-.3.1-.6.1-.9s-.1-.5-.2-.8c-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.3-.5.7-.7 1.2-.9z"
+                                />
+                                <path
+                                    id="path1966"
+                                    d="M1139.4 1619c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3s-.7 1.4-1.6 1.7c-.9.3-1.6.1-2.3-.4-.7-.6-1.2-1.5-1.7-2.9-.4-1.3-.6-2.4-.3-3.3.1-.9.6-1.4 1.5-1.7zm.3.8c-.5.2-.8.6-.9 1.2s0 1.5.4 2.7c.2.6.4 1.1.6 1.5s.4.7.6.9c.2.2.4.4.7.4.2.1.5 0 .8-.1s.6-.3.7-.6c.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9s-.6-.8-.9-.9c-.3 0-.7-.1-1 .1zm1.2-.1.5.8-.8 6-.6-.6.9-6.2z"
+                                />
+                                <path
+                                    id="path1968"
+                                    d="M1146 1616.8c.5-.2 1-.2 1.4-.2.4.1.8.2 1.1.4.3.2.5.5.6.9.1.3.1.6.1 1s-.2.6-.4.8c-.2.2-.4.4-.7.6.3-.1.6-.1 1 0 .3.1.6.2.9.4s.5.5.6 1c.2.5.2.9.1 1.4-.1.4-.3.9-.7 1.2-.3.4-.8.6-1.4.8-.4.1-.9.2-1.4.2s-1-.2-1.4-.4l.5-.8c.3.2.7.3 1 .3.4 0 .7 0 1-.1.6-.2 1-.5 1.2-.9s.2-.9.1-1.4c-.1-.4-.3-.7-.5-.8s-.5-.3-.8-.3-.6 0-.9.1l-.7.2-.1-.8.5-.2c.3-.1.5-.2.7-.4s.3-.4.4-.7c.1-.3.1-.5 0-.9s-.4-.7-.8-.9c-.4-.1-.8-.1-1.2 0-.4.1-.6.3-.9.5s-.4.5-.6.8l-.7-.4c.2-.4.5-.8.9-1.1.4 0 .7-.2 1.1-.3z"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"231"}>
-                    <path id="rect1644" className="st2" d="M1031.5 987.5h133v165h-133z"/>
-                    <g id="g1942">
-                        <g id="g1940">
-                            <path
-                                id="path1934"
-                                d="M1045.2 1000.8c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1936"
-                                d="M1052.5 1000.8c.5 0 1 .1 1.4.3s.7.4.9.8c.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7.3.7.3 1.1c0 .5-.1.9-.4 1.3s-.6.7-1 .9-1 .3-1.5.3-.9-.1-1.4-.3-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5s.5-.7.5-1.3c0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2.2-.1.4-.3.6-.5s.2-.5.2-.8c0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4s-.7.1-1 .2c-.3.1-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7.3.1.7 0 1.1 0z"
-                            />
-                            <path
-                                id="path1938"
-                                d="M1061.2 1000.9v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.6v.8h-4.9v-.8h4.9z"
-                            />
+                    <g id={"205"}>
+                        <path
+                            id="rect1658"
+                            transform="rotate(-18.286 1275.284 1931.722)"
+                            className="st4"
+                            d="M1220.8 1861.9H1330v139.4h-109.2z"
+                        />
+                        <g id="g1992">
+                            <g id="g1990">
+                                <path
+                                    id="path1984"
+                                    d="M1222.2 1889.6c.5-.2 1-.2 1.4-.1s.8.3 1.1.5.5.6.7 1.1c.1.4.2.8.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2 .3-.6.5-1.1.7-1.5s.3-.8.4-1.1.1-.6.1-.9-.1-.5-.2-.8c-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.4.6-.7 1.2-.9z"
+                                />
+                                <path
+                                    id="path1986"
+                                    d="M1229.5 1887.2c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3s-.7 1.4-1.6 1.7c-.9.3-1.6.1-2.3-.4-.7-.6-1.2-1.5-1.7-2.9-.4-1.3-.6-2.4-.3-3.3.1-.8.7-1.4 1.5-1.7zm.3.8c-.5.2-.8.6-.9 1.2s0 1.5.4 2.7c.2.6.4 1.1.6 1.5s.4.7.6.9c.2.2.4.4.7.4.2.1.5 0 .8 0 .3-.1.6-.3.7-.6.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9s-.6-.8-.9-.9c-.3-.1-.6-.1-1 0zm1.3-.1.5.8-.8 6-.6-.6.9-6.2z"
+                                />
+                                <path
+                                    id="path1988"
+                                    d="m1238.8 1884.3.1.8-3.2 1.1.8 2.5c.2-.2.4-.4.6-.5s.4-.2.7-.3c.4-.1.9-.2 1.2-.1.4.1.7.3 1.1.6.3.3.5.7.7 1.3.2.5.2 1 .1 1.5s-.3.9-.6 1.3-.8.6-1.3.8c-.5.2-.9.2-1.4.2-.4 0-.9-.2-1.3-.4l.4-.8c.3.2.7.3 1 .3s.7 0 1-.1c.5-.2.9-.5 1.1-.9s.2-.9 0-1.6c-.1-.4-.3-.8-.5-1s-.4-.3-.7-.4c-.3 0-.5 0-.8.1l-.6.3c-.2.1-.4.2-.6.4l-.8.3-1.3-4 4.3-1.4z"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"202"}>
-                    <path
-                        id="rect1652"
-                        transform="rotate(-18.286 1138.227 1516.318)"
-                        className="st4"
-                        d="M1083.7 1433.7h109.2v165h-109.2z"
-                    />
-                    <g id="g1962">
-                        <g id="g1960">
-                            <path
-                                id="path1954"
-                                d="M1078.1 1460.5c.5-.2 1-.2 1.4-.1s.8.3 1.1.5c.3.3.5.6.7 1.1.1.4.2.8.2 1.1s-.1.8-.2 1.3c-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2 .3-.6.5-1.1.7-1.5s.3-.8.4-1.1c.1-.3.1-.6.1-.9s-.1-.5-.2-.8c-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.7-.8 1.2-.9z"
-                            />
-                            <path
-                                id="path1956"
-                                d="M1085.5 1458c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3s-.7 1.4-1.6 1.7c-.9.3-1.6.1-2.3-.4s-1.2-1.5-1.7-2.9c-.4-1.3-.6-2.4-.3-3.3.1-.8.6-1.4 1.5-1.7zm.2.8c-.5.2-.8.6-.9 1.2s0 1.5.4 2.7c.2.6.4 1.1.6 1.5s.4.7.6.9c.2.2.4.4.7.4.2.1.5 0 .8 0 .3-.1.6-.3.7-.6.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9s-.6-.8-.9-.9c-.3-.1-.6-.1-1 0zm1.3-.1.5.8-.8 6-.6-.6.9-6.2z"
-                            />
-                            <path
-                                id="path1958"
-                                d="M1092.1 1455.8c.5-.2 1-.2 1.4-.1s.8.3 1.1.5c.3.3.5.6.7 1.1.1.4.2.8.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2s.5-1.1.7-1.5.3-.8.4-1.1.1-.6.1-.9-.1-.5-.2-.8c-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5s-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.7-.7 1.2-.9z"
-                            />
+                    <g id={"219"}>
+                        <path id="rect1628" className="st3" d="M791.5 435.5h133v165h-133z"/>
+                        <g id="g1782">
+                            <g id="g1780">
+                                <path
+                                    id="path1774"
+                                    d="M803.9 445.8c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1776"
+                                    d="M812.6 446v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.6v.8h-4.9v-.8h4.9z"
+                                />
+                                <path
+                                    id="path1778"
+                                    d="M819 445.9c.6 0 1.1.1 1.5.4s.7.7.9 1.2.3 1.1.3 1.8c0 .9-.1 1.6-.3 2.2s-.4 1.1-.8 1.5c-.4.4-.8.7-1.4 1-.6.3-1.3.5-2 .7l-.2-.8c.8-.2 1.5-.5 2-.8s.9-.7 1.2-1.2.4-1.1.4-1.8v-.6c0-.7-.1-1.3-.2-1.7-.1-.4-.3-.7-.6-.9-.2-.2-.6-.3-1-.3-.5 0-1 .2-1.2.5-.3.3-.4.8-.4 1.5 0 .6.1 1.1.4 1.4.3.3.7.4 1.1.4.4 0 .8-.1 1.1-.4.3-.2.6-.6.9-1v.9c-.2.4-.6.7-.9.9s-.8.4-1.2.4c-.5 0-.9-.1-1.3-.3-.4-.2-.7-.5-.9-.9s-.3-.9-.3-1.5.1-1.1.4-1.5c.2-.4.6-.7 1-.9.5-.1.9-.2 1.5-.2z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g609">
+                            <g id="g607">
+                                <path
+                                    d="M906.6 583.4v8.3H905V585l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.6 7.2v1.2h-5.3v-1.2h5.3z"
+                                    id="path603"
+                                />
+                                <path
+                                    d="M914 583.4v8.3h-1.6V585l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.6 7.2v1.2h-5.3v-1.2h5.3z"
+                                    id="path605"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"203"}>
-                    <path
-                        id="rect1654"
-                        transform="rotate(-18.286 1183.014 1651.797)"
-                        className="st4"
-                        d="M1128.5 1591.1h109.2v121.2h-109.2z"
-                    />
-                    <g id="g1972">
-                        <g id="g1970">
-                            <path
-                                id="path1964"
-                                d="M1132 1621.4c.5-.2 1-.2 1.4-.1s.8.2 1.1.5c.3.3.5.6.7 1.1.1.4.2.8.2 1.1s-.1.8-.2 1.3c-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2s.5-1.1.7-1.5.3-.8.4-1.1c.1-.3.1-.6.1-.9s-.1-.5-.2-.8c-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.3-.5.7-.7 1.2-.9z"
-                            />
-                            <path
-                                id="path1966"
-                                d="M1139.4 1619c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3s-.7 1.4-1.6 1.7c-.9.3-1.6.1-2.3-.4-.7-.6-1.2-1.5-1.7-2.9-.4-1.3-.6-2.4-.3-3.3.1-.9.6-1.4 1.5-1.7zm.3.8c-.5.2-.8.6-.9 1.2s0 1.5.4 2.7c.2.6.4 1.1.6 1.5s.4.7.6.9c.2.2.4.4.7.4.2.1.5 0 .8-.1s.6-.3.7-.6c.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9s-.6-.8-.9-.9c-.3 0-.7-.1-1 .1zm1.2-.1.5.8-.8 6-.6-.6.9-6.2z"
-                            />
-                            <path
-                                id="path1968"
-                                d="M1146 1616.8c.5-.2 1-.2 1.4-.2.4.1.8.2 1.1.4.3.2.5.5.6.9.1.3.1.6.1 1s-.2.6-.4.8c-.2.2-.4.4-.7.6.3-.1.6-.1 1 0 .3.1.6.2.9.4s.5.5.6 1c.2.5.2.9.1 1.4-.1.4-.3.9-.7 1.2-.3.4-.8.6-1.4.8-.4.1-.9.2-1.4.2s-1-.2-1.4-.4l.5-.8c.3.2.7.3 1 .3.4 0 .7 0 1-.1.6-.2 1-.5 1.2-.9s.2-.9.1-1.4c-.1-.4-.3-.7-.5-.8s-.5-.3-.8-.3-.6 0-.9.1l-.7.2-.1-.8.5-.2c.3-.1.5-.2.7-.4s.3-.4.4-.7c.1-.3.1-.5 0-.9s-.4-.7-.8-.9c-.4-.1-.8-.1-1.2 0-.4.1-.6.3-.9.5s-.4.5-.6.8l-.7-.4c.2-.4.5-.8.9-1.1.4 0 .7-.2 1.1-.3z"
-                            />
+                    <g id={"218"}>
+                        <path id="rect1626" className="st3" d="M791.5 599.5h133v165h-133z"/>
+                        <g id="g1792">
+                            <g id="g1790">
+                                <path
+                                    id="path1784"
+                                    d="M802.9 611.5c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2.5-.7.7-.9c.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1786"
+                                    d="M811.6 611.7v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.6v.8h-4.9v-.8h4.9z"
+                                />
+                                <path
+                                    id="path1788"
+                                    d="M820.6 613.7c0 .4-.1.8-.4 1.1-.3.3-.6.6-1.1.8.6.2 1 .5 1.3.9s.5.8.5 1.4c0 .5-.1.9-.4 1.2-.2.4-.6.7-1 .9s-.9.3-1.5.3-1.1-.1-1.5-.3-.8-.5-1-.9-.3-.8-.3-1.2c0-.5.2-1 .5-1.3s.7-.7 1.2-.9c-.4-.2-.8-.5-1-.8s-.3-.7-.3-1.2c0-.4.1-.7.2-1s.4-.5.6-.7c.3-.2.5-.3.8-.4.3-.1.6-.1.9-.1.3 0 .6 0 .9.1.3.1.6.2.8.4s.4.4.6.7c.2.3.2.6.2 1zm-.7 4.2c0-.4-.1-.7-.3-.9s-.5-.4-.8-.6c-.3-.1-.7-.3-1.2-.4-.2.1-.5.2-.7.4s-.4.4-.5.6-.2.5-.2.9c0 .5.1.9.4 1.1.3.3.7.4 1.3.4s1-.1 1.4-.4.6-.7.6-1.1zm-3.3-4.1c0 .3.1.6.2.8.2.2.4.3.6.5.3.1.6.2 1 .4.4-.2.7-.5.9-.7s.3-.5.3-.9-.1-.8-.4-1c-.3-.2-.6-.4-1.1-.4s-.9.1-1.1.4c-.3.1-.4.4-.4.9z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g615">
+                            <g id="g613">
+                                <path
+                                    d="M906.1 744.8c.7 0 1.2.1 1.7.4s.8.7 1 1.2c.2.5.3 1.1.3 1.8 0 .8-.1 1.6-.3 2.2-.2.6-.5 1.1-.9 1.6-.4.4-.9.8-1.5 1.1-.6.3-1.4.5-2.2.7l-.3-1.2c.8-.2 1.4-.4 1.9-.7.5-.3.9-.6 1.2-1s.5-.9.5-1.5v-.6c0-.6 0-1.2-.1-1.6s-.2-.7-.4-.9c-.2-.2-.5-.3-.8-.3-.4 0-.7.1-1 .4-.2.3-.3.7-.3 1.3 0 .6.1 1 .3 1.2.2.2.5.4.9.4.3 0 .6-.1.9-.2.3-.2.5-.4.8-.7v1c-.3.3-.6.6-.9.8-.3.2-.7.3-1.2.3s-.9-.1-1.2-.3-.7-.5-.9-.9c-.2-.4-.3-.9-.3-1.4 0-.6.1-1.1.4-1.6.3-.4.6-.8 1.1-1 .2-.4.7-.5 1.3-.5z"
+                                    id="path611"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"205"}>
-                    <path
-                        id="rect1658"
-                        transform="rotate(-18.286 1275.284 1931.722)"
-                        className="st4"
-                        d="M1220.8 1861.9H1330v139.4h-109.2z"
-                    />
-                    <g id="g1992">
-                        <g id="g1990">
-                            <path
-                                id="path1984"
-                                d="M1222.2 1889.6c.5-.2 1-.2 1.4-.1s.8.3 1.1.5.5.6.7 1.1c.1.4.2.8.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2 .3-.6.5-1.1.7-1.5s.3-.8.4-1.1.1-.6.1-.9-.1-.5-.2-.8c-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.4.6-.7 1.2-.9z"
-                            />
-                            <path
-                                id="path1986"
-                                d="M1229.5 1887.2c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3s-.7 1.4-1.6 1.7c-.9.3-1.6.1-2.3-.4-.7-.6-1.2-1.5-1.7-2.9-.4-1.3-.6-2.4-.3-3.3.1-.8.7-1.4 1.5-1.7zm.3.8c-.5.2-.8.6-.9 1.2s0 1.5.4 2.7c.2.6.4 1.1.6 1.5s.4.7.6.9c.2.2.4.4.7.4.2.1.5 0 .8 0 .3-.1.6-.3.7-.6.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9s-.6-.8-.9-.9c-.3-.1-.6-.1-1 0zm1.3-.1.5.8-.8 6-.6-.6.9-6.2z"
-                            />
-                            <path
-                                id="path1988"
-                                d="m1238.8 1884.3.1.8-3.2 1.1.8 2.5c.2-.2.4-.4.6-.5s.4-.2.7-.3c.4-.1.9-.2 1.2-.1.4.1.7.3 1.1.6.3.3.5.7.7 1.3.2.5.2 1 .1 1.5s-.3.9-.6 1.3-.8.6-1.3.8c-.5.2-.9.2-1.4.2-.4 0-.9-.2-1.3-.4l.4-.8c.3.2.7.3 1 .3s.7 0 1-.1c.5-.2.9-.5 1.1-.9s.2-.9 0-1.6c-.1-.4-.3-.8-.5-1s-.4-.3-.7-.4c-.3 0-.5 0-.8.1l-.6.3c-.2.1-.4.2-.6.4l-.8.3-1.3-4 4.3-1.4z"
-                            />
+                    <g id={"217"}>
+                        <path id="rect1624" className="st3" d="M791.5 763.5h133v165h-133z"/>
+                        <g id="g1802">
+                            <g id="g1800">
+                                <path
+                                    id="path1794"
+                                    d="M802.9 773.9c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6.4-.5.8-.9 1.1-1.2s.5-.7.7-.9c.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9s.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1796"
+                                    d="M811.6 774v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.7v.8h-4.9v-.8h4.9z"
+                                />
+                                <path
+                                    id="path1798"
+                                    d="m817.2 782.6-1-.3 3.3-7.4h-4v-.9h5v.8l-3.3 7.8z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g621">
+                            <g id="g619">
+                                <path
+                                    d="m906.4 917.6-1.5-.5 3.2-6.9h-3.8v-1.3h5.5v1.1l-3.4 7.6z"
+                                    id="path617"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"219"}>
-                    <path id="rect1628" className="st3" d="M791.5 435.5h133v165h-133z"/>
-                    <g id="g1782">
-                        <g id="g1780">
-                            <path
-                                id="path1774"
-                                d="M803.9 445.8c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1776"
-                                d="M812.6 446v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.6v.8h-4.9v-.8h4.9z"
-                            />
-                            <path
-                                id="path1778"
-                                d="M819 445.9c.6 0 1.1.1 1.5.4s.7.7.9 1.2.3 1.1.3 1.8c0 .9-.1 1.6-.3 2.2s-.4 1.1-.8 1.5c-.4.4-.8.7-1.4 1-.6.3-1.3.5-2 .7l-.2-.8c.8-.2 1.5-.5 2-.8s.9-.7 1.2-1.2.4-1.1.4-1.8v-.6c0-.7-.1-1.3-.2-1.7-.1-.4-.3-.7-.6-.9-.2-.2-.6-.3-1-.3-.5 0-1 .2-1.2.5-.3.3-.4.8-.4 1.5 0 .6.1 1.1.4 1.4.3.3.7.4 1.1.4.4 0 .8-.1 1.1-.4.3-.2.6-.6.9-1v.9c-.2.4-.6.7-.9.9s-.8.4-1.2.4c-.5 0-.9-.1-1.3-.3-.4-.2-.7-.5-.9-.9s-.3-.9-.3-1.5.1-1.1.4-1.5c.2-.4.6-.7 1-.9.5-.1.9-.2 1.5-.2z"
-                            />
+                    <g id={"226"}>
+                        <path id="rect1634" className="st3" d="M1031.5 354.5h133v117h-133z"/>
+                        <g id="g1892">
+                            <g id="g1890">
+                                <path
+                                    id="path1884"
+                                    d="M1045.2 368c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1886"
+                                    d="M1052.5 368c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1888"
+                                    d="M1060.7 368c.3 0 .6 0 .9.1s.5.2.8.4l-.4.7-.6-.3c-.2-.1-.4-.1-.7-.1-.5 0-.8.2-1.2.5-.3.3-.6.7-.7 1.3-.2.5-.2 1.2-.2 1.9v.4c0 1 .1 1.8.4 2.3s.7.7 1.3.7c.5 0 .9-.2 1.2-.6.3-.4.4-.9.4-1.6 0-.5-.1-.8-.2-1.1-.1-.3-.3-.5-.5-.6s-.5-.2-.8-.2c-.4 0-.8.1-1.2.4-.3.3-.6.6-.8 1v-.9c.3-.5.6-.8 1-1s.8-.3 1.2-.3c.4 0 .8.1 1.2.3.4.2.7.5.9.9s.3.9.3 1.5-.1 1.2-.4 1.6c-.2.4-.6.8-1 1s-.9.4-1.3.4c-.5 0-1-.1-1.3-.3-.4-.2-.6-.5-.9-.8-.2-.4-.4-.8-.5-1.3s-.2-1.1-.2-1.7c0-.9.1-1.7.4-2.4.2-.7.6-1.2 1.1-1.6s1.2-.6 1.8-.6z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g629">
+                            <g id="g627">
+                                <path
+                                    d="M1149.5 453.4v8.3h-1.6v-6.6l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.7 7.3v1.2h-5.3v-1.2h5.3z"
+                                    id="path623"
+                                />
+                                <path
+                                    d="m1155 453.3 1.4.5-2.1 5.1h4.4v1.2h-6V459l2.3-5.7zm2.7 3.4v5.3h-1.6v-2.9l.2-2.4h1.4z"
+                                    id="path625"
+                                />
+                            </g>
                         </g>
                     </g>
-                    <g id="g609">
-                        <g id="g607">
-                            <path
-                                d="M906.6 583.4v8.3H905V585l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.6 7.2v1.2h-5.3v-1.2h5.3z"
-                                id="path603"
-                            />
-                            <path
-                                d="M914 583.4v8.3h-1.6V585l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.6 7.2v1.2h-5.3v-1.2h5.3z"
-                                id="path605"
-                            />
+                    <g id={"227"}>
+                        <path id="rect1636" className="st3" d="M1031.5 471.5h133v117h-133z"/>
+                        <g id="g1902">
+                            <g id="g1900">
+                                <path
+                                    id="path1894"
+                                    d="M1045.2 483c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1896"
+                                    d="M1052.5 483c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1898"
+                                    d="m1059.4 491.7-1-.3 3.3-7.4h-4v-.9h5v.8l-3.3 7.8z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g637">
+                            <g id="g635">
+                                <path
+                                    d="M1150.4 571.4v8.3h-1.6V573l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.6 7.2v1.2h-5.3v-1.2h5.3z"
+                                    id="path631"
+                                />
+                                <path
+                                    d="M1156.2 571.2c.6 0 1.1.1 1.5.3.4.2.7.5.9.9.2.4.3.8.3 1.2 0 .4-.1.7-.2 1.1s-.3.7-.6 1.1c-.3.4-.6.8-1.1 1.3-.5.5-1 1-1.7 1.6h3.8l-.2 1.3h-5.4v-1.2l1.5-1.5 1.1-1.1c.3-.3.5-.6.7-.9.2-.3.3-.5.4-.7.1-.2.1-.5.1-.7 0-.4-.1-.7-.3-.9s-.5-.3-.9-.3-.7.1-.9.2c-.2.1-.5.4-.7.7l-1-.8c.3-.4.7-.8 1.2-1 .3-.5.8-.6 1.5-.6z"
+                                    id="path633"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"218"}>
-                    <path id="rect1626" className="st3" d="M791.5 599.5h133v165h-133z"/>
-                    <g id="g1792">
-                        <g id="g1790">
-                            <path
-                                id="path1784"
-                                d="M802.9 611.5c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2.5-.7.7-.9c.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1786"
-                                d="M811.6 611.7v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.6v.8h-4.9v-.8h4.9z"
-                            />
-                            <path
-                                id="path1788"
-                                d="M820.6 613.7c0 .4-.1.8-.4 1.1-.3.3-.6.6-1.1.8.6.2 1 .5 1.3.9s.5.8.5 1.4c0 .5-.1.9-.4 1.2-.2.4-.6.7-1 .9s-.9.3-1.5.3-1.1-.1-1.5-.3-.8-.5-1-.9-.3-.8-.3-1.2c0-.5.2-1 .5-1.3s.7-.7 1.2-.9c-.4-.2-.8-.5-1-.8s-.3-.7-.3-1.2c0-.4.1-.7.2-1s.4-.5.6-.7c.3-.2.5-.3.8-.4.3-.1.6-.1.9-.1.3 0 .6 0 .9.1.3.1.6.2.8.4s.4.4.6.7c.2.3.2.6.2 1zm-.7 4.2c0-.4-.1-.7-.3-.9s-.5-.4-.8-.6c-.3-.1-.7-.3-1.2-.4-.2.1-.5.2-.7.4s-.4.4-.5.6-.2.5-.2.9c0 .5.1.9.4 1.1.3.3.7.4 1.3.4s1-.1 1.4-.4.6-.7.6-1.1zm-3.3-4.1c0 .3.1.6.2.8.2.2.4.3.6.5.3.1.6.2 1 .4.4-.2.7-.5.9-.7s.3-.5.3-.9-.1-.8-.4-1c-.3-.2-.6-.4-1.1-.4s-.9.1-1.1.4c-.3.1-.4.4-.4.9z"
-                            />
+                    <g id={"229"}>
+                        <path id="rect1640" className="st3" d="M1031.5 753.5h133v117h-133z"/>
+                        <g id="g1922">
+                            <g id="g1920">
+                                <path
+                                    id="path1914"
+                                    d="M1046.2 764.8c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1916"
+                                    d="M1053.5 764.8c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1918"
+                                    d="M1061.2 764.8c.6 0 1.1.1 1.5.4s.7.7.9 1.2c.2.5.3 1.1.3 1.8 0 .9-.1 1.6-.3 2.2-.2.6-.4 1.1-.8 1.5s-.8.7-1.4 1-1.3.5-2 .7l-.2-.8c.8-.2 1.5-.5 2-.8s.9-.7 1.2-1.2c.3-.5.4-1.1.4-1.8v-.6c0-.7-.1-1.3-.2-1.7s-.3-.7-.6-.9c-.2-.2-.6-.3-1-.3-.5 0-1 .2-1.2.5-.3.3-.4.8-.4 1.5 0 .6.1 1.1.4 1.4.3.3.7.4 1.1.4s.8-.1 1.1-.4c.3-.2.6-.6.9-1v.9c-.2.4-.6.7-.9.9s-.8.4-1.2.4c-.5 0-.9-.1-1.3-.3s-.7-.5-.9-.9c-.2-.4-.3-.9-.3-1.5s.1-1.1.4-1.5c.2-.4.6-.7 1-.9.5-.1 1-.2 1.5-.2z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g645">
+                            <g id="g643">
+                                <path
+                                    d="M1150.4 852.7v8.3h-1.6v-6.6l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.6 7.2v1.2h-5.3v-1.2h5.3z"
+                                    id="path639"
+                                />
+                                <path
+                                    d="M1156.5 852.5c1 0 1.7.4 2.2 1.2.5.8.8 1.9.8 3.3s-.3 2.5-.8 3.3c-.5.8-1.2 1.2-2.2 1.2-1 0-1.7-.4-2.2-1.2-.5-.8-.7-1.9-.7-3.3s.2-2.5.7-3.3c.5-.8 1.2-1.2 2.2-1.2zm1.1 1.5.4 1-2.4 5-.5-.8 2.5-5.2zm-1.1-.3c-.5 0-.8.2-1 .7-.2.5-.4 1.3-.4 2.5 0 .6 0 1.2.1 1.6 0 .4.1.8.2 1 .1.2.3.4.4.5.2.1.4.2.7.2.3 0 .6-.1.8-.3s.4-.6.5-1c.1-.5.2-1.1.2-1.9 0-.8 0-1.5-.1-2s-.2-.8-.4-1c-.4-.2-.7-.3-1-.3z"
+                                    id="path641"
+                                />
+                            </g>
                         </g>
                     </g>
-                    <g id="g615">
-                        <g id="g613">
-                            <path
-                                d="M906.1 744.8c.7 0 1.2.1 1.7.4s.8.7 1 1.2c.2.5.3 1.1.3 1.8 0 .8-.1 1.6-.3 2.2-.2.6-.5 1.1-.9 1.6-.4.4-.9.8-1.5 1.1-.6.3-1.4.5-2.2.7l-.3-1.2c.8-.2 1.4-.4 1.9-.7.5-.3.9-.6 1.2-1s.5-.9.5-1.5v-.6c0-.6 0-1.2-.1-1.6s-.2-.7-.4-.9c-.2-.2-.5-.3-.8-.3-.4 0-.7.1-1 .4-.2.3-.3.7-.3 1.3 0 .6.1 1 .3 1.2.2.2.5.4.9.4.3 0 .6-.1.9-.2.3-.2.5-.4.8-.7v1c-.3.3-.6.6-.9.8-.3.2-.7.3-1.2.3s-.9-.1-1.2-.3-.7-.5-.9-.9c-.2-.4-.3-.9-.3-1.4 0-.6.1-1.1.4-1.6.3-.4.6-.8 1.1-1 .2-.4.7-.5 1.3-.5z"
-                                id="path611"
-                            />
+                    <g id={"230"}>
+                        <path id="rect1642" className="st3" d="M1031.5 870.5h133v117h-133z"/>
+                        <g id="g1932">
+                            <g id="g1930">
+                                <path
+                                    id="path1924"
+                                    d="M1045.2 883.8c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1926"
+                                    d="M1052.5 883.8c.5 0 1 .1 1.4.3s.7.4.9.8c.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7.3.7.3 1.1c0 .5-.1.9-.4 1.3s-.6.7-1 .9-1 .3-1.5.3-.9-.1-1.4-.3-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5s.5-.7.5-1.3c0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2.2-.1.4-.3.6-.5s.2-.5.2-.8c0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4s-.7.1-1 .2c-.3.1-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7.3.1.7 0 1.1 0z"
+                                />
+                                <path
+                                    id="path1928"
+                                    d="M1060.3 883.8c.9 0 1.6.4 2.1 1.1.5.8.7 1.8.7 3.2s-.2 2.5-.7 3.2c-.5.8-1.2 1.1-2.1 1.1s-1.6-.4-2.1-1.1c-.5-.8-.7-1.8-.7-3.2s.2-2.5.7-3.2 1.2-1.1 2.1-1.1zm0 .8c-.5 0-.9.3-1.2.8-.3.6-.4 1.5-.4 2.7 0 .6 0 1.2.1 1.6.1.5.2.8.3 1.1.1.3.3.5.5.6s.5.2.8.2c.4 0 .7-.1.9-.4.3-.2.4-.6.6-1.1.1-.5.2-1.2.2-2s-.1-1.5-.2-2-.3-.9-.5-1.1c-.4-.3-.7-.4-1.1-.4zm1.2.3.3.9-2.7 5.5-.4-.7 2.8-5.7z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g651">
+                            <g id="g649">
+                                <path
+                                    d="M1152.7 971.8c0 .4-.1.7-.3 1-.2.3-.6.6-1 .8.6.3 1 .6 1.3 1s.4.8.4 1.3c0 .4-.1.9-.4 1.2s-.6.7-1.1.9c-.5.2-1 .3-1.7.3s-1.2-.1-1.7-.3-.8-.5-1-.9-.3-.8-.3-1.2c0-.5.1-.9.4-1.3s.7-.7 1.2-.9c-.4-.3-.8-.5-1-.8s-.3-.7-.3-1.2c0-.4.1-.7.2-1 .1-.3.3-.5.6-.7.3-.2.5-.3.9-.4.3-.1.7-.2 1-.2.4 0 .7 0 1.1.1.3.1.6.2.9.4s.4.4.6.7c.1.5.2.8.2 1.2zm-1.3 4.1c0-.3-.1-.6-.2-.8-.1-.2-.3-.4-.6-.5-.3-.1-.6-.3-1-.4-.2.1-.4.2-.5.4-.1.2-.3.3-.4.5-.1.2-.1.4-.1.7 0 .4.1.7.4 1 .2.2.6.4 1.1.4.5 0 .8-.1 1.1-.4.1-.2.2-.5.2-.9zm-2.6-4c0 .2.1.5.2.6s.3.3.5.4c.2.1.5.2.8.4.3-.2.5-.4.7-.6.1-.2.2-.5.2-.7 0-.3-.1-.6-.3-.8s-.5-.3-.9-.3-.7.1-.9.3-.3.3-.3.7z"
+                                    id="path647"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"217"}>
-                    <path id="rect1624" className="st3" d="M791.5 763.5h133v165h-133z"/>
-                    <g id="g1802">
-                        <g id="g1800">
-                            <path
-                                id="path1794"
-                                d="M802.9 773.9c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6.4-.5.8-.9 1.1-1.2s.5-.7.7-.9c.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9s.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1796"
-                                d="M811.6 774v8.2h-1v-7.1l-1.9 1.2-.4-.7 2.5-1.6h.8zm1.8 7.7v.8h-4.9v-.8h4.9z"
-                            />
-                            <path
-                                id="path1798"
-                                d="m817.2 782.6-1-.3 3.3-7.4h-4v-.9h5v.8l-3.3 7.8z"
-                            />
+                    <g id={"232"}>
+                        <path id="rect1650" className="st3" d="M1031.5 1152.5h133v105h-133z"/>
+                        <g id="g1952">
+                            <g id="g1950">
+                                <path
+                                    id="path1944"
+                                    d="M1045.2 1167.8c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9s.8-.4 1.4-.4z"
+                                />
+                                <path
+                                    id="path1946"
+                                    d="M1052.5 1167.8c.5 0 1 .1 1.4.3s.7.4.9.8c.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7.3.7.3 1.1c0 .5-.1.9-.4 1.3s-.6.7-1 .9c-.4.2-1 .3-1.5.3s-.9-.1-1.4-.3c-.5-.2-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5s.5-.7.5-1.3c0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2s.4-.3.6-.5.2-.5.2-.8c0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4s-.7.1-1 .2-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7.3.1.7 0 1.1 0z"
+                                />
+                                <path
+                                    id="path1948"
+                                    d="M1059.9 1167.8c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9s.9-.4 1.4-.4z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g657">
+                            <g id="g655">
+                                <path
+                                    d="M1149.7 1240.3c.4 0 .7 0 1 .1.3.1.6.2.8.4l-.6 1-.6-.3c-.2-.1-.4-.1-.6-.1-.4 0-.7.1-1 .4-.3.2-.5.6-.6 1-.2.5-.2 1-.2 1.6v.5c0 1 .1 1.7.3 2.2.2.5.6.7 1.1.7.4 0 .7-.2.9-.5.2-.3.3-.8.3-1.3 0-.4 0-.7-.1-1s-.2-.4-.4-.5c-.2-.1-.4-.2-.6-.2-.3 0-.6.1-.9.3-.3.2-.5.4-.7.7v-1.1c.3-.4.6-.6.9-.8.3-.2.7-.3 1.1-.3.4 0 .8.1 1.2.3.4.2.6.5.9.9.2.4.3.9.3 1.5s-.1 1.1-.4 1.6c-.2.5-.6.8-1 1.1s-.9.4-1.5.4c-.5 0-1-.1-1.4-.3s-.7-.5-.9-.9c-.2-.4-.4-.8-.5-1.3-.1-.5-.2-1-.2-1.6 0-1 .1-1.8.4-2.5s.7-1.3 1.2-1.7c.4-.1 1-.3 1.8-.3z"
+                                    id="path653"
+                                />
+                            </g>
                         </g>
                     </g>
-                    <g id="g621">
-                        <g id="g619">
-                            <path
-                                d="m906.4 917.6-1.5-.5 3.2-6.9h-3.8v-1.3h5.5v1.1l-3.4 7.6z"
-                                id="path617"
-                            />
-                        </g>
-                    </g>
-                </g>
-                <g id={"226"}>
-                    <path id="rect1634" className="st3" d="M1031.5 354.5h133v117h-133z"/>
-                    <g id="g1892">
-                        <g id="g1890">
-                            <path
-                                id="path1884"
-                                d="M1045.2 368c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1886"
-                                d="M1052.5 368c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1888"
-                                d="M1060.7 368c.3 0 .6 0 .9.1s.5.2.8.4l-.4.7-.6-.3c-.2-.1-.4-.1-.7-.1-.5 0-.8.2-1.2.5-.3.3-.6.7-.7 1.3-.2.5-.2 1.2-.2 1.9v.4c0 1 .1 1.8.4 2.3s.7.7 1.3.7c.5 0 .9-.2 1.2-.6.3-.4.4-.9.4-1.6 0-.5-.1-.8-.2-1.1-.1-.3-.3-.5-.5-.6s-.5-.2-.8-.2c-.4 0-.8.1-1.2.4-.3.3-.6.6-.8 1v-.9c.3-.5.6-.8 1-1s.8-.3 1.2-.3c.4 0 .8.1 1.2.3.4.2.7.5.9.9s.3.9.3 1.5-.1 1.2-.4 1.6c-.2.4-.6.8-1 1s-.9.4-1.3.4c-.5 0-1-.1-1.3-.3-.4-.2-.6-.5-.9-.8-.2-.4-.4-.8-.5-1.3s-.2-1.1-.2-1.7c0-.9.1-1.7.4-2.4.2-.7.6-1.2 1.1-1.6s1.2-.6 1.8-.6z"
-                            />
-                        </g>
-                    </g>
-                    <g id="g629">
-                        <g id="g627">
-                            <path
-                                d="M1149.5 453.4v8.3h-1.6v-6.6l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.7 7.3v1.2h-5.3v-1.2h5.3z"
-                                id="path623"
-                            />
-                            <path
-                                d="m1155 453.3 1.4.5-2.1 5.1h4.4v1.2h-6V459l2.3-5.7zm2.7 3.4v5.3h-1.6v-2.9l.2-2.4h1.4z"
-                                id="path625"
-                            />
-                        </g>
-                    </g>
-                </g>
-                <g id={"227"}>
-                    <path id="rect1636" className="st3" d="M1031.5 471.5h133v117h-133z"/>
-                    <g id="g1902">
-                        <g id="g1900">
-                            <path
-                                id="path1894"
-                                d="M1045.2 483c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1896"
-                                d="M1052.5 483c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1898"
-                                d="m1059.4 491.7-1-.3 3.3-7.4h-4v-.9h5v.8l-3.3 7.8z"
-                            />
-                        </g>
-                    </g>
-                    <g id="g637">
-                        <g id="g635">
-                            <path
-                                d="M1150.4 571.4v8.3h-1.6V573l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.6 7.2v1.2h-5.3v-1.2h5.3z"
-                                id="path631"
-                            />
-                            <path
-                                d="M1156.2 571.2c.6 0 1.1.1 1.5.3.4.2.7.5.9.9.2.4.3.8.3 1.2 0 .4-.1.7-.2 1.1s-.3.7-.6 1.1c-.3.4-.6.8-1.1 1.3-.5.5-1 1-1.7 1.6h3.8l-.2 1.3h-5.4v-1.2l1.5-1.5 1.1-1.1c.3-.3.5-.6.7-.9.2-.3.3-.5.4-.7.1-.2.1-.5.1-.7 0-.4-.1-.7-.3-.9s-.5-.3-.9-.3-.7.1-.9.2c-.2.1-.5.4-.7.7l-1-.8c.3-.4.7-.8 1.2-1 .3-.5.8-.6 1.5-.6z"
-                                id="path633"
-                            />
-                        </g>
-                    </g>
-                </g>
-                <g id={"229"}>
-                    <path id="rect1640" className="st3" d="M1031.5 753.5h133v117h-133z"/>
-                    <g id="g1922">
-                        <g id="g1920">
-                            <path
-                                id="path1914"
-                                d="M1046.2 764.8c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1916"
-                                d="M1053.5 764.8c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.4-.3.9-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1918"
-                                d="M1061.2 764.8c.6 0 1.1.1 1.5.4s.7.7.9 1.2c.2.5.3 1.1.3 1.8 0 .9-.1 1.6-.3 2.2-.2.6-.4 1.1-.8 1.5s-.8.7-1.4 1-1.3.5-2 .7l-.2-.8c.8-.2 1.5-.5 2-.8s.9-.7 1.2-1.2c.3-.5.4-1.1.4-1.8v-.6c0-.7-.1-1.3-.2-1.7s-.3-.7-.6-.9c-.2-.2-.6-.3-1-.3-.5 0-1 .2-1.2.5-.3.3-.4.8-.4 1.5 0 .6.1 1.1.4 1.4.3.3.7.4 1.1.4s.8-.1 1.1-.4c.3-.2.6-.6.9-1v.9c-.2.4-.6.7-.9.9s-.8.4-1.2.4c-.5 0-.9-.1-1.3-.3s-.7-.5-.9-.9c-.2-.4-.3-.9-.3-1.5s.1-1.1.4-1.5c.2-.4.6-.7 1-.9.5-.1 1-.2 1.5-.2z"
-                            />
-                        </g>
-                    </g>
-                    <g id="g645">
-                        <g id="g643">
-                            <path
-                                d="M1150.4 852.7v8.3h-1.6v-6.6l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.6 7.2v1.2h-5.3v-1.2h5.3z"
-                                id="path639"
-                            />
-                            <path
-                                d="M1156.5 852.5c1 0 1.7.4 2.2 1.2.5.8.8 1.9.8 3.3s-.3 2.5-.8 3.3c-.5.8-1.2 1.2-2.2 1.2-1 0-1.7-.4-2.2-1.2-.5-.8-.7-1.9-.7-3.3s.2-2.5.7-3.3c.5-.8 1.2-1.2 2.2-1.2zm1.1 1.5.4 1-2.4 5-.5-.8 2.5-5.2zm-1.1-.3c-.5 0-.8.2-1 .7-.2.5-.4 1.3-.4 2.5 0 .6 0 1.2.1 1.6 0 .4.1.8.2 1 .1.2.3.4.4.5.2.1.4.2.7.2.3 0 .6-.1.8-.3s.4-.6.5-1c.1-.5.2-1.1.2-1.9 0-.8 0-1.5-.1-2s-.2-.8-.4-1c-.4-.2-.7-.3-1-.3z"
-                                id="path641"
-                            />
-                        </g>
-                    </g>
-                </g>
-                <g id={"230"}>
-                    <path id="rect1642" className="st3" d="M1031.5 870.5h133v117h-133z"/>
-                    <g id="g1932">
-                        <g id="g1930">
-                            <path
-                                id="path1924"
-                                d="M1045.2 883.8c.5 0 1 .1 1.4.3s.7.5.9.8c.2.4.3.8.3 1.2s-.1.8-.2 1.1c-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9.3-.3.8-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1926"
-                                d="M1052.5 883.8c.5 0 1 .1 1.4.3s.7.4.9.8c.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7.3.7.3 1.1c0 .5-.1.9-.4 1.3s-.6.7-1 .9-1 .3-1.5.3-.9-.1-1.4-.3-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5s.5-.7.5-1.3c0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2.2-.1.4-.3.6-.5s.2-.5.2-.8c0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4s-.7.1-1 .2c-.3.1-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7.3.1.7 0 1.1 0z"
-                            />
-                            <path
-                                id="path1928"
-                                d="M1060.3 883.8c.9 0 1.6.4 2.1 1.1.5.8.7 1.8.7 3.2s-.2 2.5-.7 3.2c-.5.8-1.2 1.1-2.1 1.1s-1.6-.4-2.1-1.1c-.5-.8-.7-1.8-.7-3.2s.2-2.5.7-3.2 1.2-1.1 2.1-1.1zm0 .8c-.5 0-.9.3-1.2.8-.3.6-.4 1.5-.4 2.7 0 .6 0 1.2.1 1.6.1.5.2.8.3 1.1.1.3.3.5.5.6s.5.2.8.2c.4 0 .7-.1.9-.4.3-.2.4-.6.6-1.1.1-.5.2-1.2.2-2s-.1-1.5-.2-2-.3-.9-.5-1.1c-.4-.3-.7-.4-1.1-.4zm1.2.3.3.9-2.7 5.5-.4-.7 2.8-5.7z"
-                            />
-                        </g>
-                    </g>
-                    <g id="g651">
-                        <g id="g649">
-                            <path
-                                d="M1152.7 971.8c0 .4-.1.7-.3 1-.2.3-.6.6-1 .8.6.3 1 .6 1.3 1s.4.8.4 1.3c0 .4-.1.9-.4 1.2s-.6.7-1.1.9c-.5.2-1 .3-1.7.3s-1.2-.1-1.7-.3-.8-.5-1-.9-.3-.8-.3-1.2c0-.5.1-.9.4-1.3s.7-.7 1.2-.9c-.4-.3-.8-.5-1-.8s-.3-.7-.3-1.2c0-.4.1-.7.2-1 .1-.3.3-.5.6-.7.3-.2.5-.3.9-.4.3-.1.7-.2 1-.2.4 0 .7 0 1.1.1.3.1.6.2.9.4s.4.4.6.7c.1.5.2.8.2 1.2zm-1.3 4.1c0-.3-.1-.6-.2-.8-.1-.2-.3-.4-.6-.5-.3-.1-.6-.3-1-.4-.2.1-.4.2-.5.4-.1.2-.3.3-.4.5-.1.2-.1.4-.1.7 0 .4.1.7.4 1 .2.2.6.4 1.1.4.5 0 .8-.1 1.1-.4.1-.2.2-.5.2-.9zm-2.6-4c0 .2.1.5.2.6s.3.3.5.4c.2.1.5.2.8.4.3-.2.5-.4.7-.6.1-.2.2-.5.2-.7 0-.3-.1-.6-.3-.8s-.5-.3-.9-.3-.7.1-.9.3-.3.3-.3.7z"
-                                id="path647"
-                            />
-                        </g>
-                    </g>
-                </g>
-                <g id={"232"}>
-                    <path id="rect1650" className="st3" d="M1031.5 1152.5h133v105h-133z"/>
-                    <g id="g1952">
-                        <g id="g1950">
-                            <path
-                                id="path1944"
-                                d="M1045.2 1167.8c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9s.8-.4 1.4-.4z"
-                            />
-                            <path
-                                id="path1946"
-                                d="M1052.5 1167.8c.5 0 1 .1 1.4.3s.7.4.9.8c.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.2.3-.4.5-.6.7-.3.2-.5.3-.8.4.3 0 .6.1.9.3s.5.4.7.7.3.7.3 1.1c0 .5-.1.9-.4 1.3s-.6.7-1 .9c-.4.2-1 .3-1.5.3s-.9-.1-1.4-.3c-.5-.2-.9-.5-1.2-.9l.7-.6c.2.3.5.5.9.6.3.1.7.2 1 .2.6 0 1.1-.2 1.4-.5s.5-.7.5-1.3c0-.4-.1-.7-.2-1-.2-.2-.4-.4-.6-.5s-.6-.2-.9-.2h-.7l.1-.8h.5c.3 0 .5-.1.8-.2s.4-.3.6-.5.2-.5.2-.8c0-.5-.2-.8-.5-1.1-.3-.2-.7-.4-1.1-.4s-.7.1-1 .2-.6.3-.8.6l-.6-.6c.4-.3.7-.6 1.2-.7.3.1.7 0 1.1 0z"
-                            />
-                            <path
-                                id="path1948"
-                                d="M1059.9 1167.8c.5 0 1 .1 1.4.3.4.2.7.5.9.8.2.4.3.8.3 1.2 0 .4-.1.8-.2 1.1-.1.4-.4.8-.6 1.2-.3.4-.7.9-1.2 1.4s-1.1 1.1-1.8 1.7h4l-.1.9h-5v-.8c.6-.6 1.2-1.1 1.6-1.6s.8-.9 1.1-1.2c.3-.3.5-.7.7-.9.2-.3.3-.6.3-.8.1-.3.1-.5.1-.8 0-.5-.1-.9-.4-1.1-.3-.3-.6-.4-1.1-.4-.4 0-.8.1-1 .2s-.5.4-.8.7l-.7-.6c.3-.4.7-.7 1.1-.9s.9-.4 1.4-.4z"
-                            />
-                        </g>
-                    </g>
-                    <g id="g657">
-                        <g id="g655">
-                            <path
-                                d="M1149.7 1240.3c.4 0 .7 0 1 .1.3.1.6.2.8.4l-.6 1-.6-.3c-.2-.1-.4-.1-.6-.1-.4 0-.7.1-1 .4-.3.2-.5.6-.6 1-.2.5-.2 1-.2 1.6v.5c0 1 .1 1.7.3 2.2.2.5.6.7 1.1.7.4 0 .7-.2.9-.5.2-.3.3-.8.3-1.3 0-.4 0-.7-.1-1s-.2-.4-.4-.5c-.2-.1-.4-.2-.6-.2-.3 0-.6.1-.9.3-.3.2-.5.4-.7.7v-1.1c.3-.4.6-.6.9-.8.3-.2.7-.3 1.1-.3.4 0 .8.1 1.2.3.4.2.6.5.9.9.2.4.3.9.3 1.5s-.1 1.1-.4 1.6c-.2.5-.6.8-1 1.1s-.9.4-1.5.4c-.5 0-1-.1-1.4-.3s-.7-.5-.9-.9c-.2-.4-.4-.8-.5-1.3-.1-.5-.2-1-.2-1.6 0-1 .1-1.8.4-2.5s.7-1.3 1.2-1.7c.4-.1 1-.3 1.8-.3z"
-                                id="path653"
-                            />
-                        </g>
-                    </g>
-                </g>
-                <g id={"204"}>
+                    <g id={"204"}>
                         <path
                             id="rect1656"
                             transform="rotate(-18.286 1227.214 1787.122)"
@@ -719,287 +861,288 @@ const FirstFloor = () => {
                                     d="m1183.9 1728.9.9.1-.5 5.8 4.3-1.4.3.8-5.3 1.8-.2-.7.5-6.4zm3 2.5 1.7 5-.9.3-.8-2.6-.7-2.5.7-.2z"
                                 />
                             </g>
-                    </g>
-                    <g id="g663">
-                        <g id="g661">
-                            <path
-                                d="M1283.6 1839c.6-.2 1.1-.2 1.6-.2.5.1.9.3 1.2.5.3.3.5.6.7 1.1.1.3.2.7.2 1.1 0 .4-.1.8-.2 1.2-.1.4-.4 1-.7 1.5-.3.6-.7 1.3-1.1 2l3.6-1.2.2 1.3-5.2 1.7-.4-1.1c.4-.7.7-1.4 1-1.9s.5-1 .7-1.4.3-.8.4-1.1c.1-.3.1-.6.1-.8 0-.2 0-.5-.1-.7-.1-.4-.3-.6-.6-.8s-.6-.2-1 0c-.3.1-.6.3-.8.5-.2.2-.4.5-.5.9l-1.2-.4c.2-.5.4-1 .8-1.3s.7-.7 1.3-.9z"
-                                id="path659"
-                            />
+                        </g>
+                        <g id="g663">
+                            <g id="g661">
+                                <path
+                                    d="M1283.6 1839c.6-.2 1.1-.2 1.6-.2.5.1.9.3 1.2.5.3.3.5.6.7 1.1.1.3.2.7.2 1.1 0 .4-.1.8-.2 1.2-.1.4-.4 1-.7 1.5-.3.6-.7 1.3-1.1 2l3.6-1.2.2 1.3-5.2 1.7-.4-1.1c.4-.7.7-1.4 1-1.9s.5-1 .7-1.4.3-.8.4-1.1c.1-.3.1-.6.1-.8 0-.2 0-.5-.1-.7-.1-.4-.3-.6-.6-.8s-.6-.2-1 0c-.3.1-.6.3-.8.5-.2.2-.4.5-.5.9l-1.2-.4c.2-.5.4-1 .8-1.3s.7-.7 1.3-.9z"
+                                    id="path659"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"210"}>
-                    <path
-                        id="rect1666"
-                        transform="rotate(-18.286 1070.788 1850.944)"
-                        className="st5"
-                        d="M1016.3 1757.2h109.2v187.3h-109.2z"
-                    />
-                    <g id="g2022">
-                        <g id="g2020">
-                            <path
-                                id="path2014"
-                                d="M1009.5 1788c.5-.2 1-.2 1.4-.1s.8.3 1.1.5c.3.3.5.6.7 1.1.1.4.2.8.2 1.1s-.1.8-.2 1.3c-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2 .3-.6.5-1.1.7-1.5s.3-.8.4-1.1c.1-.3.1-.6.1-.9s-.1-.5-.2-.8c-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5s-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.7-.7 1.2-.9z"
-                            />
-                            <path
-                                id="path2016"
-                                d="m1017.8 1785.4 2.6 7.8-1 .3-2.2-6.8-1.5 1.7-.7-.6 1.9-2.3.9-.1zm4.1 6.7.3.8-4.6 1.5-.3-.8 4.6-1.5z"
-                            />
-                            <path
-                                id="path2018"
-                                d="M1023.9 1783.2c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3s-.7 1.4-1.6 1.7c-.9.3-1.6.1-2.3-.4-.7-.6-1.2-1.5-1.7-2.9-.4-1.3-.6-2.4-.3-3.3.1-.8.6-1.4 1.5-1.7zm.2.8c-.5.2-.8.6-.9 1.2-.1.6 0 1.5.4 2.7.2.6.4 1.1.6 1.5s.4.7.6.9c.2.2.5.4.7.4h.8c.3-.1.6-.3.7-.6.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9s-.6-.8-.9-.9-.6-.1-1 0zm1.3-.1.5.8-.8 6-.6-.6.9-6.2z"
-                            />
-                        </g>
-                    </g>
-                    <g id="g669">
-                        <g id="g667">
-                            <path
-                                d="M1127.3 1911.1c.6-.2 1.1-.2 1.5-.2.5.1.8.2 1.2.5.3.2.5.6.6.9.1.3.1.7.1 1s-.2.6-.4.8c-.2.3-.4.5-.7.7.4-.1.7-.1 1.1 0 .3.1.6.2.9.4.3.2.5.6.6 1 .1.5.2.9 0 1.4-.1.5-.4.9-.8 1.2-.4.4-.9.6-1.5.8-.6.2-1.1.2-1.6.2s-1-.2-1.5-.5l.6-1.1c.3.2.6.3 1 .3.3 0 .7 0 1-.1.5-.1.8-.4 1-.7.2-.3.2-.7.1-1.1-.1-.3-.2-.6-.4-.7l-.6-.3c-.2 0-.5 0-.8.1l-.7.2-.2-1.2.5-.2c.2-.1.5-.2.6-.3.2-.2.3-.3.4-.5.1-.2.1-.5 0-.7-.1-.4-.3-.6-.6-.7-.3-.1-.7-.1-1 0-.3.1-.6.3-.8.5-.2.2-.4.5-.6.8l-1.1-.6c.2-.5.6-.9.9-1.2.3-.3.7-.6 1.2-.7z"
-                                id="path665"
-                            />
-                        </g>
-                    </g>
-                </g>
-                <g id={"206"}>
-                    <path
-                        id="rect1660"
-                        transform="rotate(-18.286 1232.781 2072.43)"
-                        className="st5"
-                        d="M1093.9 2016.4h278v111.9h-278z"
-                    />
-                    <g id="g2002">
-                        <g id="g2000">
-                            <path
-                                id="path1994"
-                                d="M1102.3 2069.6c.5-.2 1-.2 1.4-.1.4.1.8.2 1.1.5.3.3.5.6.7 1.1.1.4.2.8.2 1.1s-.1.8-.2 1.3c-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2s.5-1.1.7-1.5.3-.8.4-1.1.1-.6.1-.9c0-.3-.1-.5-.2-.8-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.6-.8 1.2-.9z"
-                            />
-                            <path
-                                id="path1996"
-                                d="M1109.7 2067.1c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3-.2.9-.7 1.4-1.6 1.7s-1.6.1-2.3-.4c-.7-.6-1.2-1.5-1.7-2.9-.4-1.3-.6-2.4-.3-3.3 0-.8.6-1.4 1.5-1.7zm.2.8c-.5.2-.8.6-.9 1.2s0 1.5.4 2.7c.2.6.4 1.1.6 1.5s.4.7.6.9.4.4.7.4c.2.1.5 0 .8-.1s.6-.3.7-.6c.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9s-.6-.8-.9-.9c-.3 0-.6 0-1 .1zm1.3-.1.5.8-.8 6-.6-.6.9-6.2z"
-                            />
-                            <path
-                                id="path1998"
-                                d="M1117.1 2064.7c.3-.1.6-.2.9-.2s.6 0 .8.1l-.2.8c-.2-.1-.4-.1-.7-.1-.2 0-.4.1-.7.1-.4.1-.7.4-1 .8-.2.4-.3.9-.3 1.4 0 .6.1 1.2.4 1.9l.1.4c.3 1 .7 1.7 1.1 2 .4.4.9.5 1.5.3.5-.2.8-.5 1-.9.1-.4.1-1-.1-1.6-.1-.4-.3-.8-.5-1s-.4-.3-.7-.4c-.2 0-.5 0-.8.1-.4.1-.7.4-1 .7-.2.4-.4.8-.5 1.2l-.3-.9c.1-.5.3-1 .6-1.3.3-.3.6-.5 1.1-.7.4-.1.8-.2 1.2-.1.4.1.8.3 1.1.6s.6.7.8 1.3c.2.6.2 1.1.2 1.6-.1.5-.3.9-.6 1.3s-.7.6-1.2.8-.9.2-1.3.1-.8-.2-1.1-.5c-.3-.3-.6-.6-.9-1.1s-.5-1-.7-1.6c-.3-.9-.4-1.7-.4-2.4s.2-1.4.5-1.9c.6-.3 1-.6 1.7-.8z"
-                            />
-                        </g>
-                    </g>
-                    <g id="g675">
-                        <g id="g673">
-                            <path
-                                d="m1361.1 2069.8 2.5 7.9-1.5.5-2-6.3-1.4 1.6-1-.9 2-2.4 1.4-.4zm3.8 6.4.4 1.2-5.1 1.6-.4-1.2 5.1-1.6z"
-                                id="path671"
-                            />
-                        </g>
-                    </g>
-                </g>
-                <g id={"211"}>
-                    <path
-                        id="rect1664"
-                        transform="rotate(-18.286 1016.323 1683.69)"
-                        className="st5"
-                        d="M961.8 1601.1H1071v165H961.8z"
-                    />
-                    <g id="g2012">
-                        <g id="g2010">
-                            <path
-                                id="path2004"
-                                d="M956.3 1629.2c.5-.2 1-.2 1.4-.1s.8.3 1.1.5.5.6.7 1.1c.1.4.2.8.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.7s-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2s.5-1.1.7-1.5.3-.8.4-1.1.1-.6.1-.9-.1-.5-.2-.8c-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5s-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.6-.7 1.2-.9z"
-                            />
-                            <path
-                                id="path2006"
-                                d="m964.6 1626.6 2.6 7.8-1 .3-2.2-6.7-1.5 1.7-.7-.6 1.9-2.3.9-.2zm4 6.7.3.8-4.6 1.5-.3-.8 4.6-1.5z"
-                            />
-                            <path
-                                id="path2008"
-                                d="m971.6 1624.3 2.6 7.8-1 .3-2.2-6.7-1.5 1.7-.7-.6 1.9-2.3.9-.2zm4 6.7.3.8-4.6 1.5-.3-.8 4.6-1.5z"
-                            />
-                        </g>
-                    </g>
-                    <g id="g681">
-                        <g id="g679">
-                            <path
-                                d="m1073.3 1734.8.2 1.2-3 1 .7 2c.2-.2.4-.3.6-.4l.6-.3c.4-.1.8-.2 1.3-.1.4.1.8.3 1.1.6s.6.8.7 1.3c.2.5.2 1.1.1 1.6s-.4 1-.7 1.3c-.4.4-.9.7-1.5.9-.6.2-1.1.2-1.6.2-.5-.1-.9-.2-1.4-.5l.6-1.1c.3.2.6.3.9.3.3 0 .6 0 .9-.1.5-.2.8-.4 1-.8s.2-.8 0-1.3c-.1-.4-.3-.6-.4-.8-.2-.2-.4-.3-.6-.3-.2 0-.4 0-.7.1-.2.1-.3.1-.5.2s-.3.2-.5.4l-1.1.4-1.4-4.2 4.7-1.6z"
-                                id="path677"
-                            />
-                        </g>
-                    </g>
-                </g>
-                <g id={"208"}>
-                    <path
-                        id="rect1668"
-                        transform="rotate(-18.286 1108.207 1966.05)"
-                        className="st6"
-                        d="M1053.7 1937.9h109.2v56.1h-109.2z"
-                    />
-                    <g id="g2030">
-                        <g id="g2028">
-                            <path
-                                id="path2024"
-                                d="m1124.7 1953.9 2.4 12.6-2.6.9-4-8.5 1.8 9.2-2.7.9-5.5-11.6 2.3-.8 4 9.7-1.7-8.9 2.3-.7 3.9 8.2-2.4-10.2 2.2-.8z"
-                            />
-                            <path
-                                id="path2026"
-                                d="M1130.9 1951.5c.8-.3 1.6-.4 2.2-.4.7 0 1.3.2 1.9.4l-.7 1.8c-.4-.2-.9-.3-1.4-.3s-.9.1-1.4.2c-.6.2-1 .5-1.4 1s-.6 1.1-.7 1.8c-.1.8.1 1.7.4 2.7.3 1.1.8 1.9 1.3 2.4.5.6 1 .9 1.6 1.1s1.2.1 1.7-.1c.6-.2 1.1-.5 1.5-.9s.6-.7.9-1.1l1.6 1.1c-.3.6-.7 1.1-1.2 1.6s-1.3.9-2.2 1.2c-1.1.3-2.1.4-3.1.2s-1.9-.7-2.7-1.5c-.8-.8-1.4-1.9-1.9-3.2-.4-1.4-.6-2.6-.4-3.7s.6-2 1.3-2.8c.8-.6 1.7-1.1 2.7-1.5z"
-                            />
-                        </g>
-                    </g>
-                    <g id="g704">
-                        <g id="g702">
-                            <path
-                                d="M1061.1 1959.7c.6-.2 1-.2 1.5-.1s.8.3 1.1.5c.3.3.5.6.7 1.1.1.4.2.7.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.6-.3.6-.7 1.3-1.1 2.1l3.7-1.2.2 1.1-5 1.6-.3-1c.4-.7.7-1.4 1-2 .3-.6.5-1 .7-1.5.2-.4.3-.8.4-1.1.1-.3.1-.6.1-.8s0-.5-.1-.7c-.1-.4-.4-.7-.7-.8-.3-.2-.7-.2-1.1 0-.4.1-.6.3-.8.5-.2.2-.4.5-.5.9l-1.1-.4c.2-.5.4-.9.8-1.3.2-.4.6-.7 1.2-.9z"
-                                id="path696"
-                            />
-                            <path
-                                d="M1068.5 1957.3c.9-.3 1.7-.1 2.4.4s1.3 1.5 1.7 2.9c.4 1.3.5 2.4.3 3.3-.2.9-.8 1.5-1.7 1.8-.9.3-1.7.2-2.4-.4-.7-.6-1.3-1.5-1.7-2.9-.4-1.3-.5-2.4-.3-3.3.2-.9.7-1.5 1.7-1.8zm.3 1c-.5.2-.7.5-.8 1.1-.1.6 0 1.4.4 2.6.2.6.4 1.1.6 1.5.2.4.4.7.6.9.2.2.4.3.6.4.2 0 .5 0 .7-.1.3-.1.5-.3.7-.6.1-.3.2-.7.2-1.2s-.2-1.1-.4-1.9c-.3-.8-.5-1.4-.8-1.9-.2-.4-.5-.7-.8-.8-.4-.1-.7-.1-1 0zm1.2 0 .6.8-.8 5.7-.7-.6.9-5.9z"
-                                id="path698"
-                            />
-                            <path
-                                d="M1078.7 1956.3c.1.4.1.8 0 1.1-.1.4-.4.7-.7 1.1.6.1 1.1.2 1.5.5.4.3.7.7.8 1.1.1.4.2.9 0 1.3-.1.4-.3.8-.7 1.2-.4.3-.8.6-1.5.8-.6.2-1.2.3-1.6.2s-.9-.2-1.2-.5c-.3-.3-.6-.6-.7-1.1-.2-.5-.1-.9 0-1.4.2-.4.5-.8.9-1.2-.5-.1-.9-.2-1.2-.5-.3-.2-.5-.5-.7-1-.1-.4-.1-.7-.1-1s.2-.6.4-.9c.2-.3.4-.5.7-.7.3-.2.6-.3.9-.4.3-.1.7-.2 1-.2.3 0 .6 0 .9.1.3.1.5.3.8.5.2.4.4.7.5 1zm-3.8 1.3c.1.3.2.5.4.6s.4.2.7.2c.3 0 .6.1.9.1.3-.3.4-.6.5-.9.1-.3.1-.5 0-.9s-.3-.6-.6-.8-.6-.2-1 0c-.4.1-.7.3-.8.6s-.2.8-.1 1.1zm4.1 3c-.1-.3-.3-.6-.5-.7-.2-.1-.5-.2-.8-.3-.3 0-.7-.1-1.2-.1-.2.2-.3.3-.4.6-.1.2-.2.4-.2.7s0 .5.1.8c.1.4.4.7.7.9s.7.2 1.2 0 .8-.4 1-.8c.1-.3.2-.7.1-1.1z"
-                                id="path700"
-                            />
-                        </g>
-                    </g>
-                </g>
-                <g id={"207"}>
-                    <path
-                        id="rect1670"
-                        transform="rotate(-18.286 1125.203 2019.104)"
-                        className="st6"
-                        d="M1070.7 1990.7h109.2v56.6h-109.2z"
-                    />
-                    <g id="g2038">
-                        <g id="g2036">
-                            <path
-                                id="path2032"
-                                d="m1142.6 2003.7 2.4 12.6-2.6.9-4-8.5 1.8 9.2-2.7.9-5.5-11.6 2.3-.8 4 9.7-1.7-8.9 2.3-.7 3.9 8.2-2.4-10.2 2.2-.8z"
-                            />
-                            <path
-                                id="path2034"
-                                d="M1148.8 2001.4c.8-.3 1.6-.4 2.2-.4.7 0 1.3.2 1.9.4l-.7 1.8c-.4-.2-.9-.3-1.4-.3s-.9.1-1.4.2c-.6.2-1 .5-1.4 1s-.6 1.1-.7 1.8c-.1.8.1 1.7.4 2.7.3 1.1.8 1.9 1.3 2.4.5.6 1 .9 1.6 1.1.6.1 1.2.1 1.7-.1.6-.2 1.1-.5 1.5-.9.3-.4.6-.7.9-1.1l1.6 1.1c-.3.6-.7 1.1-1.2 1.6s-1.3.9-2.2 1.2c-1.1.3-2.1.4-3.1.2s-1.9-.7-2.7-1.5c-.8-.8-1.4-1.9-1.9-3.2-.4-1.4-.6-2.6-.4-3.7s.6-2 1.3-2.8 1.7-1.2 2.7-1.5z"
-                            />
-                        </g>
-                    </g>
-                    <g id="g714">
-                        <g id="g712">
-                            <path
-                                d="M1077.6 2013c.6-.2 1-.2 1.5-.1.4.1.8.3 1.1.5.3.3.5.6.7 1.1.1.4.2.7.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.6-.3.6-.7 1.3-1.1 2.1l3.7-1.2.2 1.1-5 1.6-.3-1c.4-.7.7-1.4 1-2 .3-.6.5-1 .7-1.5.2-.4.3-.8.4-1.1.1-.3.1-.6.1-.8 0-.3 0-.5-.1-.7-.1-.4-.4-.7-.7-.8-.3-.2-.7-.2-1.1 0-.4.1-.6.3-.8.5-.2.2-.4.5-.5.9l-1.1-.4c.2-.5.4-.9.8-1.3.2-.5.6-.8 1.2-.9z"
-                                id="path706"
-                            />
-                            <path
-                                d="M1085 2010.6c.9-.3 1.7-.2 2.4.4s1.3 1.5 1.7 2.9c.4 1.3.5 2.5.3 3.3-.2.9-.8 1.5-1.7 1.8-.9.3-1.7.2-2.4-.4-.7-.6-1.3-1.5-1.7-2.9-.4-1.3-.5-2.4-.3-3.3.2-.9.8-1.5 1.7-1.8zm.3 1c-.5.2-.7.5-.8 1.1s0 1.4.4 2.6c.2.6.4 1.1.6 1.5.2.4.4.7.6.9.2.2.4.3.6.4.2 0 .5 0 .7-.1.3-.1.5-.3.7-.6s.2-.7.2-1.2-.2-1.1-.4-1.9c-.3-.8-.5-1.4-.8-1.9-.2-.4-.5-.7-.8-.8-.3-.1-.7-.1-1 0zm1.2-.1.6.8-.8 5.7-.7-.6.9-5.9z"
-                                id="path708"
-                            />
-                            <path
-                                d="M1094 2016.9h-1.4l.9-7.8-3.7 1.2-.3-1 5-1.6.3.9-.8 8.3z"
-                                id="path710"
-                            />
-                        </g>
-                    </g>
-                </g>
-                <g id={"42"}>
-                    <g id="g1722">
+                    <g id={"210"}>
                         <path
-                            id="rect1718"
-                            style={{
-                                fill: "#74beff",
-                            }}
-                            d="M301.5 1490.5h143v90h-143z"
+                            id="rect1666"
+                            transform="rotate(-18.286 1070.788 1850.944)"
+                            className="st5"
+                            d="M1016.3 1757.2h109.2v187.3h-109.2z"
                         />
-                        <path id="path1720" d="M444 1491v89H302v-89h142m1-1H301v91h144v-91z"/>
-                    </g>
-                    <g id="g722">
-                        <g id="g720">
-                            <path
-                                d="m312.7 1497.3 1.2.5-2.2 5.2h4.4v1.1h-5.9v-1l2.5-5.8zm2.4 3.3v5.3h-1.3v-2.8l.2-2.5h1.1z"
-                                id="path716"
-                            />
-                            <path
-                                d="M320.2 1497.3c.6 0 1.1.1 1.5.3s.7.5.9.9c.2.4.3.8.3 1.2 0 .4-.1.7-.2 1.1-.1.4-.3.7-.6 1.1s-.7.8-1.1 1.3c-.5.5-1 1-1.7 1.6h3.9l-.2 1.1h-5.3v-1c.6-.6 1.1-1.1 1.6-1.5.4-.4.8-.8 1.1-1.2.3-.3.5-.6.7-.9.2-.3.3-.5.4-.8.1-.2.1-.5.1-.7 0-.4-.1-.8-.4-1-.2-.2-.6-.4-1-.4s-.7.1-1 .2c-.3.1-.5.4-.8.7l-.9-.7c.3-.4.7-.7 1.1-1s1-.3 1.6-.3z"
-                                id="path718"
-                            />
+                        <g id="g2022">
+                            <g id="g2020">
+                                <path
+                                    id="path2014"
+                                    d="M1009.5 1788c.5-.2 1-.2 1.4-.1s.8.3 1.1.5c.3.3.5.6.7 1.1.1.4.2.8.2 1.1s-.1.8-.2 1.3c-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2 .3-.6.5-1.1.7-1.5s.3-.8.4-1.1c.1-.3.1-.6.1-.9s-.1-.5-.2-.8c-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5s-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.7-.7 1.2-.9z"
+                                />
+                                <path
+                                    id="path2016"
+                                    d="m1017.8 1785.4 2.6 7.8-1 .3-2.2-6.8-1.5 1.7-.7-.6 1.9-2.3.9-.1zm4.1 6.7.3.8-4.6 1.5-.3-.8 4.6-1.5z"
+                                />
+                                <path
+                                    id="path2018"
+                                    d="M1023.9 1783.2c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3s-.7 1.4-1.6 1.7c-.9.3-1.6.1-2.3-.4-.7-.6-1.2-1.5-1.7-2.9-.4-1.3-.6-2.4-.3-3.3.1-.8.6-1.4 1.5-1.7zm.2.8c-.5.2-.8.6-.9 1.2-.1.6 0 1.5.4 2.7.2.6.4 1.1.6 1.5s.4.7.6.9c.2.2.5.4.7.4h.8c.3-.1.6-.3.7-.6.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9s-.6-.8-.9-.9-.6-.1-1 0zm1.3-.1.5.8-.8 6-.6-.6.9-6.2z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g669">
+                            <g id="g667">
+                                <path
+                                    d="M1127.3 1911.1c.6-.2 1.1-.2 1.5-.2.5.1.8.2 1.2.5.3.2.5.6.6.9.1.3.1.7.1 1s-.2.6-.4.8c-.2.3-.4.5-.7.7.4-.1.7-.1 1.1 0 .3.1.6.2.9.4.3.2.5.6.6 1 .1.5.2.9 0 1.4-.1.5-.4.9-.8 1.2-.4.4-.9.6-1.5.8-.6.2-1.1.2-1.6.2s-1-.2-1.5-.5l.6-1.1c.3.2.6.3 1 .3.3 0 .7 0 1-.1.5-.1.8-.4 1-.7.2-.3.2-.7.1-1.1-.1-.3-.2-.6-.4-.7l-.6-.3c-.2 0-.5 0-.8.1l-.7.2-.2-1.2.5-.2c.2-.1.5-.2.6-.3.2-.2.3-.3.4-.5.1-.2.1-.5 0-.7-.1-.4-.3-.6-.6-.7-.3-.1-.7-.1-1 0-.3.1-.6.3-.8.5-.2.2-.4.5-.6.8l-1.1-.6c.2-.5.6-.9.9-1.2.3-.3.7-.6 1.2-.7z"
+                                    id="path665"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id="g2007" transform="translate(-201.111 -1.828)">
-                    <g id="g1728" transform="translate(200.111 2.828)">
+                    <g id={"206"}>
                         <path
-                            id="rect1724"
-                            style={{
-                                fill: "#ffc62a",
-                            }}
-                            d="M363.5 1618.5h81v188h-81z"
+                            id="rect1660"
+                            transform="rotate(-18.286 1232.781 2072.43)"
+                            className="st5"
+                            d="M1093.9 2016.4h278v111.9h-278z"
                         />
-                        <path id="path1726" d="M444 1619v187h-80v-187h80m1-1h-82v189h82z"/>
-                    </g>
-                    <g id="g732" transform="translate(198.697 32.527)">
-                        <g id="g730">
-                            <path
-                                d="m376.2 1626.5 1.2.5-2.2 5.2h4.4v1.1h-5.9v-1zm2.4 3.4v5.3h-1.3v-2.8l.2-2.5z"
-                                id="path724"
-                            />
-                            <path
-                                d="M385.2 1626.7v8.2h-1.4v-6.8l-1.9 1.2-.6-1 2.6-1.6zm1.7 7.4v1.1h-5.1v-1.1z"
-                                id="path726"
-                            />
-                            <path
-                                d="M393 1633.1h-3l-.6 2h-1.5l2.7-8.5h1.8l2.7 8.5h-1.5zm-2.8-1.1h2.4l-1.2-4.2z"
-                                id="path728"
-                            />
+                        <g id="g2002">
+                            <g id="g2000">
+                                <path
+                                    id="path1994"
+                                    d="M1102.3 2069.6c.5-.2 1-.2 1.4-.1.4.1.8.2 1.1.5.3.3.5.6.7 1.1.1.4.2.8.2 1.1s-.1.8-.2 1.3c-.2.5-.4 1-.7 1.7-.3.6-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2s.5-1.1.7-1.5.3-.8.4-1.1.1-.6.1-.9c0-.3-.1-.5-.2-.8-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5-.2.2-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.6-.8 1.2-.9z"
+                                />
+                                <path
+                                    id="path1996"
+                                    d="M1109.7 2067.1c.9-.3 1.6-.1 2.3.4.7.6 1.2 1.5 1.7 2.9.4 1.3.6 2.4.4 3.3-.2.9-.7 1.4-1.6 1.7s-1.6.1-2.3-.4c-.7-.6-1.2-1.5-1.7-2.9-.4-1.3-.6-2.4-.3-3.3 0-.8.6-1.4 1.5-1.7zm.2.8c-.5.2-.8.6-.9 1.2s0 1.5.4 2.7c.2.6.4 1.1.6 1.5s.4.7.6.9.4.4.7.4c.2.1.5 0 .8-.1s.6-.3.7-.6c.2-.3.2-.7.2-1.3 0-.5-.2-1.2-.4-2-.3-.8-.5-1.4-.8-1.9s-.6-.8-.9-.9c-.3 0-.6 0-1 .1zm1.3-.1.5.8-.8 6-.6-.6.9-6.2z"
+                                />
+                                <path
+                                    id="path1998"
+                                    d="M1117.1 2064.7c.3-.1.6-.2.9-.2s.6 0 .8.1l-.2.8c-.2-.1-.4-.1-.7-.1-.2 0-.4.1-.7.1-.4.1-.7.4-1 .8-.2.4-.3.9-.3 1.4 0 .6.1 1.2.4 1.9l.1.4c.3 1 .7 1.7 1.1 2 .4.4.9.5 1.5.3.5-.2.8-.5 1-.9.1-.4.1-1-.1-1.6-.1-.4-.3-.8-.5-1s-.4-.3-.7-.4c-.2 0-.5 0-.8.1-.4.1-.7.4-1 .7-.2.4-.4.8-.5 1.2l-.3-.9c.1-.5.3-1 .6-1.3.3-.3.6-.5 1.1-.7.4-.1.8-.2 1.2-.1.4.1.8.3 1.1.6s.6.7.8 1.3c.2.6.2 1.1.2 1.6-.1.5-.3.9-.6 1.3s-.7.6-1.2.8-.9.2-1.3.1-.8-.2-1.1-.5c-.3-.3-.6-.6-.9-1.1s-.5-1-.7-1.6c-.3-.9-.4-1.7-.4-2.4s.2-1.4.5-1.9c.6-.3 1-.6 1.7-.8z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g675">
+                            <g id="g673">
+                                <path
+                                    d="m1361.1 2069.8 2.5 7.9-1.5.5-2-6.3-1.4 1.6-1-.9 2-2.4 1.4-.4zm3.8 6.4.4 1.2-5.1 1.6-.4-1.2 5.1-1.6z"
+                                    id="path671"
+                                />
+                            </g>
                         </g>
                     </g>
-                </g>
-                <g id={"41"}>
-                    <g id="g1716">
-                        <path id="rect1712" className="st11" d="M318.5 1618.5h126v516h-126z"/>
+                    <g id={"211"}>
                         <path
-                            id="path1714"
-                            d="M444 1619v515H319v-515h125m1-1H318v517h127v-517z"
+                            id="rect1664"
+                            transform="rotate(-18.286 1016.323 1683.69)"
+                            className="st5"
+                            d="M961.8 1601.1H1071v165H961.8z"
                         />
-                    </g>
-                    <g id="g689">
-                        <g id="g687">
-                            <path
-                                d="M424.1 2112v8.3h-1.6v-6.6l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.6 7.3v1.2h-5.3v-1.2h5.3z"
-                                id="path683"
-                            />
-                            <path
-                                d="m429.5 2111.9 1.4.5-2.1 5.1h4.4v1.2h-6v-1.1l2.3-5.7zm2.7 3.4v5.3h-1.6v-2.9l.2-2.4h1.4z"
-                                id="path685"
-                            />
+                        <g id="g2012">
+                            <g id="g2010">
+                                <path
+                                    id="path2004"
+                                    d="M956.3 1629.2c.5-.2 1-.2 1.4-.1s.8.3 1.1.5.5.6.7 1.1c.1.4.2.8.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.7s-.7 1.3-1.2 2.2l3.8-1.3.2.9-4.8 1.6-.3-.8c.4-.8.8-1.5 1-2s.5-1.1.7-1.5.3-.8.4-1.1.1-.6.1-.9-.1-.5-.2-.8c-.1-.5-.4-.8-.7-.9-.3-.2-.7-.2-1.2 0-.4.1-.7.3-.9.5s-.4.5-.5.9l-.9-.3c.2-.5.4-.9.8-1.2.2-.5.6-.7 1.2-.9z"
+                                />
+                                <path
+                                    id="path2006"
+                                    d="m964.6 1626.6 2.6 7.8-1 .3-2.2-6.7-1.5 1.7-.7-.6 1.9-2.3.9-.2zm4 6.7.3.8-4.6 1.5-.3-.8 4.6-1.5z"
+                                />
+                                <path
+                                    id="path2008"
+                                    d="m971.6 1624.3 2.6 7.8-1 .3-2.2-6.7-1.5 1.7-.7-.6 1.9-2.3.9-.2zm4 6.7.3.8-4.6 1.5-.3-.8 4.6-1.5z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g681">
+                            <g id="g679">
+                                <path
+                                    d="m1073.3 1734.8.2 1.2-3 1 .7 2c.2-.2.4-.3.6-.4l.6-.3c.4-.1.8-.2 1.3-.1.4.1.8.3 1.1.6s.6.8.7 1.3c.2.5.2 1.1.1 1.6s-.4 1-.7 1.3c-.4.4-.9.7-1.5.9-.6.2-1.1.2-1.6.2-.5-.1-.9-.2-1.4-.5l.6-1.1c.3.2.6.3.9.3.3 0 .6 0 .9-.1.5-.2.8-.4 1-.8s.2-.8 0-1.3c-.1-.4-.3-.6-.4-.8-.2-.2-.4-.3-.6-.3-.2 0-.4 0-.7.1-.2.1-.3.1-.5.2s-.3.2-.5.4l-1.1.4-1.4-4.2 4.7-1.6z"
+                                    id="path677"
+                                />
+                            </g>
                         </g>
                     </g>
-                    <g id="g740">
-                        <g id="g738">
-                            <path
-                                d="m330.8 1626.5 1.2.5-2.2 5.2h4.4v1.1h-5.9v-1l2.5-5.8zm2.4 3.4v5.3h-1.3v-2.8l.2-2.5h1.1z"
-                                id="path734"
-                            />
-                            <path
-                                d="M339.8 1626.7v8.2h-1.4v-6.8l-1.9 1.2-.6-1 2.6-1.6h1.3zm1.7 7.4v1.1h-5.1v-1.1h5.1z"
-                                id="path736"
-                            />
-                        </g>
-                    </g>
-                </g>
-                <g id={"43"}>
-                    <g id="g1710">
-                        <path id="rect1706" className="st11" d="M19.5 1490.5h174v127h-174z"/>
+                    <g id={"208"}>
                         <path
-                            id="path1708"
-                            d="M193 1491v126H20v-126h173m1-1H19v128h175v-128z"
+                            id="rect1668"
+                            transform="rotate(-18.286 1108.207 1966.05)"
+                            className="st6"
+                            d="M1053.7 1937.9h109.2v56.1h-109.2z"
                         />
+                        <g id="g2030">
+                            <g id="g2028">
+                                <path
+                                    id="path2024"
+                                    d="m1124.7 1953.9 2.4 12.6-2.6.9-4-8.5 1.8 9.2-2.7.9-5.5-11.6 2.3-.8 4 9.7-1.7-8.9 2.3-.7 3.9 8.2-2.4-10.2 2.2-.8z"
+                                />
+                                <path
+                                    id="path2026"
+                                    d="M1130.9 1951.5c.8-.3 1.6-.4 2.2-.4.7 0 1.3.2 1.9.4l-.7 1.8c-.4-.2-.9-.3-1.4-.3s-.9.1-1.4.2c-.6.2-1 .5-1.4 1s-.6 1.1-.7 1.8c-.1.8.1 1.7.4 2.7.3 1.1.8 1.9 1.3 2.4.5.6 1 .9 1.6 1.1s1.2.1 1.7-.1c.6-.2 1.1-.5 1.5-.9s.6-.7.9-1.1l1.6 1.1c-.3.6-.7 1.1-1.2 1.6s-1.3.9-2.2 1.2c-1.1.3-2.1.4-3.1.2s-1.9-.7-2.7-1.5c-.8-.8-1.4-1.9-1.9-3.2-.4-1.4-.6-2.6-.4-3.7s.6-2 1.3-2.8c.8-.6 1.7-1.1 2.7-1.5z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g704">
+                            <g id="g702">
+                                <path
+                                    d="M1061.1 1959.7c.6-.2 1-.2 1.5-.1s.8.3 1.1.5c.3.3.5.6.7 1.1.1.4.2.7.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.6-.3.6-.7 1.3-1.1 2.1l3.7-1.2.2 1.1-5 1.6-.3-1c.4-.7.7-1.4 1-2 .3-.6.5-1 .7-1.5.2-.4.3-.8.4-1.1.1-.3.1-.6.1-.8s0-.5-.1-.7c-.1-.4-.4-.7-.7-.8-.3-.2-.7-.2-1.1 0-.4.1-.6.3-.8.5-.2.2-.4.5-.5.9l-1.1-.4c.2-.5.4-.9.8-1.3.2-.4.6-.7 1.2-.9z"
+                                    id="path696"
+                                />
+                                <path
+                                    d="M1068.5 1957.3c.9-.3 1.7-.1 2.4.4s1.3 1.5 1.7 2.9c.4 1.3.5 2.4.3 3.3-.2.9-.8 1.5-1.7 1.8-.9.3-1.7.2-2.4-.4-.7-.6-1.3-1.5-1.7-2.9-.4-1.3-.5-2.4-.3-3.3.2-.9.7-1.5 1.7-1.8zm.3 1c-.5.2-.7.5-.8 1.1-.1.6 0 1.4.4 2.6.2.6.4 1.1.6 1.5.2.4.4.7.6.9.2.2.4.3.6.4.2 0 .5 0 .7-.1.3-.1.5-.3.7-.6.1-.3.2-.7.2-1.2s-.2-1.1-.4-1.9c-.3-.8-.5-1.4-.8-1.9-.2-.4-.5-.7-.8-.8-.4-.1-.7-.1-1 0zm1.2 0 .6.8-.8 5.7-.7-.6.9-5.9z"
+                                    id="path698"
+                                />
+                                <path
+                                    d="M1078.7 1956.3c.1.4.1.8 0 1.1-.1.4-.4.7-.7 1.1.6.1 1.1.2 1.5.5.4.3.7.7.8 1.1.1.4.2.9 0 1.3-.1.4-.3.8-.7 1.2-.4.3-.8.6-1.5.8-.6.2-1.2.3-1.6.2s-.9-.2-1.2-.5c-.3-.3-.6-.6-.7-1.1-.2-.5-.1-.9 0-1.4.2-.4.5-.8.9-1.2-.5-.1-.9-.2-1.2-.5-.3-.2-.5-.5-.7-1-.1-.4-.1-.7-.1-1s.2-.6.4-.9c.2-.3.4-.5.7-.7.3-.2.6-.3.9-.4.3-.1.7-.2 1-.2.3 0 .6 0 .9.1.3.1.5.3.8.5.2.4.4.7.5 1zm-3.8 1.3c.1.3.2.5.4.6s.4.2.7.2c.3 0 .6.1.9.1.3-.3.4-.6.5-.9.1-.3.1-.5 0-.9s-.3-.6-.6-.8-.6-.2-1 0c-.4.1-.7.3-.8.6s-.2.8-.1 1.1zm4.1 3c-.1-.3-.3-.6-.5-.7-.2-.1-.5-.2-.8-.3-.3 0-.7-.1-1.2-.1-.2.2-.3.3-.4.6-.1.2-.2.4-.2.7s0 .5.1.8c.1.4.4.7.7.9s.7.2 1.2 0 .8-.4 1-.8c.1-.3.2-.7.1-1.1z"
+                                    id="path700"
+                                />
+                            </g>
+                        </g>
                     </g>
-                    <g id="g748">
-                        <g id="g746">
+                    <g id={"207"}>
+                        <path
+                            id="rect1670"
+                            transform="rotate(-18.286 1125.203 2019.104)"
+                            className="st6"
+                            d="M1070.7 1990.7h109.2v56.6h-109.2z"
+                        />
+                        <g id="g2038">
+                            <g id="g2036">
+                                <path
+                                    id="path2032"
+                                    d="m1142.6 2003.7 2.4 12.6-2.6.9-4-8.5 1.8 9.2-2.7.9-5.5-11.6 2.3-.8 4 9.7-1.7-8.9 2.3-.7 3.9 8.2-2.4-10.2 2.2-.8z"
+                                />
+                                <path
+                                    id="path2034"
+                                    d="M1148.8 2001.4c.8-.3 1.6-.4 2.2-.4.7 0 1.3.2 1.9.4l-.7 1.8c-.4-.2-.9-.3-1.4-.3s-.9.1-1.4.2c-.6.2-1 .5-1.4 1s-.6 1.1-.7 1.8c-.1.8.1 1.7.4 2.7.3 1.1.8 1.9 1.3 2.4.5.6 1 .9 1.6 1.1.6.1 1.2.1 1.7-.1.6-.2 1.1-.5 1.5-.9.3-.4.6-.7.9-1.1l1.6 1.1c-.3.6-.7 1.1-1.2 1.6s-1.3.9-2.2 1.2c-1.1.3-2.1.4-3.1.2s-1.9-.7-2.7-1.5c-.8-.8-1.4-1.9-1.9-3.2-.4-1.4-.6-2.6-.4-3.7s.6-2 1.3-2.8 1.7-1.2 2.7-1.5z"
+                                />
+                            </g>
+                        </g>
+                        <g id="g714">
+                            <g id="g712">
+                                <path
+                                    d="M1077.6 2013c.6-.2 1-.2 1.5-.1.4.1.8.3 1.1.5.3.3.5.6.7 1.1.1.4.2.7.2 1.1 0 .4-.1.8-.2 1.3-.2.5-.4 1-.7 1.6-.3.6-.7 1.3-1.1 2.1l3.7-1.2.2 1.1-5 1.6-.3-1c.4-.7.7-1.4 1-2 .3-.6.5-1 .7-1.5.2-.4.3-.8.4-1.1.1-.3.1-.6.1-.8 0-.3 0-.5-.1-.7-.1-.4-.4-.7-.7-.8-.3-.2-.7-.2-1.1 0-.4.1-.6.3-.8.5-.2.2-.4.5-.5.9l-1.1-.4c.2-.5.4-.9.8-1.3.2-.5.6-.8 1.2-.9z"
+                                    id="path706"
+                                />
+                                <path
+                                    d="M1085 2010.6c.9-.3 1.7-.2 2.4.4s1.3 1.5 1.7 2.9c.4 1.3.5 2.5.3 3.3-.2.9-.8 1.5-1.7 1.8-.9.3-1.7.2-2.4-.4-.7-.6-1.3-1.5-1.7-2.9-.4-1.3-.5-2.4-.3-3.3.2-.9.8-1.5 1.7-1.8zm.3 1c-.5.2-.7.5-.8 1.1s0 1.4.4 2.6c.2.6.4 1.1.6 1.5.2.4.4.7.6.9.2.2.4.3.6.4.2 0 .5 0 .7-.1.3-.1.5-.3.7-.6s.2-.7.2-1.2-.2-1.1-.4-1.9c-.3-.8-.5-1.4-.8-1.9-.2-.4-.5-.7-.8-.8-.3-.1-.7-.1-1 0zm1.2-.1.6.8-.8 5.7-.7-.6.9-5.9z"
+                                    id="path708"
+                                />
+                                <path
+                                    d="M1094 2016.9h-1.4l.9-7.8-3.7 1.2-.3-1 5-1.6.3.9-.8 8.3z"
+                                    id="path710"
+                                />
+                            </g>
+                        </g>
+                    </g>
+                    <g id={"42"}>
+                        <g id="g1722">
                             <path
-                                d="m32.7 1499 1.2.5-2.2 5.2h4.4v1.1h-5.9v-1l2.5-5.8zm2.4 3.4v5.3h-1.3v-2.8l.2-2.5h1.1z"
-                                id="path742"
+                                id="rect1718"
+                                style={{
+                                    fill: "#74beff",
+                                }}
+                                d="M301.5 1490.5h143v90h-143z"
                             />
+                            <path id="path1720" d="M444 1491v89H302v-89h142m1-1H301v91h144v-91z"/>
+                        </g>
+                        <g id="g722">
+                            <g id="g720">
+                                <path
+                                    d="m312.7 1497.3 1.2.5-2.2 5.2h4.4v1.1h-5.9v-1l2.5-5.8zm2.4 3.3v5.3h-1.3v-2.8l.2-2.5h1.1z"
+                                    id="path716"
+                                />
+                                <path
+                                    d="M320.2 1497.3c.6 0 1.1.1 1.5.3s.7.5.9.9c.2.4.3.8.3 1.2 0 .4-.1.7-.2 1.1-.1.4-.3.7-.6 1.1s-.7.8-1.1 1.3c-.5.5-1 1-1.7 1.6h3.9l-.2 1.1h-5.3v-1c.6-.6 1.1-1.1 1.6-1.5.4-.4.8-.8 1.1-1.2.3-.3.5-.6.7-.9.2-.3.3-.5.4-.8.1-.2.1-.5.1-.7 0-.4-.1-.8-.4-1-.2-.2-.6-.4-1-.4s-.7.1-1 .2c-.3.1-.5.4-.8.7l-.9-.7c.3-.4.7-.7 1.1-1s1-.3 1.6-.3z"
+                                    id="path718"
+                                />
+                            </g>
+                        </g>
+                    </g>
+                    <g id="g2007" transform="translate(-201.111 -1.828)">
+                        <g id="g1728" transform="translate(200.111 2.828)">
                             <path
-                                d="M40.2 1499c.6 0 1 .1 1.5.3.4.2.7.5.9.8.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.1.3-.3.5-.6.7-.3.2-.5.3-.9.4.4 0 .7.1 1 .3.3.2.5.4.7.7.2.3.3.7.3 1.1 0 .5-.1.9-.4 1.3-.3.4-.6.7-1.1.9s-1 .3-1.6.3c-.5 0-1-.1-1.5-.3-.5-.2-.9-.5-1.2-.9l.8-.7c.2.3.5.5.8.6.3.1.7.2 1 .2.5 0 .9-.1 1.2-.4.3-.3.5-.7.5-1.1 0-.4-.1-.7-.2-.9-.1-.2-.3-.4-.6-.5-.2-.1-.5-.1-.9-.1h-.7l.2-1h.5c.3 0 .5 0 .7-.1s.4-.2.5-.4.2-.5.2-.8c0-.4-.1-.7-.4-1-.3-.2-.6-.3-1-.3s-.7.1-.9.2c-.3.1-.5.3-.8.6l-.7-.8c.4-.4.8-.6 1.2-.8.5-.2.9-.3 1.4-.3z"
-                                id="path744"
+                                id="rect1724"
+                                style={{
+                                    fill: "#ffc62a",
+                                }}
+                                d="M363.5 1618.5h81v188h-81z"
                             />
+                            <path id="path1726" d="M444 1619v187h-80v-187h80m1-1h-82v189h82z"/>
+                        </g>
+                        <g id="g732" transform="translate(198.697 32.527)">
+                            <g id="g730">
+                                <path
+                                    d="m376.2 1626.5 1.2.5-2.2 5.2h4.4v1.1h-5.9v-1zm2.4 3.4v5.3h-1.3v-2.8l.2-2.5z"
+                                    id="path724"
+                                />
+                                <path
+                                    d="M385.2 1626.7v8.2h-1.4v-6.8l-1.9 1.2-.6-1 2.6-1.6zm1.7 7.4v1.1h-5.1v-1.1z"
+                                    id="path726"
+                                />
+                                <path
+                                    d="M393 1633.1h-3l-.6 2h-1.5l2.7-8.5h1.8l2.7 8.5h-1.5zm-2.8-1.1h2.4l-1.2-4.2z"
+                                    id="path728"
+                                />
+                            </g>
+                        </g>
+                    </g>
+                    <g id={"41"}>
+                        <g id="g1716">
+                            <path id="rect1712" className="st11" d="M318.5 1618.5h126v516h-126z"/>
+                            <path
+                                id="path1714"
+                                d="M444 1619v515H319v-515h125m1-1H318v517h127v-517z"
+                            />
+                        </g>
+                        <g id="g689">
+                            <g id="g687">
+                                <path
+                                    d="M424.1 2112v8.3h-1.6v-6.6l-1.8 1.1-.7-1.1 2.7-1.6h1.4zm1.6 7.3v1.2h-5.3v-1.2h5.3z"
+                                    id="path683"
+                                />
+                                <path
+                                    d="m429.5 2111.9 1.4.5-2.1 5.1h4.4v1.2h-6v-1.1l2.3-5.7zm2.7 3.4v5.3h-1.6v-2.9l.2-2.4h1.4z"
+                                    id="path685"
+                                />
+                            </g>
+                        </g>
+                        <g id="g740">
+                            <g id="g738">
+                                <path
+                                    d="m330.8 1626.5 1.2.5-2.2 5.2h4.4v1.1h-5.9v-1l2.5-5.8zm2.4 3.4v5.3h-1.3v-2.8l.2-2.5h1.1z"
+                                    id="path734"
+                                />
+                                <path
+                                    d="M339.8 1626.7v8.2h-1.4v-6.8l-1.9 1.2-.6-1 2.6-1.6h1.3zm1.7 7.4v1.1h-5.1v-1.1h5.1z"
+                                    id="path736"
+                                />
+                            </g>
+                        </g>
+                    </g>
+                    <g id={"43"}>
+                        <g id="g1710">
+                            <path id="rect1706" className="st11" d="M19.5 1490.5h174v127h-174z"/>
+                            <path
+                                id="path1708"
+                                d="M193 1491v126H20v-126h173m1-1H19v128h175v-128z"
+                            />
+                        </g>
+                        <g id="g748">
+                            <g id="g746">
+                                <path
+                                    d="m32.7 1499 1.2.5-2.2 5.2h4.4v1.1h-5.9v-1l2.5-5.8zm2.4 3.4v5.3h-1.3v-2.8l.2-2.5h1.1z"
+                                    id="path742"
+                                />
+                                <path
+                                    d="M40.2 1499c.6 0 1 .1 1.5.3.4.2.7.5.9.8.2.3.3.7.3 1.1 0 .3-.1.7-.2.9-.1.3-.3.5-.6.7-.3.2-.5.3-.9.4.4 0 .7.1 1 .3.3.2.5.4.7.7.2.3.3.7.3 1.1 0 .5-.1.9-.4 1.3-.3.4-.6.7-1.1.9s-1 .3-1.6.3c-.5 0-1-.1-1.5-.3-.5-.2-.9-.5-1.2-.9l.8-.7c.2.3.5.5.8.6.3.1.7.2 1 .2.5 0 .9-.1 1.2-.4.3-.3.5-.7.5-1.1 0-.4-.1-.7-.2-.9-.1-.2-.3-.4-.6-.5-.2-.1-.5-.1-.9-.1h-.7l.2-1h.5c.3 0 .5 0 .7-.1s.4-.2.5-.4.2-.5.2-.8c0-.4-.1-.7-.4-1-.3-.2-.6-.3-1-.3s-.7.1-.9.2c-.3.1-.5.3-.8.6l-.7-.8c.4-.4.8-.6 1.2-.8.5-.2.9-.3 1.4-.3z"
+                                    id="path744"
+                                />
+                            </g>
                         </g>
                     </g>
                 </g>

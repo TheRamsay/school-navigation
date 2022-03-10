@@ -25,7 +25,7 @@ const SearchBox = () => {
     debounceFunctionRef.current = () => handleQuery();
 
     const debounceHandleQuery = useCallback(debounce(() => {
-        if (debounceFunctionRef.current){
+        if (debounceFunctionRef.current) {
             debounceFunctionRef.current()
         }
     }, 250), []);
