@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import RoomInfo from "./info/RoomInfo";
 import FirstFloor from "./floors/FirstFloor";
@@ -9,16 +9,17 @@ import {
     setSelectedEmployee,
     setSelectedRoom,
 } from "../reducers/selectedSlice";
-import {setSelectedType} from "../reducers/typeSlice";
+import { setSelectedType } from "../reducers/typeSlice";
 import EmployeeInfo from "./info/EmployeeInfo";
-import {RootState} from "../store";
-import {SVGClickEvent} from "../types";
-import {useAppDispatch, useAppSelector} from "../hooks";
+import { RootState } from "../store";
+import { SVGClickEvent } from "../types";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import ZoomablePannableMap from "./floors/ZoomablePannableMap";
 
 const Map = () => {
     const floor = useAppSelector((state: RootState) => state.floor.value);
     const selectedType = useAppSelector((state: RootState) => state.types.value.selectedType);
-    const floorOptions = {first: <FirstFloor/>, second: <SecondFloor/>};
+    const floorOptions = { first: <FirstFloor />, second: <SecondFloor /> };
     const selectedRoomID = useAppSelector((state: RootState) => state.selected.value.room);
     const dispatch = useAppDispatch();
     let info: JSX.Element | null = null;
@@ -81,10 +82,10 @@ const Map = () => {
 
     switch (selectedType) {
         case "room":
-            info = <RoomInfo/>;
+            info = <RoomInfo />;
             break;
         case "employee":
-            info = <EmployeeInfo/>;
+            info = <EmployeeInfo />;
             break;
         default:
             info = null;
@@ -93,9 +94,9 @@ const Map = () => {
 
     return (
         <div className="map">
-            <SearchBox/>
-            {floor === "first" ? <FirstFloor/> : <SecondFloor/>}
-            <FloorPicker/>
+            <SearchBox />
+            {floor === "first" ? <ZoomablePannableMap children={<FirstFloor />} /> : <ZoomablePannableMap children={<SecondFloor />} />}
+            <FloorPicker />
             {info}
         </div>
     );
