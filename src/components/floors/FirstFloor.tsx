@@ -5,34 +5,10 @@ import * as d3 from "d3";
 
 
 const FirstFloor = () => {
-    const SVGMapRef = useRef<SVGSVGElement>(null);
-
-    useEffect(() => {
-        const zoom = d3.zoom()
-            .scaleExtent([0.25, 3])
-            // .translateExtent([[0, 0], [1920, 980]])
-            .on('zoom', handleZoom);
-
-        // @ts-ignore
-        function handleZoom(e) {
-            d3.select('#svg-map g')
-                .attr('transform', e.transform);
-        }
-
-        function center() {
-            // @ts-ignore
-            d3.select("#svg-map").transition().call(zoom.translateTo, 0.5 * width, 0.5 * height);
-        }
-
-        // @ts-ignore
-        d3.select('#svg-map').call(zoom);
-
-    },);
 
     return (
         <>
             <svg
-                ref={SVGMapRef}
                 id="svg-map"
                 // transform={`scale(${zoom}) translate(${translate[0]}, ${translate[1]})`}
                 // viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`}

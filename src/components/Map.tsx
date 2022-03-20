@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
 import * as d3 from "d3";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import RoomInfo from "./info/RoomInfo";
 import FirstFloor from "./floors/FirstFloor";
@@ -15,6 +15,7 @@ import EmployeeInfo from "./info/EmployeeInfo";
 import {RootState} from "../store";
 import {SVGClickEvent} from "../types";
 import {useAppDispatch, useAppSelector} from "../hooks";
+import ZoomablePannableMap from "./floors/ZoomablePannableMap";
 
 const Map = () => {
     const floor = useAppSelector((state: RootState) => state.floor.value);
@@ -117,7 +118,8 @@ const Map = () => {
     return (
         <div className="map">
             <SearchBox/>
-            {floor === "first" ? <FirstFloor/> : <SecondFloor/>}
+            {floor === "first" ? <ZoomablePannableMap children={<FirstFloor/>}/> :
+                <ZoomablePannableMap children={<SecondFloor/>}/>}
             <FloorPicker/>
             {info}
         </div>
