@@ -27,14 +27,15 @@ const Map = () => {
 
     const handleSVGClick = (event: SVGClickEvent) => {
         const element = event.currentTarget as Element;
-        if (element.classList.contains("nonclickable")) {
-        }
-        ;
 
         const ID = element.parentElement?.id;
         if (ID == undefined) {
             console.log("No ID found for element" + event.currentTarget);
         } else {
+            // Kontrola jestli mistnost ma normalni ID, nebo ID vytvorene Illustratorem, ktere vetsinou zacina G+neco
+            if (!+ID.charAt(0)) {
+                return;
+            }
             if (ID === selectedRoomID) {
                 dispatch(setSelectedType(null));
             } else {
@@ -64,19 +65,23 @@ const Map = () => {
                 console.log(window.screenY);
 
                 // @ts-ignore
-                const handleZoom = (e) => {
-                    console.log(e);
-                    d3.select('#svg-map g')
-                        .attr('transform', e.transform);
-                }
-
-                const zoom = d3.zoom()
-                    .scaleExtent([0.25, 3])
-                    // .translateExtent([[0, 0], [1920, 980]])
-                    .on('zoom', handleZoom);
+                // const handleZoom = (e) => {
+                //     console.log(e);
+                //     d3.select('#svg-map g')
+                //         .attr('transform', e.transform);
+                // }
+                //
+                // const zoom = d3.zoom()
+                //     .scaleExtent([0.25, 3])
+                //     // .translateExtent([[0, 0], [1920, 980]])
+                //     .on('zoom', handleZoom);
 
                 // @ts-ignore
-                d3.select("#svg-map").transition().call(zoom.translateTo, 0.5 * pos2.x, 0.5 * pos2.y);
+                // d3.select("#svg-map").transition().call(zoom.translateTo, 0.5 * pos2.x, 0.5 * pos2.y);
+
+                const circleBoundingRect = element.getBoundingClientRect()
+                // window.scrollTo(circleBoundingRect.left - 50 + window.scrollX, 0)
+                window.scrollTo(10, 10);
                 // element.scrollIntoView({
                 //     behavior: "smooth",
                 //     block: "center",

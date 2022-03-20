@@ -168,6 +168,10 @@ g:hover {
     cursor: pointer;
 }
 
+.clickable:hover {
+    cursor: pointer;
+}
+
 #root, #svg-map, .map, .app {
     width: 100%;
     height: 100%;

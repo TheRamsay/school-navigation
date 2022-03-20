@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { getRoom } from "../../services/api";
+import React, {useEffect, useState} from "react";
+import {getRoom} from "../../services/api";
 import PhoneIcon from "@material-ui/icons/Phone";
 import PersonIcon from "@material-ui/icons/Person";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import SkeletonInfo from "./SkeletonInfo";
-import { setSelectedType } from "../../reducers/typeSlice";
-import { setSelectedEmployee } from "../../reducers/selectedSlice";
-import { RootState } from "../../store";
-import { HTMLClickEvent, Room } from "../../types";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import {setSelectedType} from "../../reducers/typeSlice";
+import {setSelectedEmployee} from "../../reducers/selectedSlice";
+import {RootState} from "../../store";
+import {HTMLClickEvent, Room} from "../../types";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 
 const RoomInfo = () => {
     const selectedRoomID = useAppSelector((state: RootState) => state.selected.value.room);
@@ -46,7 +46,7 @@ const RoomInfo = () => {
                         <p>Učitelé</p>
                         <ul>
                             {room.teachers.map((teacher, index) => (
-                                <li
+                                <li className={"clickable"}
                                     key={index}
                                     data-employee={teacher.employee_id}
                                     onClick={handleTeacherClick}
@@ -56,7 +56,7 @@ const RoomInfo = () => {
                             ))}
                         </ul>
                         <div className="icon-with-text">
-                            <PhoneIcon />
+                            <PhoneIcon/>
                             <p>{room.phone_number}</p>
                         </div>
                     </div>
@@ -74,7 +74,7 @@ const RoomInfo = () => {
                     <div className="content">
                         <h3>UČEBNA {room.room_number}</h3>
                         <div className="icon-with-text">
-                            <LocalOfferIcon />
+                            <LocalOfferIcon/>
                             {room.room_id}
                         </div>
                         {/* <div>
@@ -91,9 +91,9 @@ const RoomInfo = () => {
     if (fetched && room !== null) {
         switch (room.room_type) {
             case "učebna":
-                return <ClassRoomInfo />;
+                return <ClassRoomInfo/>;
             case "kabinet":
-                return <CabinetInfo />;
+                return <CabinetInfo/>;
             default:
                 return (
                     <div className="room-info">
@@ -102,7 +102,7 @@ const RoomInfo = () => {
                                 {room.room_type} {room.room_id}
                             </h3>
                             <p className="icon-with-text">
-                                <PhoneIcon />
+                                <PhoneIcon/>
                                 {room.phone_number}
                             </p>
                         </div>
@@ -110,7 +110,7 @@ const RoomInfo = () => {
                 );
         }
     } else {
-        return <SkeletonInfo />;
+        return <SkeletonInfo/>;
     }
 };
 

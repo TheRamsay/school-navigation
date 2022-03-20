@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import LayersIcon from "@material-ui/icons/Layers";
-import { setFloor } from "../../reducers/floorSlice";
-import { RootState } from "../../store";
-import { HTMLClickEvent } from "../../types";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import {setFloor} from "../../reducers/floorSlice";
+import {RootState} from "../../store";
+import {HTMLClickEvent} from "../../types";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 
 const FloorPicker = () => {
     const [active, setActive] = useState(false);
@@ -40,10 +40,10 @@ const FloorPicker = () => {
 
     return (
         <>
-            <div className="floor-picker" onClick={toggleActive}>
-                <LayersIcon />
+            <div className="floor-picker clickable" onClick={toggleActive}>
+                <LayersIcon/>
             </div>
-            {active ? <FloorMenu /> : ""}
+            {active ? <FloorMenu/> : ""}
         </>
     );
 };
