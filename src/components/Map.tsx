@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import * as d3 from "d3";
 import axios from "axios";
 import RoomInfo from "./info/RoomInfo";
 import FirstFloor from "./floors/FirstFloor";
@@ -53,10 +54,32 @@ const Map = () => {
             const element = document.getElementById(selectedRoomID)?.firstElementChild;
             if (element) {
                 element.classList.add("selected-room");
-                element.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center",
-                });
+                const pos = element.getBoundingClientRect();
+                // @ts-ignore
+                const pos2 = element.getBBox();
+                console.log(pos2);
+                console.log(pos);
+                console.log(window.screenX);
+                console.log(window.screenY);
+
+                // @ts-ignore
+                const handleZoom = (e) => {
+                    console.log(e);
+                    d3.select('#svg-map g')
+                        .attr('transform', e.transform);
+                }
+
+                const zoom = d3.zoom()
+                    .scaleExtent([0.25, 3])
+                    // .translateExtent([[0, 0], [1920, 980]])
+                    .on('zoom', handleZoom);
+
+                // @ts-ignore
+                d3.select("#svg-map").transition().call(zoom.translateTo, 0.5 * pos2.x, 0.5 * pos2.y);
+                // element.scrollIntoView({
+                //     behavior: "smooth",
+                //     block: "center",
+                // });
             }
         }
     }, [selectedRoomID]);
