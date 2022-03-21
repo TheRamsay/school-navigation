@@ -56,36 +56,21 @@ const Map = () => {
             const element = document.getElementById(selectedRoomID)?.firstElementChild;
             if (element) {
                 element.classList.add("selected-room");
-                const pos = element.getBoundingClientRect();
-                // @ts-ignore
-                const pos2 = element.getBBox();
-                console.log(pos2);
-                console.log(pos);
-                console.log(window.screenX);
-                console.log(window.screenY);
+                const coords = (element as SVGSVGElement).getBBox();
 
                 // @ts-ignore
-                // const handleZoom = (e) => {
-                //     console.log(e);
-                //     d3.select('#svg-map g')
-                //         .attr('transform', e.transform);
-                // }
-                //
-                // const zoom = d3.zoom()
-                //     .scaleExtent([0.25, 3])
-                //     // .translateExtent([[0, 0], [1920, 980]])
-                //     .on('zoom', handleZoom);
+                const handleZoom = (e) => {
+                    d3.select('#svg-map g')
+                        .attr('transform', e.transform);
+                }
+
+                const zoom = d3.zoom()
+                    .scaleExtent([0.25, 3])
+                    // .translateExtent([[0, 0], [1920, 980]])
+                    .on('zoom', handleZoom);
 
                 // @ts-ignore
-                // d3.select("#svg-map").transition().call(zoom.translateTo, 0.5 * pos2.x, 0.5 * pos2.y);
-
-                const circleBoundingRect = element.getBoundingClientRect()
-                // window.scrollTo(circleBoundingRect.left - 50 + window.scrollX, 0)
-                window.scrollTo(10, 10);
-                // element.scrollIntoView({
-                //     behavior: "smooth",
-                //     block: "center",
-                // });
+                d3.select("#svg-map").transition().duration(500).call(zoom.translateTo, coords.x, coords.y);
             }
         }
     }, [selectedRoomID]);

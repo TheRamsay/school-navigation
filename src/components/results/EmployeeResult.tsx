@@ -1,21 +1,21 @@
 import React from "react";
 import PersonIcon from "@material-ui/icons/Person";
-import { setSelectedType } from "../../reducers/typeSlice";
+import {setSelectedType} from "../../reducers/typeSlice";
 import {
     setSelectedEmployee,
     setSelectedRoom,
 } from "../../reducers/selectedSlice";
-import { useHistory } from "react-router";
-import { setFloor } from "../../reducers/floorSlice";
-import { getFloor } from "../../services/floor";
-import { Employee, HTMLClickEvent, Room } from "../../types";
-import { useAppDispatch } from "../../hooks";
+import {useHistory} from "react-router";
+import {setFloor} from "../../reducers/floorSlice";
+import {getFloor} from "../../services/floor";
+import {Employee, HTMLClickEvent, Room} from "../../types";
+import {useAppDispatch} from "../../hooks";
 
 interface EmployeeResultProps {
     result: Employee
 }
 
-const EmployeeResult = ({ result }: EmployeeResultProps) => {
+const EmployeeResult = ({result}: EmployeeResultProps) => {
     const dispatch = useAppDispatch();
     const history = useHistory();
 
@@ -39,25 +39,25 @@ const EmployeeResult = ({ result }: EmployeeResultProps) => {
         <div
             data-room={result.room_id}
             data-employee={result.employee_id}
-            className="result"
+            className="result clickable"
             onClick={handleSelect}
         >
             <div className="result-icon">
-                <PersonIcon className={iconColor} />
+                <PersonIcon className={iconColor}/>
             </div>
             <div className="result-content">
                 <p className="content-primary">
-                    <span>{result.title_before}. </span>
+                    <span>{result.title_before ? `${result.title_before} ` : ""}</span>
                     <span>
                         {result.first_name} {result.last_name}
                     </span>
                     <span>
                         {result.title_after
-                            ? ", " + result.title_after + "."
+                            ? ", " + result.title_after
                             : ""}
                     </span>
                 </p>
-                <p className="content-secondary">kabinet {result.room_id}</p>
+                <p className="content-secondary"> {result.room_id ? `kabinet ${result.room_id}` : ""}</p>
             </div>
         </div>
     );

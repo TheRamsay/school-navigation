@@ -1,18 +1,18 @@
 import React from "react";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import { setSelectedType } from "../../reducers/typeSlice";
-import { setSelectedRoom } from "../../reducers/selectedSlice";
-import { useHistory } from "react-router";
-import { setFloor } from "../../reducers/floorSlice";
-import { getFloor } from "../../services/floor";
-import { HTMLClickEvent, Room } from "../../types";
-import { useAppDispatch } from "../../hooks";
+import {setSelectedType} from "../../reducers/typeSlice";
+import {setSelectedRoom} from "../../reducers/selectedSlice";
+import {useHistory} from "react-router";
+import {setFloor} from "../../reducers/floorSlice";
+import {getFloor} from "../../services/floor";
+import {HTMLClickEvent, Room} from "../../types";
+import {useAppDispatch} from "../../hooks";
 
 interface RoomProps {
     result: Room
 }
 
-const RoomResult = ({ result }: RoomProps) => {
+const RoomResult = ({result}: RoomProps) => {
     const dispatch = useAppDispatch();
     const history = useHistory();
 
@@ -43,11 +43,11 @@ const RoomResult = ({ result }: RoomProps) => {
     return (
         <div
             data-room={result.room_id}
-            className="result"
+            className="result clickable"
             onClick={handleSelect}
         >
             <div className="result-icon">
-                <VpnKeyIcon />
+                <VpnKeyIcon/>
             </div>
             <div className="result-content">
                 <p className="content-primary">{roomLabel}</p>

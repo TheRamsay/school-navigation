@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { getEmployee } from "../../services/api";
+import React, {useState, useEffect} from "react";
+import {getEmployee} from "../../services/api";
 import SkeletonInfo from "./SkeletonInfo";
 import EmailIcon from "@material-ui/icons/Email";
 import RoomIcon from "@material-ui/icons/Room";
@@ -7,10 +7,10 @@ import {
     setSelectedRoom,
     setSelectedEmployee,
 } from "../../reducers/selectedSlice";
-import { setSelectedType } from "../../reducers/typeSlice";
-import { RootState } from "../../store";
-import { useAppSelector, useAppDispatch } from "../../hooks";
-import { Employee, HTMLClickEvent } from "../../types";
+import {setSelectedType} from "../../reducers/typeSlice";
+import {RootState} from "../../store";
+import {useAppSelector, useAppDispatch} from "../../hooks";
+import {Employee, HTMLClickEvent} from "../../types";
 
 const EmployeeInfo = () => {
     const selectedEmployeeID = useAppSelector(
@@ -50,21 +50,21 @@ const EmployeeInfo = () => {
                     data-room={employee.room_id}
                 >
                     <div
-                        className="icon-with-text"
+                        className="icon-with-text clickable"
                         onClick={handleRoomClick}
                     >
-                        <RoomIcon />
+                        <RoomIcon/>
                         <p>{employee.room_id}</p>
                     </div>
-                    <div className="icon-with-text">
-                        <EmailIcon />
+                    <div className="icon-with-text clickable">
+                        <EmailIcon/>
                         <p>{employee.email}</p>
                     </div>
                 </div>
             </div>
         );
     } else {
-        return <SkeletonInfo />;
+        return <SkeletonInfo/>;
     }
 };
 
