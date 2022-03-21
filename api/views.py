@@ -29,7 +29,6 @@ def get_room(request, room_id):
     return Response(room_serializer.data)
 
 
-
 @api_view(["GET"])
 def get_employee(request, employee_id):
     employee = Employee.objects.get(pk=employee_id)
@@ -44,6 +43,7 @@ def search(request):
     employees = Employee.objects.annotate(
         full_name=Concat("first_name", V(" "), "last_name")
     ).filter(full_name__icontains=query)
+
     employee_serializer = EmployeeSerializer(employees, many=True)
 
     rooms = Room.objects.filter(room_id__contains=query)
