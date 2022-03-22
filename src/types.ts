@@ -17,7 +17,7 @@ export interface Room {
     floor: string,
     room_type: string,
     room_number?: string,
-    phone_number: number,
+    phone_extension: number,
     teachers: Array<Employee>
 }
 

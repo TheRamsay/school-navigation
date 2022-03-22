@@ -57,7 +57,7 @@ const RoomInfo = () => {
                         </ul>
                         <div className="icon-with-text">
                             <PhoneIcon/>
-                            <p>{room.phone_number}</p>
+                            <p>{room.phone_extension}</p>
                         </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@ const RoomInfo = () => {
                             </h3>
                             <p className="icon-with-text">
                                 <PhoneIcon/>
-                                {room.phone_number}
+                                {room.phone_extension}
                             </p>
                         </div>
                     </div>
