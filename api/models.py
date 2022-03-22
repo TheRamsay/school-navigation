@@ -11,7 +11,7 @@ class Room(models.Model):
     )
     room_type = models.CharField(max_length=100)
     room_number = models.CharField(max_length=50, blank=True)
-    phone_number = models.IntegerField(blank=True)
+    phone_extension = models.IntegerField(blank=True)
 
     class Meta:
         db_table = "room"

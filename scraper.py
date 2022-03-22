@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 @dataclass
 class TempEmployee:
     name: str
-    phone_number: str
+    phone_extension: str
     email: str
 
 

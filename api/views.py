@@ -23,6 +23,13 @@ def all_rooms(request):
 
 
 @api_view(["GET"])
+def all_rooms_by_floor(request, floor: int):
+    rooms = Room.objects.filter(floor=floor)
+    room_serializer = RoomSerializer(rooms, many=True)
+    return Response(room_serializer.data)
+
+
+@api_view(["GET"])
 def get_room(request, room_id):
     room = Room.objects.get(pk=room_id)
     room_serializer = RoomSerializer(room)
