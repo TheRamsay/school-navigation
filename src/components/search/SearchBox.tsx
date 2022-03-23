@@ -74,7 +74,7 @@ const SearchBox = () => {
         <>
             <div className="searchbox">
                 {location.pathname === "/search" ? (
-                    <ArrowBackIcon className={"clickable"} onClick={goHome}/>
+                    <ArrowBackIcon className={"clickable back-icon"} onClick={goHome}/>
                 ) : (
                     <div className="fill"></div>
                 )}
