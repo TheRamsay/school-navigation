@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.enums import Choices
 
 
 class Room(models.Model):
@@ -15,7 +14,6 @@ class Room(models.Model):
 
     class Meta:
         db_table = "room"
-        app_label = "api"
 
 
 class Employee(models.Model):
@@ -31,30 +29,6 @@ class Employee(models.Model):
 
     class Meta:
         db_table = "employee"
-        app_label = "api"
 
     def __str__(self):
         return f"{self.title_before or ''} {self.first_name} {self.last_name}{f', {self.title_after}' if self.title_after else ''}"
-
-
-class DemoRouter:
-    def db_for_read(self, model, **hints):
-        if model._meta.app_label == "api":
-            return "api_db"
-        return None
-
-    def db_for_write(self, model, **hints):
-        if model._meta.app_label == "api":
-            return "api_db"
-        return None
-
-    def allow_relation(self, obj1, obj2, **hints):
-        if obj1._meta.app_label == "api" or obj2._meta.app_label == "api":
-            return True
-        return None
-
-    def allow_migrate(self, db, app_label, model_name=None, **hints):
-
-        if app_label == "api":
-            return db == "api_db"
-        return None
