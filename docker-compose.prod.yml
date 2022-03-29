@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile.prod
+        command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
+        volumes:
+            - static_volume:/home/app/backend/static_files
+        expose:
+            - 8000
+    nginx:
+        build:
+            context: .
+            dockerfile: ./nginx/Dockerfile
+        volumes:
+            - static_volume:/home/app/backend/static_files
+        ports:
+            - "80:80"
+            - "443:443"
+        depends_on:
+            - backend
+#    certbot:
+#        image: "certbot/certbot"
+#        volumes:
+#            - ./nginx/certbot/conf:/etc/letsencrypt
+#            - ./nginx/certbot/www:/var/www/certbot
+#        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+volumes:
+    static_volume:
