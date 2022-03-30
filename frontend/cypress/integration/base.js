@@ -1,33 +1,25 @@
-// describe("Checking if all rooms in first floor are clickable", function() {
-//     it("", () => {
-//         cy.visit("http://localhost:3000");
-//         cy.request("http://127.0.0.1:8000/api/room/floor/1").then((data) => {
-//             const x = data.body.map(k => k.room_id);
-//             cy.wrap(x).each(j => {
-//                 if ([212, 214, 214].includes(+j)) {
-//                     return;
-//                 }
-//                 const el = cy.get(`#${j}`).children().first();
-//                 el.click({ force: true }).should("have.class", "selected-room");
-//             });
-//         });
-//     });
+// TODO: dodelat testy na switchovani pater
 
-// });
-
-describe("School navigation app", () => {
+describe("Base tests", () => {
 	beforeEach(() => {
 		cy.visit("http://localhost:3000");
 	});
 
-	it("Search item, click on it, show it on map", () => {
+	it("Search employee, click on it, show it on map", () => {
 		cy.get("#search-input").click();
 		cy.get("#search-input").type("dagmar po");
 		cy.get(".results").first().click();
 		cy.get(`#205`).children().first().should("have.class", "selected-room");
 	});
 
-	it("No results for item that doesn't exist", () => {
+	it("Search room, click on it, show it on map", () => {
+		cy.get("#search-input").click();
+		cy.get("#search-input").type("204");
+		cy.get(".results").first().click();
+		cy.get(`#204`).children().first().should("have.class", "selected-room");
+	});
+
+	it("No results for employee that doesn't exist", () => {
 		cy.get("#search-input").click();
 		cy.get("#search-input").type("This input doesn't work");
 		cy.get(".results").should("not.exist");
