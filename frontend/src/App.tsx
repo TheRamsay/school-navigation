@@ -13,10 +13,12 @@ import {RootState} from "./store";
 import Test from "./components/Test";
 import {useAppDispatch, useAppSelector} from './hooks';
 import {setSelectedType} from "./reducers/typeSlice";
+import {useHistory} from "react-router";
 
 
 function App() {
     const dispatch = useAppDispatch();
+    const history = useHistory();
     const floor = useAppSelector((state: RootState) => state.floor);
 
     useEffect(() => {
@@ -29,6 +31,16 @@ function App() {
         dispatch(setSelectedRoom(null))
     }, [floor])
 
+    useEffect(() => {
+        const escHandler = (ev: KeyboardEvent) => {
+            if (ev.key == "Escape") {
+                history.push("/");
+            }
+        }
+        document.addEventListener("keydown", escHandler);
+
+        return () => document.removeEventListener("keydown", escHandler);
+    })
 
     console.log(window.location.origin);
     if (window.location.origin === "http://localhost:3000") {

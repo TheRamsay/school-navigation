@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState, useMemo, useRef, useCallback} from "react";
 import SearchBox from "./SearchBox";
 import Results from "../results/Results";
-import { makeQuery } from "../../services/api";
-import { setSelectedType, clearTypes } from "../../reducers/typeSlice";
-import { clearSelected, setSelectedRoom } from "../../reducers/selectedSlice";
-import { clearResult } from "../../reducers/resultSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { RootState } from "../../store";
+import {makeQuery} from "../../services/api";
+import {setSelectedType, clearTypes} from "../../reducers/typeSlice";
+import {clearSelected, setSelectedRoom} from "../../reducers/selectedSlice";
+import {clearResult} from "../../reducers/resultSlice";
+import {useAppDispatch, useAppSelector} from "../../hooks";
+import {RootState} from "../../store";
 
 const Search = () => {
     const results = useAppSelector((state) => state.result.value);
@@ -31,9 +31,9 @@ const Search = () => {
 
     return (
         <div className="search">
-            <SearchBox />
+            <SearchBox/>
             {results.length !== 0 ? (
-                <Results handleSearch={handleSearch} />
+                <Results handleSearch={handleSearch}/>
             ) : (
                 ""
             )}
