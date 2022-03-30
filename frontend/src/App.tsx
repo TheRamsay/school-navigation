@@ -1,16 +1,11 @@
 import './App.css';
-import SearchBox from "./components/search/SearchBox";
 import Map from "./components/Map";
-import FloorPicker from "./components/floors/FloorPicker";
-import React, {useState, useEffect} from "react";
-import axios from "axios";
-import RoomInfo from "./components/info/RoomInfo";
+import React, {useEffect} from "react";
 import Search from "./components/search/Search";
 import {Switch, Route} from "react-router-dom";
 import {setSelectedEmployee, setSelectedRoom} from "./reducers/selectedSlice";
 import {axiosInstance} from './services/api';
 import {RootState} from "./store";
-import Test from "./components/Test";
 import {useAppDispatch, useAppSelector} from './hooks';
 import {setSelectedType} from "./reducers/typeSlice";
 import {useHistory} from "react-router";
