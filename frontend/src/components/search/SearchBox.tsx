@@ -1,6 +1,4 @@
 import React, {useEffect, useState, useMemo, useRef, useCallback} from "react";
-import axios from "axios";
-import Results from "../results/Results";
 import {makeQuery} from "../../services/api";
 import {setResult} from "../../reducers/resultSlice";
 import {setResultType} from "../../reducers/typeSlice";
@@ -10,7 +8,7 @@ import {useHistory, useLocation} from "react-router";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import {RootState} from "../../store";
 import {useAppSelector, useAppDispatch} from "../../hooks";
-import {HTMLClickEvent, HTMLInputEvent} from "../../types";
+import {HTMLInputEvent} from "../../types";
 import debounce from "lodash.debounce";
 
 const SearchBox = () => {
