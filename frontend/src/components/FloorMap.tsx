@@ -23,6 +23,7 @@ const Map = () => {
     const floorOptions = {first: <FirstFloor/>, second: <SecondFloor/>};
     const selectedRoomID = useAppSelector((state: RootState) => state.selected.value.room);
     const dispatch = useAppDispatch();
+    const floorMapper: Map<string, string> = new ([["first", "j"], ["seconds", "j"]]);
     let info: JSX.Element | null = null;
 
     const handleSVGClick = (event: SVGClickEvent) => {
