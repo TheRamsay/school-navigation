@@ -16,14 +16,20 @@ import {RootState} from "../store";
 import {SVGClickEvent} from "../types";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import ZoomablePannableMap from "./floors/ZoomablePannableMap";
+import ThirdFloor from "./floors/ThirdFloor";
 
-const Map = () => {
+const FloorMap = () => {
     const floor = useAppSelector((state: RootState) => state.floor.value);
     const selectedType = useAppSelector((state: RootState) => state.types.value.selectedType);
     const floorOptions = {first: <FirstFloor/>, second: <SecondFloor/>};
     const selectedRoomID = useAppSelector((state: RootState) => state.selected.value.room);
     const dispatch = useAppDispatch();
-    const floorMapper: Map<string, string> = new ([["first", "j"], ["seconds", "j"]]);
+    const floorMapper: Map<string, JSX.Element> = new Map(
+        [
+            ["first", <FirstFloor/>],
+            ["second", <SecondFloor/>],
+            ["third", <ThirdFloor/>]
+        ]);
     let info: JSX.Element | null = null;
 
     const handleSVGClick = (event: SVGClickEvent) => {
@@ -109,12 +115,11 @@ const Map = () => {
     return (
         <div className="map">
             <SearchBox/>
-            {floor === "first" ? <ZoomablePannableMap children={<FirstFloor/>}/> :
-                <ZoomablePannableMap children={<SecondFloor/>}/>}
+            {<ZoomablePannableMap children={floorMapper.get(floor)}/>}
             <FloorPicker/>
             {info}
         </div>
     );
 };
 
-export default Map;
+export default FloorMap;

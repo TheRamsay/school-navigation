@@ -1,5 +1,5 @@
 import './App.css';
-import Map from "./components/Map";
+import FloorMap from "./components/FloorMap";
 import React, {useEffect} from "react";
 import Search from "./components/search/Search";
 import {Switch, Route} from "react-router-dom";
@@ -52,7 +52,7 @@ function App() {
                     <Search/>
                 </Route>
                 <Route path="/" exact>
-                    <Map/>
+                    <FloorMap/>
                 </Route>
             </Switch>
         </div>
