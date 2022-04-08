@@ -19,7 +19,7 @@
       <sourceFolder url="file://$MODULE_DIR$/frontend/cypress" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/nginx" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.8 (school-navigation)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.10 (school-navigation)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">
