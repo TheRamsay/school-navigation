@@ -17,6 +17,7 @@ import {SVGClickEvent} from "../types";
 import {useAppDispatch, useAppSelector} from "../hooks";
 import ZoomablePannableMap from "./floors/ZoomablePannableMap";
 import ThirdFloor from "./floors/ThirdFloor";
+import FourthFloor from "./floors/FourthFloor";
 
 const FloorMap = () => {
     const floor = useAppSelector((state: RootState) => state.floor.value);
@@ -28,11 +29,13 @@ const FloorMap = () => {
         [
             ["first", <FirstFloor/>],
             ["second", <SecondFloor/>],
-            ["third", <ThirdFloor/>]
+            ["third", <ThirdFloor/>],
+            ["fourth", <FourthFloor/>]
         ]);
     let info: JSX.Element | null = null;
 
     const handleSVGClick = (event: SVGClickEvent) => {
+        console.log("Click")
         const element = event.currentTarget as Element;
 
         const ID = element.parentElement?.id;
@@ -56,7 +59,12 @@ const FloorMap = () => {
     useEffect(() => {
         const svg = document.getElementById("svg-map");
         const elements = svg?.querySelectorAll("g > path") as NodeListOf<Element>
+        const elements2 = svg?.querySelectorAll("g > ellipse") as NodeListOf<Element>
         [...elements].forEach((element) => {
+            element.classList.remove("selected-room");
+        });
+
+        [...elements2].forEach((element) => {
             element.classList.remove("selected-room");
         });
         if (selectedRoomID !== null) {
@@ -88,7 +96,7 @@ const FloorMap = () => {
             console.error("SVG map not found");
             return;
         }
-        const elements = svg.querySelectorAll("path, text");
+        const elements = svg.querySelectorAll("path, text, ellipse");
         [...elements].forEach((element) => {
             element.addEventListener("click", handleSVGClick);
         });
