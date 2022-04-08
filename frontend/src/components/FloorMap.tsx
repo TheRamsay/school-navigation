@@ -35,7 +35,6 @@ const FloorMap = () => {
     let info: JSX.Element | null = null;
 
     const handleSVGClick = (event: SVGClickEvent) => {
-        console.log("Click")
         const element = event.currentTarget as Element;
 
         const ID = element.parentElement?.id;
