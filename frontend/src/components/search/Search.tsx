@@ -31,6 +31,7 @@ const Search = () => {
 
     return (
         <div className="search">
+            <div className={"search-fill"}></div>
             <SearchBox/>
             {results.length !== 0 ? (
                 <Results handleSearch={handleSearch}/>
