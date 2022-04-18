@@ -53,7 +53,7 @@ def search(request):
 
     employee_serializer = EmployeeSerializer(employees, many=True)
 
-    rooms = Room.objects.filter(room_id__contains=query)
+    rooms = Room.objects.filter(room_id__contains=query) | Room.objects.filter(room_type__contains=query)
     room_serializer = RoomSerializer(rooms, many=True)
 
     if employee_serializer.data:
