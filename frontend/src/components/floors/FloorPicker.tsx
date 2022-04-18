@@ -4,6 +4,8 @@ import {setFloor} from "../../reducers/floorSlice";
 import {RootState} from "../../store";
 import {HTMLClickEvent} from "../../types";
 import {useAppDispatch, useAppSelector} from "../../hooks";
+import {clearSelected} from "../../reducers/selectedSlice";
+import {clearTypes} from "../../reducers/typeSlice";
 
 const FloorPicker = () => {
     const [active, setActive] = useState(false);
@@ -16,6 +18,8 @@ const FloorPicker = () => {
 
     const changeFloor = (ev: HTMLClickEvent) => {
         dispatch(setFloor(ev.currentTarget.id));
+        dispatch(clearSelected());
+        dispatch(clearTypes());
         toggleActive();
     };
 
