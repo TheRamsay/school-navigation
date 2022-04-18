@@ -16,19 +16,54 @@ class Room(models.Model):
         db_table = "room"
 
 
+class EmployeeRoom(models.Model):
+    employee_room_id = models.AutoField(primary_key=True)
+    employee_id = models.ForeignKey("Employee", on_delete=models.CASCADE)
+    room_id = models.ForeignKey("Room", on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "employee_room"
+
+
+class Title(models.Model):
+    title_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = "title"
+
+
+class EmployeeTitle(models.Model):
+    employee_title_id = models.AutoField(primary_key=True)
+    title_id = models.ForeignKey("Title", on_delete=models.CASCADE)
+    employee_id = models.ForeignKey("Employee", on_delete=models.CASCADE)
+    position = models.IntegerField()
+    location = models.CharField(max_length=6, choices=[("before", "before"), ("after", "after")], default=None)
+
+    class Meta:
+        db_table = "employee_title"
+
+
 class Employee(models.Model):
     employee_id = models.AutoField(primary_key=True)
     gender = models.CharField(max_length=1, choices=[("M", "M"), ("F", "F")], default=None)
-    title_before = models.CharField(max_length=100, null=True, blank=True)
+    prefix = models.CharField(max_length=100, blank=True, null=True)
     first_name = models.CharField(max_length=100)
-
     last_name = models.CharField(max_length=100)
-    title_after = models.CharField(max_length=100, null=True, blank=True)
+    suffix = models.CharField(max_length=100, blank=True, null=True)
     email = models.CharField(max_length=100)
-    room_id = models.ForeignKey('Room', on_delete=models.CASCADE, db_column="room_id", blank=True)
+    titles = models.ManyToManyField(Title, related_name="titles", through='EmployeeTitle')
 
     class Meta:
         db_table = "employee"
 
+    def display_name(self):
+        output = ""
+        titles_before = self.titles.filter(titles__employeetitle__location="before").all()
+        titles_after = self.titles.filter(titles__employeetitle__location="after").all()
+        output += "".join([title.name for title in titles_after])
+        output += f"{self.prefix} {self.first_name} {self.last_name} {self.suffix}"
+        output += "".join(["," + title.name for title in titles_before])
+
     def __str__(self):
-        return f"{self.title_before or ''} {self.first_name} {self.last_name}{f', {self.title_after}' if self.title_after else ''}"
+        return self.display_name()
