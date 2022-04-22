@@ -26,16 +26,19 @@ const FloorPicker = () => {
     const FloorMenu = () => {
         return (
             <div className="floor-menu">
-                <div id="first" className="floor-option" onClick={changeFloor}>
+                <div id="0" className="floor-option" onClick={changeFloor}>
+                    0
+                </div>
+                <div id="1" className="floor-option" onClick={changeFloor}>
                     1
                 </div>
-                <div id="second" className="floor-option" onClick={changeFloor}>
+                <div id="2" className="floor-option" onClick={changeFloor}>
                     2
                 </div>
-                <div id="third" className="floor-option" onClick={changeFloor}>
+                <div id="3" className="floor-option" onClick={changeFloor}>
                     3
                 </div>
-                <div id="fourth" className="floor-option" onClick={changeFloor}>
+                <div id="4" className="floor-option" onClick={changeFloor}>
                     4
                 </div>
             </div>
