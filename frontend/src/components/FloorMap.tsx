@@ -18,19 +18,20 @@ import {useAppDispatch, useAppSelector} from "../hooks";
 import ZoomablePannableMap from "./floors/ZoomablePannableMap";
 import ThirdFloor from "./floors/ThirdFloor";
 import FourthFloor from "./floors/FourthFloor";
+import GroundFloor from "./floors/GroundFloor";
 
 const FloorMap = () => {
     const floor = useAppSelector((state: RootState) => state.floor.value);
     const selectedType = useAppSelector((state: RootState) => state.types.value.selectedType);
-    const floorOptions = {first: <FirstFloor/>, second: <SecondFloor/>};
     const selectedRoomID = useAppSelector((state: RootState) => state.selected.value.room);
     const dispatch = useAppDispatch();
     const floorMapper: Map<string, JSX.Element> = new Map(
         [
-            ["first", <FirstFloor/>],
-            ["second", <SecondFloor/>],
-            ["third", <ThirdFloor/>],
-            ["fourth", <FourthFloor/>]
+            ["0", <GroundFloor/>],
+            ["1", <FirstFloor/>],
+            ["2", <SecondFloor/>],
+            ["3", <ThirdFloor/>],
+            ["4", <FourthFloor/>]
         ]);
     let info: JSX.Element | null = null;
 
@@ -80,7 +81,6 @@ const FloorMap = () => {
 
                 const zoom = d3.zoom()
                     .scaleExtent([0.25, 3])
-                    // .translateExtent([[0, 0], [1920, 980]])
                     .on('zoom', handleZoom);
 
                 // @ts-ignore
