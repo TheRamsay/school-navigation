@@ -8,11 +8,11 @@ import {
 import {useHistory} from "react-router";
 import {setFloor} from "../../reducers/floorSlice";
 import {getFloor} from "../../services/floor";
-import {Employee, HTMLClickEvent, Room} from "../../types";
+import {Employee, EmployeeWithRooms, HTMLClickEvent, Room} from "../../types";
 import {useAppDispatch} from "../../hooks";
 
 interface EmployeeResultProps {
-    result: Employee
+    result: Employee,
 }
 
 const EmployeeResult = ({result}: EmployeeResultProps) => {
@@ -31,13 +31,13 @@ const EmployeeResult = ({result}: EmployeeResultProps) => {
         if (employee) {
             dispatch(setSelectedEmployee(employee));
         }
-        dispatch(setFloor(getFloor(result.floor)));
+        dispatch(setFloor(result.room.floor));
         history.push("/");
     };
 
     return (
         <div
-            data-room={result.room_id}
+            data-room={result?.room?.room_id || ""}
             data-employee={result.employee_id}
             className="result clickable"
             onClick={handleSelect}
@@ -47,17 +47,15 @@ const EmployeeResult = ({result}: EmployeeResultProps) => {
             </div>
             <div className="result-content">
                 <p className="content-primary">
-                    <span>{result.title_before ? `${result.title_before} ` : ""}</span>
+                    <span>{result.titles_before}</span>
                     <span>
                         {result.first_name} {result.last_name}
                     </span>
                     <span>
-                        {result.title_after
-                            ? ", " + result.title_after
-                            : ""}
+                        {result.titles_after}
                     </span>
                 </p>
-                <p className="content-secondary"> {result.room_id ? `kabinet ${result.room_id}` : ""}</p>
+                <p className="content-secondary"> {result?.room?.room_id ? `kabinet ${result.room.room_id}` : ""}</p>
             </div>
         </div>
     );

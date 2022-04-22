@@ -10,24 +10,10 @@ import {RootState} from "../../store";
 import {HTMLClickEvent, Room} from "../../types";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 
-const RoomInfo = () => {
-    const selectedRoomID = useAppSelector((state: RootState) => state.selected.value.room);
-    const [room, setRoom] = useState<Room | null>(null);
-    const [fetched, setFetched] = useState(false);
-    const dispatch = useAppDispatch();
+type TeachersProps = { room: Room };
 
-    useEffect(() => {
-        if (selectedRoomID) {
-            getRoom(selectedRoomID)
-                .then((data) => {
-                    setRoom(data);
-                    setFetched(true);
-                })
-                .catch((e) => {
-                    setFetched(false);
-                });
-        }
-    }, [selectedRoomID]);
+const Teachers = ({room}: TeachersProps) => {
+    const dispatch = useAppDispatch();
 
     const handleTeacherClick = (ev: HTMLClickEvent) => {
         const employeeID = ev?.currentTarget?.dataset?.employee;
@@ -36,6 +22,52 @@ const RoomInfo = () => {
             dispatch(setSelectedType("employee"));
         }
     };
+    return (
+        <>
+            <p>Lidé</p>
+            <ul>
+                {room?.teachers && room.teachers.map((teacher, index) => (
+                    <li className={"clickable"}
+                        key={index}
+                        data-employee={teacher.employee_id}
+                        onClick={handleTeacherClick}
+                    >
+                        {teacher.titles_before}{teacher.first_name} {teacher.last_name}{teacher.titles_after}
+                    </li>
+                ))}
+            </ul>
+        </>
+    )
+}
+
+const RoomInfo = () => {
+    const selectedRoomID = useAppSelector((state: RootState) => state.selected.value.room);
+    const [room, setRoom] = useState<Room | null>(null);
+    const [fetched, setFetched] = useState(false);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (!selectedRoomID) {
+            return;
+        }
+        let isCanceled = false;
+        getRoom(selectedRoomID)
+            .then((data) => {
+                if (!isCanceled) {
+                    setRoom(data);
+                    setFetched(true);
+                }
+            })
+            .catch(() => {
+                if (!isCanceled) {
+                    setFetched(false);
+                }
+            });
+
+        return () => {
+            isCanceled = true;
+        };
+    }, [selectedRoomID]);
 
     const CabinetInfo = () => {
         if (room !== null) {
@@ -43,21 +75,10 @@ const RoomInfo = () => {
                 <div className="room-info">
                     <div className="content">
                         <h3>KABINET {room.room_id}</h3>
-                        <p>Učitelé</p>
-                        <ul>
-                            {room.teachers.map((teacher, index) => (
-                                <li className={"clickable"}
-                                    key={index}
-                                    data-employee={teacher.employee_id}
-                                    onClick={handleTeacherClick}
-                                >
-                                    {teacher.first_name} {teacher.last_name}
-                                </li>
-                            ))}
-                        </ul>
+                        {room.teachers.length > 0 && <Teachers room={room}/>}
                         <div className="icon-with-text">
                             <PhoneIcon/>
-                            <p>{room.phone_extension}</p>
+                            <p>{room.phone_extension ? "541 649 " + room.phone_extension : ""}</p>
                         </div>
                     </div>
                 </div>
@@ -74,13 +95,9 @@ const RoomInfo = () => {
                     <div className="content">
                         <h3>UČEBNA {room.room_number}</h3>
                         <div className="icon-with-text">
-                            <LocalOfferIcon/>
-                            {room.room_id}
+                            <LocalOfferIcon className={"room-id-icon"}/>
+                            <p>{room.room_id}</p>
                         </div>
-                        {/* <div>
-                            <PhoneIcon />
-                            {room.phone_number}
-                        </div> */}
                     </div>
                 </div>
             );
@@ -99,12 +116,13 @@ const RoomInfo = () => {
                     <div className="room-info">
                         <div className="content">
                             <h3>
-                                {room.room_type} {room.room_id}
+                                {room.room_type.toUpperCase()} {room.room_id}
                             </h3>
-                            <p className="icon-with-text">
-                                <PhoneIcon/>
-                                {room.phone_extension}
-                            </p>
+                            {room.teachers.length > 0 && <Teachers room={room}/>}
+                            <div className="icon-with-text">
+                                {room.phone_extension && <PhoneIcon/>}
+                                <p>{room.phone_extension ? "541 649 " + room.phone_extension : ""}</p>
+                            </div>
                         </div>
                     </div>
                 );

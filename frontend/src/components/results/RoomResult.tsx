@@ -26,7 +26,6 @@ const RoomResult = ({result}: RoomProps) => {
             roomLabel = `kabinet ${result.room_id}`;
             break;
         default:
-            // Maybe add some error handler, this behavior is not wanted
             return <></>;
     }
 
