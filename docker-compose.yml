@@ -18,4 +18,5 @@ services:
             - CHOKIDAR_USEPOLLING=true
         volumes:
             - ./frontend:/usr/src/app
-        command: npm start run
+        command: npm run start
+
