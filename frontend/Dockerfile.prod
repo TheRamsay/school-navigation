@@ -12,3 +12,4 @@ COPY . ./
 RUN npm run build
 
 COPY ./build /var/www/html/
+
