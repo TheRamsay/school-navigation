@@ -7,6 +7,10 @@ describe("Checking if all rooms are clickable", function () {
 				if ([212, 214, 214].includes(+j)) {
 					return;
 				}
+
+				if (!x) {
+					return;
+				}
 				const el = cy.get(`#${j}`).children().first();
 				el.click({ force: true }).should("have.class", "selected-room");
 			});
@@ -14,4 +18,5 @@ describe("Checking if all rooms are clickable", function () {
 	});
 
 });
+
 

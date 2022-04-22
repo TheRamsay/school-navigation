@@ -1,5 +1,3 @@
-// TODO: dodelat testy na switchovani pater
-
 describe("Base tests", () => {
 	beforeEach(() => {
 		cy.visit("http://localhost:3000");
@@ -27,14 +25,13 @@ describe("Base tests", () => {
 
 	it("Number of results is correct", () => {
 		cy.get("#search-input").click();
-		cy.get("#search-input").type("Ivana");
+		cy.get("#search-input").type("dag");
 		cy.get(".results").children().its("length").then(size => {
-			cy.request("http://localhost:8000/api/search/?query=Ivana").then(data => {
+			cy.request("http://localhost:8000/api/search/?query=dag").then(data => {
 				cy.wrap(data.body.result).should("have.length", size);
 			});
 		});
 	});
-
 
 	it("Gender is correct", () => {
 		cy.request("http://localhost:8000/api/employee/").then(data => {
