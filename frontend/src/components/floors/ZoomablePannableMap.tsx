@@ -6,7 +6,6 @@ const ZoomablePannableMap: React.FC = ({children}) => {
     useEffect(() => {
         const zoom = d3.zoom()
             .scaleExtent([0.25, 3])
-            // .translateExtent([[-700, -1100], [4000, 3400]])
             .on('zoom', handleZoom);
 
         // @ts-ignore
