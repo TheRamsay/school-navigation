@@ -1,9 +1,7 @@
 from django.db.models import Value as V
 from django.db.models.functions import Concat
-from django.shortcuts import render
-from rest_framework import generics
 from .models import Room, Employee
-from .serializers import RoomSerializer, EmployeeSerializer
+from .serializers import RoomSerializer, EmployeeSerializer, SimpleRoomSerializer
 from rest_framework.decorators import api_view
 from rest_framework.views import Response
 
@@ -30,7 +28,7 @@ def all_rooms_by_floor(request, floor: int):
 
 
 @api_view(["GET"])
-def get_room(request, room_id):
+def get_room(request, room_id: str):
     room = Room.objects.get(pk=room_id)
     room_serializer = RoomSerializer(room)
     return Response(room_serializer.data)
@@ -44,8 +42,22 @@ def get_employee(request, employee_id):
 
 
 @api_view(["GET"])
+def get_employee_in_room(request, employee_id, room_id):
+    employee = Employee.objects.get(pk=employee_id)
+    room = Room.objects.get(pk=room_id)
+    employee_data = EmployeeSerializer(employee)
+    room_data = SimpleRoomSerializer(room)
+    data = {**employee_data.data, "room": room_data.data}
+    del data["rooms"]
+    return Response(data)
+
+
+@api_view(["GET"])
 def search(request):
     query = request.GET["query"]
+
+    if len(query) < 3:
+        return Response([])
 
     employees = Employee.objects.annotate(
         full_name=Concat("first_name", V(" "), "last_name")
