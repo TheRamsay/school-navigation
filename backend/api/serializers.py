@@ -1,24 +1,66 @@
 from rest_framework import serializers
-from rest_framework.utils import field_mapping
-from .models import Room, Employee
+from .models import Room, Employee, EmployeeRoom, Title, EmployeeTitle
 
 
-class EmployeeSerializer(serializers.ModelSerializer):
-    floor = serializers.SerializerMethodField("get_floor")
+class SimpleRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = ("room_id", "floor", "room_type", "room_number", "phone_extension")
 
-    def get_floor(self, obj):
-        return obj.room_id.floor if obj.room_id_id else None
+
+class SimpleEmployeeSerializer(serializers.ModelSerializer):
+    titles_before = serializers.SerializerMethodField("get_titles_before")
+    titles_after = serializers.SerializerMethodField("get_titles_after")
+
+    def get_titles_before(self, obj):
+        titles = EmployeeTitle.objects.filter(employee_id=obj, location="before").order_by(
+            "position").all()
+        return " ".join([title.title_id.name for title in titles]) + " "
+
+    def get_titles_after(self, obj):
+        titles = EmployeeTitle.objects.filter(employee_id=obj, location="after").order_by(
+            "position").all()
+        out = ", ".join([title.title_id.name for title in titles])
+        if out:
+            out = ", " + out
+        return out
 
     class Meta:
         model = Employee
         fields = (
-            "employee_id", "gender", "title_before", "first_name", "last_name", "title_after", "email", "room_id",
-            "floor")
+        "employee_id", "gender", "first_name", "last_name", "email", "titles_before", "titles_after", "phone_number")
+
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    titles_before = serializers.SerializerMethodField("get_titles_before")
+    titles_after = serializers.SerializerMethodField("get_titles_after")
+    rooms = SimpleRoomSerializer(many=True, read_only=True)
+
+    def get_titles_before(self, obj):
+        titles = EmployeeTitle.objects.filter(employee_id=obj, location="before").order_by(
+            "position").all()
+        return " ".join([title.title_id.name for title in titles]) + " "
+
+    def get_titles_after(self, obj):
+        titles = EmployeeTitle.objects.filter(employee_id=obj, location="after").order_by(
+            "position").all()
+        out = ", ".join([title.title_id.name for title in titles])
+        if out:
+            out = ", " + out
+        return out
+
+    class Meta:
+        model = Employee
+        fields = (
+            "employee_id", "gender", "first_name", "last_name", "email", "rooms", "titles_before", "titles_after",
+            "phone_number")
+        depth = 2
 
 
 class RoomSerializer(serializers.ModelSerializer):
-    teachers = EmployeeSerializer(read_only=True, many=True, source="employee_set")
+    teachers = SimpleEmployeeSerializer(read_only=True, many=True)
 
     class Meta:
         model = Room
+        depth = 2
         fields = ("room_id", "floor", "room_type", "room_number", "phone_extension", "teachers")
