@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-type floor = "first" | "second" | "third" | "fourth";
+type floor = "0" | "1" | "2" | "3" | "4";
+
 interface FloorState {
     value: string
 }
@@ -8,7 +9,7 @@ interface FloorState {
 export const floorSlice = createSlice({
     name: "floor",
     initialState: {
-        value: "first",
+        value: "1",
     } as FloorState,
     reducers: {
         setFloor: (state, action: PayloadAction<string>) => {
@@ -17,6 +18,6 @@ export const floorSlice = createSlice({
     },
 });
 
-export const { setFloor } = floorSlice.actions;
+export const {setFloor} = floorSlice.actions;
 
 export default floorSlice.reducer;

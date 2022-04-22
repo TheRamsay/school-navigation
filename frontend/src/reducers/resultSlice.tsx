@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Employee, Room } from "../types";
+import { EmployeeWithRooms, Room } from "../types";
 
-type arrayAction = PayloadAction<Array<Employee | Room>>;
+type arrayAction = PayloadAction<Array<EmployeeWithRooms | Room>>;
 interface ResultState {
-    value: Array<Employee | Room>
+    value: Array<EmployeeWithRooms | Room>
 }
 
 export const resultSlice = createSlice({
@@ -24,3 +24,4 @@ export const resultSlice = createSlice({
 export const { setResult, clearResult } = resultSlice.actions;
 
 export default resultSlice.reducer;
+
