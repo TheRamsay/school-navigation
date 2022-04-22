@@ -3,13 +3,34 @@ import React from "react";
 export interface Employee {
     employee_id: number,
     gender: string,
-    title_before?: string,
     first_name: string,
     last_name: string,
-    title_after?: string,
     email: string,
+    phone_number?: string,
+    room: SimpleRoom
+    titles_before: string,
+    titles_after: string
+}
+
+export interface EmployeeWithRooms {
+    employee_id: number,
+    gender: string,
+    first_name: string,
+    last_name: string,
+    email: string,
+    phone_number?: string,
+    rooms: Array<SimpleRoom>,
+    titles_before: string,
+    titles_after: string
+}
+
+export interface SimpleRoom {
     room_id: string,
-    floor: string
+    floor: string,
+    room_type: string,
+    room_number: string,
+    phone_extensions: number
+
 }
 
 export interface Room {
@@ -18,7 +39,7 @@ export interface Room {
     room_type: string,
     room_number?: string,
     phone_extension: number,
-    teachers: Array<Employee>
+    teachers: Array<EmployeeWithRooms>
 }
 
 export type SVGClickEvent = Event;
