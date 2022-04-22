@@ -3,11 +3,11 @@ import FloorMap from "./components/FloorMap";
 import React, {useEffect} from "react";
 import Search from "./components/search/Search";
 import {Switch, Route} from "react-router-dom";
-import {setSelectedEmployee, setSelectedRoom} from "./reducers/selectedSlice";
+import {clearSelected, setSelectedEmployee, setSelectedRoom} from "./reducers/selectedSlice";
 import {axiosInstance} from './services/api';
 import {RootState} from "./store";
 import {useAppDispatch, useAppSelector} from './hooks';
-import {setSelectedType} from "./reducers/typeSlice";
+import {clearTypes, setSelectedType} from "./reducers/typeSlice";
 import {useHistory} from "react-router";
 
 
@@ -17,18 +17,14 @@ function App() {
     const floor = useAppSelector((state: RootState) => state.floor);
 
     useEffect(() => {
-        dispatch(setSelectedEmployee(null))
-        dispatch(setSelectedRoom(null))
-        dispatch(setSelectedType(null))
+        dispatch(clearSelected());
+        dispatch(clearTypes());
     }, [])
 
-    useEffect(() => {
-        dispatch(setSelectedRoom(null))
-    }, [floor])
 
     useEffect(() => {
         const escHandler = (ev: KeyboardEvent) => {
-            if (ev.key == "Escape") {
+            if ("Escape" === ev.key) {
                 history.push("/");
             }
         }
