@@ -28,7 +28,6 @@ SECRET_KEY = "django-insecure-nn@2rl4su9ge0_dka#t6+r&t+1^_kldj=2j&c-c$ndr53_m@nt
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -90,6 +89,7 @@ DATABASES = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = ["*"]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

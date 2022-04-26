@@ -1,9 +1,10 @@
 import axios from "axios";
 
-// const BASE_URL = "http://78.47.245.96/api/";
-const BASE_URL = "http://localhost:8000/api/";
+const BASE_URL = "http://78.47.245.96/api/";
+// const BASE_URL = "http://localhost:8000/api/";
 
-export const axiosInstance = axios.create({});
+export const axiosInstance = axios.create({ 
+});
 
 const makeQuery = async (query: string): Promise<any> => {
     const res = await axiosInstance.get(`${BASE_URL}search/?query=${query}`);
