@@ -5,7 +5,7 @@ services:
         build:
             context: ./backend
             dockerfile: Dockerfile.prod
-        command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000"
+        command: gunicorn backend.wsgi:application --bind 0.0.0.0:8000
         volumes:
             - static_volume:/home/app/backend/static_files
         expose:
@@ -18,7 +18,7 @@ services:
             - static_volume:/home/app/backend/static_files
         ports:
             - "80:80"
-                - "443:443"
+            - "443:443"
         depends_on:
             - backend
 volumes:

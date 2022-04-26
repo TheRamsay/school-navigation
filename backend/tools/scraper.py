@@ -29,7 +29,7 @@ def _get(url: str):
 
 
 def add_employees_from_file():
-    with open("./employees.txt") as f:
+    with open("employees.txt") as f:
         employees = [[line.strip() for line in lines.split("\n")] for lines in f.read().split("\n\n")]
         for employee in employees:
             titles = []

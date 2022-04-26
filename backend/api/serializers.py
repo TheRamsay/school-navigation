@@ -28,32 +28,15 @@ class SimpleEmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = (
-        "employee_id", "gender", "first_name", "last_name", "email", "titles_before", "titles_after", "phone_number")
+            "employee_id", "gender", "first_name", "last_name", "email", "titles_before", "titles_after",
+            "phone_number")
 
 
-class EmployeeSerializer(serializers.ModelSerializer):
-    titles_before = serializers.SerializerMethodField("get_titles_before")
-    titles_after = serializers.SerializerMethodField("get_titles_after")
+class EmployeeSerializer(SimpleEmployeeSerializer):
     rooms = SimpleRoomSerializer(many=True, read_only=True)
 
-    def get_titles_before(self, obj):
-        titles = EmployeeTitle.objects.filter(employee_id=obj, location="before").order_by(
-            "position").all()
-        return " ".join([title.title_id.name for title in titles]) + " "
-
-    def get_titles_after(self, obj):
-        titles = EmployeeTitle.objects.filter(employee_id=obj, location="after").order_by(
-            "position").all()
-        out = ", ".join([title.title_id.name for title in titles])
-        if out:
-            out = ", " + out
-        return out
-
-    class Meta:
-        model = Employee
-        fields = (
-            "employee_id", "gender", "first_name", "last_name", "email", "rooms", "titles_before", "titles_after",
-            "phone_number")
+    class Meta(SimpleEmployeeSerializer.Meta):
+        fields = SimpleEmployeeSerializer.Meta.fields + ("rooms",)
         depth = 2
 
 
@@ -63,4 +46,10 @@ class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         depth = 2
-        fields = ("room_id", "floor", "room_type", "room_number", "phone_extension", "teachers")
+        fields = (
+            "room_id",
+            "floor",
+            "room_type",
+            "room_number",
+            "phone_extension",
+            "teachers")
