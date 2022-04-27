@@ -32,9 +32,12 @@ function App() {
 
         return () => document.removeEventListener("keydown", escHandler);
     })
-
-    console.log(window.location.origin);
-    // axiosInstance.defaults.baseURL = window.location.origin + "/api";
+    if (window.location.origin === "http://localhost:3000") {
+        axiosInstance.defaults.baseURL = "http://localhost:8000/api";
+    } else {
+        console.log("JJ");
+        axiosInstance.defaults.baseURL = window.location.origin + "/api";
+    }
 
     return (
         <div className="app">
