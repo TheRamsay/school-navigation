@@ -26,6 +26,7 @@ const RoomResult = ({result}: RoomProps) => {
             roomLabel = `kabinet ${result.room_id}`;
             break;
         default:
+            roomLabel = `místnost ${result.room_id}`;
             return <></>;
     }
 
@@ -35,7 +36,8 @@ const RoomResult = ({result}: RoomProps) => {
         if (room) {
             dispatch(setSelectedRoom(room));
         }
-        dispatch(setFloor(getFloor(result.floor)));
+        dispatch(setFloor(result.floor));
+        console.log(result.floor)
         history.push("/");
     };
 
