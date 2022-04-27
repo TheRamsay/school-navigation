@@ -119,7 +119,6 @@ const FloorMap = () => {
             break;
     }
 
-    console.log(floor)
     return (
         <div className="map">
             <SearchBox/>

@@ -37,7 +37,6 @@ const RoomResult = ({result}: RoomProps) => {
             dispatch(setSelectedRoom(room));
         }
         dispatch(setFloor(result.floor));
-        console.log(result.floor)
         history.push("/");
     };
 

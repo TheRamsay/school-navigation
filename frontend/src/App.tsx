@@ -35,7 +35,6 @@ function App() {
     if (window.location.origin === "http://localhost:3000") {
         axiosInstance.defaults.baseURL = "http://localhost:8000/api";
     } else {
-        console.log("JJ");
         axiosInstance.defaults.baseURL = window.location.origin + "/api";
     }
 
