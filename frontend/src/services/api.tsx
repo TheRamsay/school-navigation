@@ -1,8 +1,6 @@
 import axios from "axios";
 
-export const axiosInstance = axios.create({
-    baseURL: BASE_URL
-});
+export const axiosInstance = axios.create({});
 
 const makeQuery = async (query: string): Promise<any> => {
     const res = await axiosInstance.get(`/search/?query=${query}`);
